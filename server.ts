@@ -14,6 +14,10 @@ export function app(): express.Express {
 
   const commonEngine = new CommonEngine();
 
+  const distFolder = join(process.cwd(), 'dist/sigma-frontend/browser');
+  server.use('/logos', express.static(join(process.cwd(), 'public/logos')));
+
+
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
