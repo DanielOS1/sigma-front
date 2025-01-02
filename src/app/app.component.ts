@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { environment } from '../environments/environment.development';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = process.env["API_BASE_URL"] || '?';
+  title = 'sigma-frontend';
 }
