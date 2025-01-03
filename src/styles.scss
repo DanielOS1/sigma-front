@@ -1,8 +1,4 @@
-html, body{
-    font-family: "Montserrat", serif;
-    background-color: rgb(250, 243, 234);
-}
+/* You can add global styles to this file, and also import other style files */
 
-*{
-    font-family: inherit;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
