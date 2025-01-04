@@ -1,0 +1,35 @@
+.card-container{
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 40%;
+    height: 50%;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+
+.auth-container{
+    position: relative;
+    background-color: #0f9;
+    width: 100%;
+    height: 100%;
+}
+
+.card-body-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.btn-container{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
