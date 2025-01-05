@@ -5,7 +5,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { LoginTypeAdto } from '../interfaces/logintypeAdto';
+import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 
 @Component({
   selector: 'app-authentication',
@@ -22,24 +22,46 @@ export class AuthenticationComponent {
     constructor(private authService: AuthService) { }
 
     onRutChange(): void {
-      const rutFocus = '11.111.111-1';
+      const rutFocus = '333333333';
       this.showPassword = this.rut === rutFocus;
     }
 
     onSumbit(): void {
-
-      const loginData = {
+      console.log(this.password)
+      const loginDataTypeA: LoginTypeAdto = {
         rut: this.rut,
         deviceId: navigator.userAgent.slice(0, 25),
       }
 
-      this.authService.loginPasswordLess(loginData).subscribe({
-        next: (response: LoginTypeAdto) => { 
-          console.log('Respuesta del login:', response);
-        },
-        error: (error) => {
-          console.error('Error al iniciar sesión:', error);
-        }
-      });
+      const loginDataTypeB: LoginTypeBdto = {
+        rut: this.rut,
+        password: this.password,
+        deviceId: navigator.userAgent.slice(0, 25),
+      }
+
+      if (!this.showPassword) {
+        this.authService.loginPasswordLess(loginDataTypeA).subscribe({
+          next: (response: LoginTypeAdto) => { 
+            console.log('Respuesta del login:', response);
+          },
+          error: (error) => {
+            console.error('Error al iniciar sesión:', error);
+          }
+        });
+      } else {
+        this.authService.loginPassword(loginDataTypeB).subscribe({
+          next: (response: LoginTypeBdto) => { 
+            console.log('Respuesta del login:', response);
+          },
+          error: (error) => {
+            console.error('Error al iniciar sesión:', error);
+          }
+        });
+      }
+
+
+
     }
+
+
   }

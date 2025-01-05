@@ -4,38 +4,31 @@
             <h2>Inicia con tu cuenta de Acceso</h2>
         </mat-card-header>
         <mat-card-content>
-                <form class="card-body-container">
-                    <mat-form-field class="card-content-container">
-                        <mat-label>Ingrese su Rut</mat-label>
-                        <input 
-                            matInput 
-                            placeholder="Ej: 11.111.111-1" 
-                            [(ngModel)] = "rut"
-                            (ngModelChange)="onRutChange()"
-                            value=""
-                            name="rut"
-                            >
-                    </mat-form-field>
-                    <mat-form-field *ngIf="showPassword" class="card-content-container">
-                        <mat-label>Ingrese su Contraseña</mat-label>
-                        <input 
-                            matInput 
-                            placeholder="" 
-                            value=""
-                            [(ngModel)] = "password"
-                            
-                            >
-                    </mat-form-field>
-
-                </form>
+            <form class="card-body-container" (ngSubmit)="onSumbit()">
+                <mat-form-field class="card-content-container">
+                    <mat-label>Ingrese su Rut</mat-label>
+                    <input 
+                        matInput 
+                        placeholder="Ej: 11.111.111-1" 
+                        [(ngModel)]="rut"
+                        (ngModelChange)="onRutChange()"
+                        name="rut"
+                    >
+                </mat-form-field>
+                <mat-form-field *ngIf="showPassword" class="card-content-container">
+                    <mat-label>Ingrese su Contraseña</mat-label>
+                    <input 
+                        matInput 
+                        placeholder="Contraseña" 
+                        [(ngModel)]="password"
+                        type="password"
+                        name="password"
+                    >
+                </mat-form-field>
+                <mat-card-actions class="btn-container">
+                    <button mat-flat-button type="submit">Ingresar</button>
+                </mat-card-actions>
+            </form>
         </mat-card-content>
-        <mat-card-actions class="btn-container">
-            <button 
-                mat-flat-button
-                (click)="onSumbit()"
-            >
-                Ingresar
-            </button>
-        </mat-card-actions>
     </mat-card>
 </section>
