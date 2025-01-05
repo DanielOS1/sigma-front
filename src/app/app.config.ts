@@ -14,8 +14,8 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(
-      withFetch(), // Habilitar fetch
-      withInterceptors([apiInterceptor]) // Agregar interceptores
+      withFetch(), 
+      withInterceptors([apiInterceptor])
     ),
   ],
 };

@@ -1,4 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family:"Montserrat", sans-serif; font-weight: 400; font-size: 16px; line-height: 1.5; color: #fff; background-color: #000; }
+
+.mat-mdc-form-field {
+    --mdc-outlined-text-field-input-text-color: #ffffff;
+    --mdc-outlined-text-field-outline-color: #0068B7;
+    --mdc-outlined-text-field-input-text-placeholder-color: white;
+    --mdc-outlined-text-field-label-text-color: white;
+    --mdc-outlined-text-field-hover-outline-color: #white;
+    --mdc-outlined-text-field-hover-label-text-color: #2350f4;
+    --mat-form-field-container-text-size: 20px ;
+  
+  }  
