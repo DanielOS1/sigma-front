@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-authentication',
@@ -18,14 +19,11 @@ export class AuthenticationComponent {
     rut: string  = '';
     password: string = '';
     showPassword: boolean = false;
-
-    constructor(private authService: AuthService) { }
-
+    constructor(private authService: AuthService, private router: Router) { }
     onRutChange(): void {
       const rutFocus = '333333333';
       this.showPassword = this.rut === rutFocus;
     }
-
     onSumbit(): void {
       console.log(this.password)
       const loginDataTypeA: LoginTypeAdto = {
@@ -43,6 +41,7 @@ export class AuthenticationComponent {
         this.authService.loginPasswordLess(loginDataTypeA).subscribe({
           next: (response: LoginTypeAdto) => { 
             console.log('Respuesta del login:', response);
+            this.router.navigate(['/dashboard']);
           },
           error: (error) => {
             console.error('Error al iniciar sesión:', error);
@@ -52,16 +51,12 @@ export class AuthenticationComponent {
         this.authService.loginPassword(loginDataTypeB).subscribe({
           next: (response: LoginTypeBdto) => { 
             console.log('Respuesta del login:', response);
+            this.router.navigate(['/dashboard']);
           },
           error: (error) => {
             console.error('Error al iniciar sesión:', error);
           }
         });
       }
-
-
-
     }
-
-
-  }
+ }
