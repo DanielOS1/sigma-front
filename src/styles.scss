@@ -1,7 +1,21 @@
+@import 'ngx-toastr/toastr';
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family:"Montserrat", sans-serif; font-weight: 400; font-size: 16px; line-height: 1.5; color: #fff; background-color: #000; }
+  html, body { 
+    height: 100%; 
+    background-color: white; 
+  }
+
+  body { 
+      padding: 0; 
+      margin: 0; 
+      font-family:"Montserrat", sans-serif; 
+      font-weight: 400; 
+      font-size: 16px; 
+      line-height: 1.5; 
+      color: #fff; 
+      background-color: #000; 
+    }
 
 .mat-mdc-form-field {
     --mdc-outlined-text-field-input-text-color: #ffffff;
@@ -13,5 +27,3 @@ body { margin: 0; font-family:"Montserrat", sans-serif; font-weight: 400; font-s
     --mat-form-field-container-text-size: 20px ;
   
   }  
-
-@import 'ngx-toastr/toastr';

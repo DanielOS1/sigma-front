@@ -1,0 +1,19 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    margin: 0;
+  }
+  
+  app-header {
+    flex-shrink: 0; /* Fija el tamaño del header */
+  }
+  
+  router-outlet {
+    flex-grow: 1; /* El contenido principal ocupa el espacio restante */
+  }
+  
+  app-footer {
+    flex-shrink: 0; /* Fija el tamaño del footer */
+  }
+  

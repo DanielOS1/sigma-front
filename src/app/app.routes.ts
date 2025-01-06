@@ -4,12 +4,28 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadComponent: () =>
-      import('./authentication/authentication.component').then((m) => m.AuthenticationComponent),
+      import('./layouts/auth-layout/auth-layout.component').then((m) => m.AuthLayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./authentication/authentication.component').then((m) => m.AuthenticationComponent),
+      },
+    ],
   },
   {
-    path: 'dashboard',
+    path: '',
     loadComponent: () =>
-      import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      import('./layouts/main-layout/main-layout.component').then((m) => m.MainLayoutComponent),
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      },
+    ],
   },
-  { path: '', redirectTo: 'auth', pathMatch: 'full' }, // Redirección a 'auth' como vista inicial
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+  { path: '**', redirectTo: 'auth' },
 ];
+
