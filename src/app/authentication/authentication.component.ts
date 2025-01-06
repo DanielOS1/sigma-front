@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-authentication',
@@ -22,7 +23,12 @@ export class AuthenticationComponent {
   showPassword: boolean = false;
   showPasswordIcon: boolean = false; // Controla el estado del ícono de visibilidad
 
-  constructor(private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) {}
+
+  constructor(
+      private authService: AuthService, 
+      private router: Router, 
+      private cdr: ChangeDetectorRef,
+      private toastr: ToastrService) {}
 
   // Detectar cambio en el RUT
   onRutChange(): void {
@@ -54,20 +60,24 @@ export class AuthenticationComponent {
       this.authService.loginPasswordLess(loginDataTypeA).subscribe({
         next: (response: LoginTypeAdto) => {
           console.log('Respuesta del login:', response);
+          this.toastr.success('Login Succesful', 'Success');
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Error al iniciar sesión:', error);
+          this.toastr.error('Su rut es incorrecto');
         },
       });
     } else {
       this.authService.loginPassword(loginDataTypeB).subscribe({
         next: (response: LoginTypeBdto) => {
           console.log('Respuesta del login:', response);
+          this.toastr.success('Login Succesful', 'Success');
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Error al iniciar sesión:', error);
+          this.toastr.error('Su Contraseña es incorrecta');
         },
       });
     }
