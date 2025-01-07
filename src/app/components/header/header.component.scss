@@ -1,4 +1,59 @@
 .header-component{
     margin: 0;
     height: 7vh;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0rem 1rem 10rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-menu{
+    position: absolute;
+    right: 10rem;
+}
+
+.header-menu-background {
+    width: 20rem;
+    height: 10rem;
+    background-color: black;
+    border-radius: 50%;
+    position: absolute; 
+    right: -30rem; 
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease-in-out;
+    z-index: 1; 
+    
+
+}
+
+
+.header-menu:hover .header-menu-background {
+    right: -13rem;
+    background: rgb(7, 53, 75);
+    filter: blur(100px);
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+.out-option {
+    position: relative;
+    color: white;
+    z-index: 2; 
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    pointer-events: auto; 
+
+}
+
+.test{
+    background-color: white;
+    height: 10rem;
+    width: 10rem;
+    align-content: center
+    ;
 }

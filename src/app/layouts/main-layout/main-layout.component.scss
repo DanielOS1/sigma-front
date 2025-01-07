@@ -1,19 +1,27 @@
-:host {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Ocupa toda la altura de la ventana */
-    margin: 0;
-  }
-  
-  app-header {
-    flex-shrink: 0; /* Fija el tamaño del header */
-  }
-  
-  router-outlet {
-    flex-grow: 1; /* El contenido principal ocupa el espacio restante */
-  }
-  
-  app-footer {
-    flex-shrink: 0; /* Fija el tamaño del footer */
-  }
-  
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+  background-image: url('/media/bg-dashboard.webp'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-color: rgba(255, 255, 255, 0.3);
+
+}
+
+app-header {
+  flex-shrink: 0; 
+  border: 2px solid #ffffff23;
+  background: #e729ae10;
+  backdrop-filter: blur(0.6px);
+     
+}
+
+router-outlet {
+  flex-grow: 1; 
+}
+
+app-footer {
+  flex-shrink: 0; 
+}
