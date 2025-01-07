@@ -28,13 +28,13 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthenticationComponent {
   rut: string = '';
   password: string = '';
-  showPassword: boolean = false; // Determina si el login requiere contraseña
-  showPasswordIcon: boolean = false; // Icono de visibilidad de contraseña
-  previousRut: string = ''; // Almacena el RUT previo para evitar llamadas redundantes
+  showPassword: boolean = false; 
+  showPasswordIcon: boolean = false;
+  previousRut: string = ''; 
 
   constructor(
     private authService: AuthService,
-    private sessionService: SessionService, // Servicio para manejar tokens y monitoreo
+    private sessionService: SessionService, 
     private router: Router,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService
@@ -43,25 +43,37 @@ export class AuthenticationComponent {
   /** Detecta cambios en el RUT y verifica si requiere contraseña */
   onRutChange(): void {
     if (this.isValidRutFormat(this.rut)) {
+
       if (this.rut !== this.previousRut) {
         this.previousRut = this.rut;
         const formattedRut = this.formatRut(this.rut);
 
-        // Verifica si el RUT requiere contraseña
         this.authService.checkShouldPassword(formattedRut).subscribe({
           next: (requiresPassword: boolean) => {
             this.showPassword = requiresPassword;
             this.cdr.detectChanges();
+            
           },
+          
           error: () => {
-            this.toastr.error('Error al verificar el RUT');
+            
           },
         });
       }
+      
     } else {
       this.showPassword = false;
-      this.previousRut = ''; 
+      this.previousRut = '';
+      
     }
+  }
+
+  /** Formatea el RUT automáticamente mientras el usuario escribe */
+  onRutInput(): void {
+    const rawValue = this.rut.replace(/[^\dkK]/g, ''); // Elimina caracteres no válidos
+    const formattedValue = this.applyRutFormat(rawValue);
+    this.rut = formattedValue;
+    this.onRutChange();
   }
 
   /** Alterna la visibilidad de la contraseña */
@@ -71,7 +83,7 @@ export class AuthenticationComponent {
 
   /** Envía los datos del formulario al servicio de autenticación */
   onSumbit(): void {
-    const formattedRut = this.formatRut(this.rut); // Formatea el RUT
+    const formattedRut = this.formatRut(this.rut); 
 
     const loginDataTypeA: LoginTypeAdto = {
       rut: formattedRut,
@@ -111,27 +123,35 @@ export class AuthenticationComponent {
   private handleLoginSuccess(response: any): void {
     const accessToken = response.data?.accessToken;
 
-    // Almacena el token y configura el monitoreo de la sesión
     this.authService.setToken(accessToken);
     this.sessionService.startSessionMonitor();
 
-    // Redirige al dashboard
     console.log('Respuesta del servidor:', response);
-  console.log('AccessToken recibido:', response.data?.accessToken);
+    console.log('AccessToken recibido:', response.data?.accessToken);
     this.toastr.success('Login exitoso', 'Éxito');
     this.router.navigate(['/dashboard']);
   }
 
-  /** Verifica si el formato del RUT es válido */
+  /** Aplica el formato 10.123.456-7 al RUT */
+  private applyRutFormat(rut: string): string {
+    if (rut.length <= 1) {
+      return rut;
+    }
+
+    const body = rut.slice(0, -1); 
+    const verifier = rut.slice(-1); 
+    const formattedBody = body.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+    return `${formattedBody}-${verifier}`;
+  }
+
+  /** Verifica si el RUT tiene un formato válido */
   private isValidRutFormat(rut: string): boolean {
-    const rutRegex = /^(\d{1,2}\.\d{3}\.\d{3}-\d{1})$/;
+    const rutRegex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/; 
     return rutRegex.test(rut);
   }
 
   /** Elimina los caracteres no válidos del RUT */
   private formatRut(rut: string): string {
-    return rut.replace(/[.\-]/g, '');
+    return rut.replace(/[.\-]/g, ''); 
   }
-
-
 }

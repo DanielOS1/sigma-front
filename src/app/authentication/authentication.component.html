@@ -11,12 +11,14 @@
     <form class="card-body-container" (ngSubmit)="onSumbit()">
       <!-- Campo del Rut -->
       <mat-form-field class="rut-field" appearance="outline">
-        <mat-icon matPrefix>badge</mat-icon> <!-- Ícono al inicio -->
+        <mat-icon matPrefix>badge</mat-icon>
         <mat-label>Ingrese su Rut con puntos y guión</mat-label>
         <input
           matInput
+          type="text"
           [(ngModel)]="rut"
-          (ngModelChange)="onRutChange()"
+          (input)="onRutInput()"
+          maxlength="12"
           name="rut"
         />
       </mat-form-field>
