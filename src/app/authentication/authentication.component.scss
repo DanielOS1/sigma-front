@@ -8,7 +8,7 @@
   overflow: hidden;
   background-image: url('/media/bg-login.webp');
   background-size: cover;
-  background-position: center;
+  background-position: center ; 
   background-repeat: no-repeat;
 }
 
@@ -18,7 +18,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 500px; /* Ancho máximo de la tarjeta */
+  max-width: 450px; /* Ancho máximo de la tarjeta */
   max-height: 400px; /* Altura inicial de la tarjeta */
   padding: 2rem;
   display: flex;

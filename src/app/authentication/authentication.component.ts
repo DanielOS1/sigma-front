@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { SessionService } from '../services/session-service.service'; // Nuevo servicio para manejar la sesión
+import { SessionService } from '../services/session-service.service'; // Servicio para manejar la sesión
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -28,10 +28,9 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthenticationComponent {
   rut: string = '';
   password: string = '';
-  showPassword: boolean = false;
-  showPasswordIcon: boolean = false;
-  previousRut: string = '';
-  hasShownInvalidRutAlert: boolean = false;
+  showPassword: boolean = false; // Determina si el login requiere contraseña
+  showPasswordIcon: boolean = false; // Icono de visibilidad de contraseña
+  previousRut: string = ''; // Almacena el RUT previo para evitar llamadas redundantes
 
   constructor(
     private authService: AuthService,
@@ -41,12 +40,14 @@ export class AuthenticationComponent {
     private toastr: ToastrService
   ) {}
 
+  /** Detecta cambios en el RUT y verifica si requiere contraseña */
   onRutChange(): void {
     if (this.isValidRutFormat(this.rut)) {
       if (this.rut !== this.previousRut) {
         this.previousRut = this.rut;
         const formattedRut = this.formatRut(this.rut);
 
+        // Verifica si el RUT requiere contraseña
         this.authService.checkShouldPassword(formattedRut).subscribe({
           next: (requiresPassword: boolean) => {
             this.showPassword = requiresPassword;
@@ -63,12 +64,14 @@ export class AuthenticationComponent {
     }
   }
 
+  /** Alterna la visibilidad de la contraseña */
   togglePasswordVisibility(): void {
     this.showPasswordIcon = !this.showPasswordIcon;
   }
 
+  /** Envía los datos del formulario al servicio de autenticación */
   onSumbit(): void {
-    const formattedRut = this.formatRut(this.rut);
+    const formattedRut = this.formatRut(this.rut); // Formatea el RUT
 
     const loginDataTypeA: LoginTypeAdto = {
       rut: formattedRut,
@@ -82,6 +85,7 @@ export class AuthenticationComponent {
     };
 
     if (!this.showPassword) {
+      // Login sin contraseña
       this.authService.loginPasswordLess(loginDataTypeA).subscribe({
         next: (response: any) => {
           this.handleLoginSuccess(response);
@@ -91,9 +95,9 @@ export class AuthenticationComponent {
         },
       });
     } else {
+      // Login con contraseña
       this.authService.loginPassword(loginDataTypeB).subscribe({
         next: (response: any) => {
-          console.log('Respuesta del login:', response);
           this.handleLoginSuccess(response);
         },
         error: () => {
@@ -103,20 +107,31 @@ export class AuthenticationComponent {
     }
   }
 
+  /** Maneja el éxito en el login */
   private handleLoginSuccess(response: any): void {
-    const { accessToken, expiration } = response; 
-    //this.authService.setToken(accessToken, expiration); 
-    this.sessionService.startSessionMonitor(); 
+    const accessToken = response.data?.accessToken;
+
+    // Almacena el token y configura el monitoreo de la sesión
+    this.authService.setToken(accessToken);
+    this.sessionService.startSessionMonitor();
+
+    // Redirige al dashboard
+    console.log('Respuesta del servidor:', response);
+  console.log('AccessToken recibido:', response.data?.accessToken);
     this.toastr.success('Login exitoso', 'Éxito');
     this.router.navigate(['/dashboard']);
   }
 
+  /** Verifica si el formato del RUT es válido */
   private isValidRutFormat(rut: string): boolean {
     const rutRegex = /^(\d{1,2}\.\d{3}\.\d{3}-\d{1})$/;
     return rutRegex.test(rut);
   }
 
+  /** Elimina los caracteres no válidos del RUT */
   private formatRut(rut: string): string {
     return rut.replace(/[.\-]/g, '');
   }
+
+
 }

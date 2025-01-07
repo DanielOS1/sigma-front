@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { Injectable } from "@angular/core";
+import { AuthService } from "./auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionService {
   private timeoutId: any;
@@ -11,13 +11,20 @@ export class SessionService {
 
   startSessionMonitor(): void {
     this.clearSessionMonitor();
-    const expiration = localStorage.getItem('token_expiration');
+    const expiration = this.authService.getTokenExpiration();
+
     if (expiration) {
-      const timeLeft = +expiration - Date.now();
-      this.timeoutId = setTimeout(() => {
+      const timeLeft = expiration - Date.now();
+
+      if (timeLeft > 0) {
+        this.timeoutId = setTimeout(() => {
+          this.authService.clearToken();
+          alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+        }, timeLeft);
+      } else {
         this.authService.clearToken();
         alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-      }, timeLeft);
+      }
     }
   }
 

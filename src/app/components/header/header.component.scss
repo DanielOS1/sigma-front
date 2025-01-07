@@ -33,7 +33,7 @@
 .header-menu:hover .header-menu-background {
     right: -13rem;
     background: rgb(7, 53, 75);
-    filter: blur(100px);
+    filter: blur(20px);
     transition: all 0.3s ease-in-out;
 }
 
@@ -50,10 +50,17 @@
 
 }
 
-.test{
+
+.logo-component{
+    width: 150px; /* Ajusta el ancho */
+    height: auto; /* Mantén la proporción original */
+    max-width: 100%; /* Asegura que no exceda el ancho del contenedor */
+    display: block; /* Evita espacios adicionales alrededor de la imagen */
+}
+
+.logo-container{
     background-color: white;
-    height: 10rem;
-    width: 10rem;
-    align-content: center
-    ;
+    height: 140%;
+    width: 200px;
+    border-radius: 50%;
 }

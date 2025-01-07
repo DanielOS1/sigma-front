@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
+import { DecodedToken } from '../interfaces/token';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +21,8 @@ export class AuthService {
   loginPasswordLess(loginTypeAdto: LoginTypeAdto): Observable<LoginTypeAdto> {
     return this.http.post<LoginTypeAdto>(this.endPointUrlA, loginTypeAdto);
   }
-
   loginPassword(loginTypeBdto: LoginTypeBdto): Observable<LoginTypeBdto> {
+
     return this.http.post<LoginTypeBdto>(this.endPointUrlB, loginTypeBdto);
   }
 
@@ -29,33 +31,35 @@ export class AuthService {
     return this.http.get<boolean>(`${this.shouldPasswordUrl}/${rut}`);
   }
 
-  setToken(token: string, expiration: number): void {
-    localStorage.setItem(this.tokenKey, token);
-    localStorage.setItem(this.expirationKey, expiration.toString());
+  setToken(token: string): void {
+    try {
+      const decodedToken: DecodedToken = jwtDecode(token);
+      const expiration = decodedToken.exp * 1000;
+      localStorage.setItem(this.tokenKey, token);
+      localStorage.setItem('tokenExpiration', expiration.toString());
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+    }
   }
 
   getToken(): string | null {
-    const token = localStorage.getItem(this.tokenKey);
-    const expiration = localStorage.getItem(this.expirationKey);
+    return localStorage.getItem('access_token');
+  }
 
-    if (token && expiration) {
-      const now = Date.now();
-      if (now < +expiration) {
-        return token;
-      } else {
-        this.clearToken();
-      }
-    }
-    return null;
+  getTokenExpiration(): number | null {
+    const expiration = localStorage.getItem('tokenExpiration');
+    return expiration ? parseInt(expiration, 10) : null;
   }
 
   clearToken(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.expirationKey);
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('tokenExpiration');
   }
 
-  isTokenExpired(): boolean {
-    const expiration = localStorage.getItem(this.expirationKey);
-    return expiration ? Date.now() > +expiration : true;
+  logout(): void {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('tokenExpiration');
+    console.log('Sesión cerrada y token eliminado.');
   }
+  
 }
