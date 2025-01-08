@@ -43,30 +43,29 @@ export class AuthenticationComponent {
   /** Detecta cambios en el RUT y verifica si requiere contraseña */
   onRutChange(): void {
     if (this.isValidRutFormat(this.rut)) {
-
       if (this.rut !== this.previousRut) {
         this.previousRut = this.rut;
         const formattedRut = this.formatRut(this.rut);
-
+  
         this.authService.checkShouldPassword(formattedRut).subscribe({
-          next: (requiresPassword: boolean) => {
+          next: (response: any) => {
+
+            const requiresPassword = response?.data?.require_password;
+
             this.showPassword = requiresPassword;
             this.cdr.detectChanges();
-            
           },
-          
-          error: () => {
-            
+          error: (err) => {
+            console.error('Error al verificar el RUT:', err);
           },
         });
       }
-      
     } else {
       this.showPassword = false;
       this.previousRut = '';
-      
     }
   }
+  
 
   /** Formatea el RUT automáticamente mientras el usuario escribe */
   onRutInput(): void {
