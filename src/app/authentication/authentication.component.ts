@@ -6,10 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { SessionService } from '../services/session-service.service'; // Servicio para manejar la sesión
+import { SessionService } from '../services/session-service.service'; 
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ForgotPasswordDialogComponent } from '../components/forgot-password/forgot-password.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-authentication',
@@ -37,7 +40,8 @@ export class AuthenticationComponent {
     private sessionService: SessionService, 
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog 
   ) {}
 
   /** Detecta cambios en el RUT y verifica si requiere contraseña */
@@ -66,10 +70,15 @@ export class AuthenticationComponent {
     }
   }
   
+  openForgotPasswordDialog(): void {
+    this.dialog.open(ForgotPasswordDialogComponent, {
+      width: '400px', 
+    });
+  }
 
   /** Formatea el RUT automáticamente mientras el usuario escribe */
   onRutInput(): void {
-    const rawValue = this.rut.replace(/[^\dkK]/g, ''); // Elimina caracteres no válidos
+    const rawValue = this.rut.replace(/[^\dkK]/g, ''); 
     const formattedValue = this.applyRutFormat(rawValue);
     this.rut = formattedValue;
     this.onRutChange();

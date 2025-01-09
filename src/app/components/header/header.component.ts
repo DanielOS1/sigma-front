@@ -16,10 +16,16 @@ export class HeaderComponent {
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   
-  logout(): void {
-    this.authService.logout();
-    this.toastr.success('Sesión cerrada con éxito', 'Éxito');
-    this.router.navigate(['/auth']);
+  onLogout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.toastr.success('Sesión cerrada con éxito.');
+        this.router.navigate(['/login']); 
+      },
+      error: (err) => {
+        this.toastr.error('Error al cerrar sesión.');
+        console.error('Error en logout:', err);
+      },
+    });
   }
-
 }

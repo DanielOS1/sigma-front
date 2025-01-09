@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 import { DecodedToken } from '../interfaces/token';
@@ -54,12 +54,32 @@ export class AuthService {
   clearToken(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('tokenExpiration');
+    
   }
+  
+  logout(): Observable<any> {
 
-  logout(): void {
+    const token = localStorage.getItem('access_token');
+
+    if (!token) {
+      throw new Error('Token no encontrado');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+    });
+
+    
     localStorage.removeItem('access_token');
     localStorage.removeItem('tokenExpiration');
-    console.log('Sesión cerrada y token eliminado.');
+   
+    return this.http.put<any>(`/auth/logout`, {}, {headers});
   }
+
+  requestPasswordReset(rut: string): Observable<any> {
+    return this.http.get<any>(`/user/reset-password?rut=${rut}`);
+  }
+
+
   
 }

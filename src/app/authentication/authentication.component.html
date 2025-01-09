@@ -1,54 +1,57 @@
 <section class="auth-container">
   <mat-card
-  appearance="outlined"
-  class="card-container"
-  [class.expanded]="showPassword"
->
-  <mat-card-header>
-    <h2>Iniciar Sesión</h2>
-  </mat-card-header>
-  <mat-card-content>
-    <form class="card-body-container" (ngSubmit)="onSumbit()">
-      <!-- Campo del Rut -->
-      <mat-form-field class="rut-field" appearance="outline">
-        <mat-icon matPrefix>badge</mat-icon>
-        <mat-label>Ingrese su Rut con puntos y guión</mat-label>
-        <input
-          matInput
-          type="text"
-          [(ngModel)]="rut"
-          (input)="onRutInput()"
-          maxlength="12"
-          name="rut"
-        />
-      </mat-form-field>
+    appearance="outlined"
+    class="card-container"
+    [class.expanded]="showPassword"
+  >
+    <mat-card-header>
+      <h2>Iniciar Sesión</h2>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="card-body-container" (ngSubmit)="onSumbit()">
+        <mat-form-field class="rut-field" appearance="outline">
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-label>Ingrese su Rut con puntos y guión</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="rut"
+            (input)="onRutInput()"
+            maxlength="12"
+            name="rut"
+          />
+        </mat-form-field>
 
-      <!-- Campo de Contraseña -->
-      <mat-form-field
-        *ngIf="showPassword"
-        class="password-field"
-        appearance="outline"
-      >
-        <mat-icon matPrefix>lock</mat-icon> <!-- Ícono al inicio -->
-        <mat-label>Ingrese su Contraseña</mat-label>
-        <input
-          matInput
-          [(ngModel)]="password"
-          type="password"
-          name="password"
-        />
-      </mat-form-field>
+        <mat-form-field
+          *ngIf="showPassword"
+          class="password-field"
+          appearance="outline"
+        >
+          <mat-icon matPrefix>lock</mat-icon>
+          <mat-label>Ingrese su Contraseña</mat-label>
+          <input
+            matInput
+            [(ngModel)]="password"
+            type="password"
+            name="password"
+          />
+        </mat-form-field>
 
-      <div class="options-container">
-        <span>Recuerdame</span>
-        <span>Olvidaste tu contraseña?</span>
-      
-      </div>
-      <mat-card-actions class="btn-container">
-        <button mat-flat-button type="submit" color="accent" class="btn-style">Ingresar</button>
-      </mat-card-actions>
-    </form>
-  </mat-card-content>
-</mat-card>
-
+        <div class="options-container">
+          <span>Recuerdame</span>
+          <span class="link" (click)="openForgotPasswordDialog()">Olvidaste tu contraseña?</span>
+        </div>
+        <mat-card-actions class="btn-container">
+          <button
+            mat-flat-button
+            type="submit"
+            color="accent"
+            class="btn-style"
+          >
+            Ingresar
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </section>
