@@ -1,0 +1,65 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      mode="side"
+      opened
+      class="sidenav"
+      [class.collapsed]="!isExpanded"
+    >
+      <!-- Botón para alternar el sidebar -->
+      <button mat-icon-button class="toggle-button" (click)="toggleSidebar()">
+        <mat-icon>{{ isExpanded ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      </button>
+  
+      <!-- Usuario -->
+      <div class="user-info" *ngIf="isExpanded">
+        <img src="assets/avatar.png" alt="User Avatar" class="user-avatar" />
+        <div class="user-details">
+          <h3 class="user-name">John Brown</h3>
+          <p class="user-email">johnpixsellz.io</p>
+        </div>
+      </div>
+  
+      <!-- Opciones del menú -->
+      <div class="menu-options">
+        <button mat-button class="menu-item">
+          <mat-icon>home</mat-icon>
+          <span *ngIf="isExpanded">Home</span>
+        </button>
+        <button mat-button class="menu-item">
+          <mat-icon>group</mat-icon>
+          <span *ngIf="isExpanded">Users</span>
+        </button>
+        <button mat-button class="menu-item">
+          <mat-icon>domain</mat-icon>
+          <span *ngIf="isExpanded">Organizations</span>
+        </button>
+  
+        <div class="menu-section-title" *ngIf="isExpanded">Configure</div>
+        <button mat-button class="menu-item">
+          <mat-icon>lock</mat-icon>
+          <span *ngIf="isExpanded">Authentication</span>
+        </button>
+        <button mat-button class="menu-item">
+          <mat-icon>timer</mat-icon>
+          <span *ngIf="isExpanded">Sessions</span>
+        </button>
+        <button mat-button class="menu-item">
+          <mat-icon>settings</mat-icon>
+          <span *ngIf="isExpanded">Settings</span>
+        </button>
+      </div>
+  
+      <!-- Botón de Logout -->
+      <div class="logout-section">
+        <button mat-button class="logout-button" (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          <span *ngIf="isExpanded">Log out</span>
+        </button>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <!-- Contenido principal aquí -->
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
