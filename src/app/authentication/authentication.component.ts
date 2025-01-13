@@ -102,7 +102,7 @@ export class AuthenticationComponent {
     const loginDataTypeB: LoginTypeBdto = {
       rut: formattedRut,
       password: this.password,
-      deviceId: navigator.userAgent.slice(0, 25),
+      deviceId
     };
     console.log(deviceId);
     if (!this.showPassword) {
