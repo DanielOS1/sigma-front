@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ForgotPasswordDialogComponent } from '../components/forgot-password/forgot-password.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { DeviceService } from '../services/device.service';
 
 @Component({
   selector: 'app-authentication',
@@ -41,7 +41,8 @@ export class AuthenticationComponent {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
-    private dialog: MatDialog 
+    private dialog: MatDialog,
+    private deviceService: DeviceService
   ) {}
 
   /** Detecta cambios en el RUT y verifica si requiere contraseña */
@@ -90,12 +91,12 @@ export class AuthenticationComponent {
   }
 
   /** Envía los datos del formulario al servicio de autenticación */
-  onSumbit(): void {
+  async onSumbit(): Promise<void> {
     const formattedRut = this.formatRut(this.rut); 
-
+    const deviceId = await this.deviceService.getDeviceId();
     const loginDataTypeA: LoginTypeAdto = {
       rut: formattedRut,
-      deviceId: navigator.userAgent.slice(0, 25),
+      deviceId
     };
 
     const loginDataTypeB: LoginTypeBdto = {
@@ -103,7 +104,7 @@ export class AuthenticationComponent {
       password: this.password,
       deviceId: navigator.userAgent.slice(0, 25),
     };
-
+    console.log(deviceId);
     if (!this.showPassword) {
       // Login sin contraseña
       this.authService.loginPasswordLess(loginDataTypeA).subscribe({
