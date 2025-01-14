@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../services/user.service';
-import { adminSystem } from '../interfaces/users/usersDto';
+import { user } from '../interfaces/users/usersDto';
 import { ApiResponse } from '../types/response.interface';
 
 @Component({
@@ -31,7 +31,7 @@ import { ApiResponse } from '../types/response.interface';
 })
 export class ProfileComponent{
 
-  user: adminSystem = {
+  user: user = {
     rut: '',
     name: '',
     lastName: '',
@@ -44,7 +44,7 @@ export class ProfileComponent{
   userType: string = '';
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe((user: ApiResponse<adminSystem>) => {
+    this.userService.getUser().subscribe((user: ApiResponse<user>) => {
       this.user = user.data;
     });
   }

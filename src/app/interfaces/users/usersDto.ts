@@ -1,4 +1,4 @@
-export interface adminSystem {
+export interface user {
     rut: string;
     name: string;
     lastName: string;

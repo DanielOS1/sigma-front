@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { ApiResponse } from '../../types/response.interface';
-import { adminSystem } from '../../interfaces/users/usersDto';
+import { user } from '../../interfaces/users/usersDto';
 @Component({
   selector: 'app-side-nav',
   standalone: true,
@@ -25,7 +25,7 @@ import { adminSystem } from '../../interfaces/users/usersDto';
 export class SideNavComponent implements OnInit {
   isExpanded = true;
 
-  user: adminSystem = {
+  user: user = {
     rut: '',
     name: '',
     lastName: '',
@@ -40,7 +40,7 @@ export class SideNavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe((user: ApiResponse<adminSystem>) => {
+    this.userService.getUser().subscribe((user: ApiResponse<user>) => {
       this.user = user.data;
     });
     
