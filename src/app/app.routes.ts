@@ -34,6 +34,11 @@ export const routes: Routes = [
           //     import('./profile/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
           // }
         ]
+      },
+      {
+        path: 'system-admin',
+        loadComponent: () =>
+          import('./users/system-admin/system-admin.component').then((m) => m.SystemAdminComponent),
       }
     ]
   },

@@ -59,4 +59,13 @@ export class SideNavComponent implements OnInit {
     });
   }
 
+
+  goToProfile(): void {
+    console.log('goToProfile');
+    this.router.navigate(['/profile']);
+  }
+
+  goToSystemAdmin(): void {
+    this.router.navigate(['/system-admin']);
+  }
 }

@@ -25,13 +25,13 @@
           <mat-icon>home</mat-icon>
           <span *ngIf="isExpanded">Home</span>
         </button>
-        <button mat-button class="menu-item">
+        <button mat-button class="menu-item" (click)="goToProfile()">
           <mat-icon>group</mat-icon>
           <span *ngIf="isExpanded">Profile</span>
         </button>
-        <button mat-button class="menu-item">
-          <mat-icon>domain</mat-icon>
-          <span *ngIf="isExpanded">Organizations</span>
+        <button mat-button class="menu-item" (click)="goToSystemAdmin()" type="button">
+          <mat-icon>supervised_user_circle</mat-icon>
+          <span *ngIf="isExpanded">User Management</span>
         </button>
   
         <div class="menu-section-title" *ngIf="isExpanded">Configure</div>
@@ -58,7 +58,6 @@
       </div>
     </mat-sidenav>
     <mat-sidenav-content>
-      <!-- Contenido principal aquí -->
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
