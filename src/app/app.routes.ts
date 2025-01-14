@@ -5,28 +5,37 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadComponent: () =>
-      import('./layouts/auth-layout/auth-layout.component').then((m) => m.AuthLayoutComponent),
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./authentication/authentication.component').then((m) => m.AuthenticationComponent),
-      },
-    ],
+      import('./authentication/authentication.component').then((m) => m.AuthenticationComponent),
   },
   {
     path: '',
     loadComponent: () =>
       import('./layouts/main-layout/main-layout.component').then((m) => m.MainLayoutComponent),
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
         loadComponent: () =>
           import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
-
-    ],
-    canActivate: [AuthGuard], 
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./profile/profile.component').then((m) => m.ProfileComponent),
+        children: [
+          // {
+          //   path: 'admin',
+          //   loadComponent: () =>
+          //     import('./profile/admin-profile/admin-profile.component').then((m) => m.AdminProfileComponent),
+          // },
+          // {
+          //   path: 'user',
+          //   loadComponent: () =>
+          //     import('./profile/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
+          // }
+        ]
+      }
+    ]
   },
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth' },

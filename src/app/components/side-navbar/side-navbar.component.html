@@ -14,8 +14,8 @@
       <div class="user-info" *ngIf="isExpanded">
         <img src="assets/avatar.png" alt="User Avatar" class="user-avatar" />
         <div class="user-details">
-          <h3 class="user-name">John Brown</h3>
-          <p class="user-email">johnpixsellz.io</p>
+          <h3 class="user-name">{{user.name}} {{user.lastName}}</h3>
+          <p class="user-email">{{user.email}}</p>
         </div>
       </div>
   
@@ -27,7 +27,7 @@
         </button>
         <button mat-button class="menu-item">
           <mat-icon>group</mat-icon>
-          <span *ngIf="isExpanded">Users</span>
+          <span *ngIf="isExpanded">Profile</span>
         </button>
         <button mat-button class="menu-item">
           <mat-icon>domain</mat-icon>
