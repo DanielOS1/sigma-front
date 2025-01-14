@@ -1,29 +1,59 @@
-@import 'ngx-toastr/toastr';
+@use '@angular/material' as mat;
+@include mat.core();
 
+// Definición de la paleta principal (basada en #0068B7)
+$primary-palette: (
+    50: lighten(#0068B7, 40%),
+    100: lighten(#0068B7, 30%),
+    200: lighten(#0068B7, 20%),
+    300: lighten(#0068B7, 10%),
+    400: #0068B7,
+    500: #0068B7,
+    600: darken(#0068B7, 10%),
+    700: #0069B9,
+    800: darken(#0068B7, 20%),
+    900: darken(#0068B7, 30%),
+    A100: lighten(#0068B7, 35%),
+    A200: lighten(#0068B7, 25%),
+    A400: #0068B7,
+    A700: #0069B9,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: white,
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: rgba(black, 0.87),
+        A200: white,
+        A400: white,
+        A700: white,
+    )
+);
 
-  html, body { 
-    height: 100%; 
-    background-color: white; 
-  }
+$myapp-theme-primary: mat.m2-define-palette($primary-palette, A400, A100, A700);
+$myapp-theme-accent: mat.m2-define-palette($primary-palette);
+$myapp-theme-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-  body { 
-      padding: 0; 
-      margin: 0; 
-      font-family:"Montserrat", sans-serif; 
-      font-weight: 400; 
-      font-size: 16px; 
-      line-height: 1.5; 
-      color: #fff; 
-      background-color: #000; 
-    }
+$myapp-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $myapp-theme-primary,
+    accent: $myapp-theme-accent,
+    warn: $myapp-theme-warn,
+  )
+));
 
-.mat-mdc-form-field {
-    --mdc-outlined-text-field-input-text-color: #ffffff;
-    --mdc-outlined-text-field-outline-color: #0068B7;
-    --mdc-outlined-text-field-input-text-placeholder-color: white;
-    --mdc-outlined-text-field-label-text-color: white;
-    --mdc-outlined-text-field-hover-outline-color: #white;
-    --mdc-outlined-text-field-hover-label-text-color: #2350f4;
-    --mat-form-field-container-text-size: 20px ;
-  
-  }  
+@include mat.all-component-themes($myapp-theme);
+
+// Variables CSS globales
+:root {
+    --primary-color: #0068B7;
+    --secondary-color: #3C3F47;
+    --dark-color: #1E1E1E;
+    --black-color: #000000;
+    --primary-variant: #0069B9;
+}
