@@ -27,8 +27,26 @@ export interface PaginatedUsers {
     limit: number;
 }
 
+
+
 export interface UsersApiResponse {
     message: string;
     data: PaginatedUsers;
+    success: boolean;
+}
+
+
+export interface PasswordResetRequest {
+    id: string;
+    user_rut: string;
+    admin_rut: string;
+    status: 'PENDING' | 'APPROVED' | 'REJECTED';
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface PasswordResetResponse {
+    message: string;
+    data: PasswordResetRequest[];
     success: boolean;
 }

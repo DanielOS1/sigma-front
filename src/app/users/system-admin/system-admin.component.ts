@@ -7,6 +7,7 @@ import { UserService } from '../../services/user.service';
 import {BaseUser, OwnerUser, isOwnerUser } from '../../interfaces/users/usersDto';
 import { UsersApiResponse } from '../../types/response.interface';
 import { User } from '../../interfaces/users/usersDto';
+import { UserRole } from '../../interfaces/users/roles.enum';
 
 @Component({
   selector: 'app-system-admin',
@@ -75,14 +76,14 @@ export class SystemAdminComponent implements OnInit {
   // Helper para obtener el nombre del rol
   getRoleName(role: number): string {
     switch (role) {
-      case 1:
+      case UserRole.OWNER:
         return 'Owner';
-      case 2:
-        return 'Admin';
-      case 3:
-        return 'User';
-      case 4:
-        return 'Guest';
+      case UserRole.SCIENTIST:
+        return 'Scientist';
+      case UserRole.AQUACULTURE_ADMIN:
+        return 'Aquaculture Admin';
+      case UserRole.SYSTEM_ADMIN:
+        return 'System Admin';
       default:
         return 'Unknown';
     }

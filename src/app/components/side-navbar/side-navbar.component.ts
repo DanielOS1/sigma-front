@@ -83,8 +83,8 @@ export class SideNavComponent implements OnInit {
     this.router.navigate(['/system-admin/create-user']);
   }
 
-  goToUserList(): void {
-    this.router.navigate(['/system-admin/users']);
+  goToResetPassword(): void {
+    this.router.navigate(['/system-admin/reset-password']);
   }
 
   goToUserRoles(): void {

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/users/usersDto';
-import { ApiResponse, UsersApiResponse } from '../types/response.interface';
+import { ApiResponse, PasswordResetResponse, UsersApiResponse } from '../types/response.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class UserService {
   private myInfoEndPoint = "/auth/get-my-info"
   private createUserEndPoint = "/system-admin/register"
   private getUsersEndPoint = "/system-admin/show-users"
+  private getResetPasswordRequestsEndPoint = "/system-admin/show-password-request"
 
   getUser(): Observable<any> {
 
@@ -42,5 +44,25 @@ export class UserService {
       Authorization: `Bearer ${token}`, 
     });
     return this.http.get<UsersApiResponse>(`${this.getUsersEndPoint}?page=${page}`, { headers });
+  }
+
+  getResetPasswordRequests(page: number = 1): Observable<PasswordResetResponse> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+    });
+    return this.http.get<PasswordResetResponse>(`${this.getResetPasswordRequestsEndPoint}?page=${page}`, { headers });
+  }
+
+  approvePasswordReset(requestId: string): Observable<ApiResponse<any>> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<ApiResponse<any>>(
+      `/system-admin/reset-user-password?id=${requestId}`,
+      { headers }
+    );
   }
 }

@@ -44,6 +44,11 @@ export const routes: Routes = [
         path: 'system-admin/create-user',
         loadComponent: () =>
           import('./users/system-admin/create-users/create-users.component').then((m) => m.CreateUsersComponent),
+      },
+      {
+        path: 'system-admin/reset-password',
+        loadComponent: () =>
+          import('./users/system-admin/reset-password/reset-password.component').then((m) => m.ResetPasswordComponent),
       }
     ]
   },
