@@ -1,78 +1,41 @@
-<div class="admin-container">
-    <h1>System Admin</h1>
-    
-    <mat-card class="user-form-card">
-        <mat-card-header>
-            <mat-card-title>Crear Nuevo Usuario</mat-card-title>
-        </mat-card-header>
-        
-        <mat-card-content>
-            <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="user-form">
-                <div class="form-row">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Nombre</mat-label>
-                        <input matInput formControlName="name" required>
-                        <mat-error *ngIf="userForm.get('name')?.hasError('required')">
-                            El nombre es requerido
-                        </mat-error>
-                    </mat-form-field>
+<div class="user-list-container">
+    <ng-container *ngIf="users.length > 0; else noUsers">
+        <div *ngFor="let user of users">
+            <mat-card class="user-card">
+                <mat-card-content>
+                    <div class="user-info">
+                        <h3 class="text-dark">{{user.name}} {{user.lastName}}</h3>
+                        <p class="text-primary">{{user.email}}</p>
+                        <p class="text-primary">RUT: {{user.rut}}</p>
+                        <p class="text-primary">Role: {{getRoleName(user.role)}}</p>
+                        <ng-container *ngIf="isOwnerUser(user)">
+                            <p class="text-primary">Aquaculture RUT: {{user.aquacultureRut}}</p>
+                        </ng-container>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </ng-container>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Apellido</mat-label>
-                        <input matInput formControlName="lastName" required>
-                        <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">
-                            El apellido es requerido
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+    <ng-template #noUsers>
+        <p class="text-primary">No hay usuarios para mostrar</p>
+    </ng-template>
 
-                <div class="form-row">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Correo Electrónico</mat-label>
-                        <input matInput formControlName="email" type="email" required>
-                        <mat-error *ngIf="userForm.get('email')?.hasError('required')">
-                            El correo electrónico es requerido
-                        </mat-error>
-                        <mat-error *ngIf="userForm.get('email')?.hasError('email')">
-                            Ingrese un correo electrónico válido
-                        </mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Rut</mat-label>
-                        <input matInput formControlName="rut" required>
-                        <mat-error *ngIf="userForm.get('rut')?.hasError('required')">
-                            El RUT es requerido
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Rol</mat-label>
-                    <mat-select formControlName="role" required>
-                        <mat-option *ngFor="let role of roleOptions" [value]="role.value">
-                            {{ role.label }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="userForm.get('role')?.hasError('required')">
-                        El rol es requerido
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" *ngIf="userForm.get('role')?.value === roles.OWNER">
-                    <mat-label>RUT Acuícola</mat-label>
-                    <input matInput formControlName="aquacultureRut" required>
-                    <mat-error *ngIf="userForm.get('aquacultureRut')?.hasError('required')">
-                        El RUT Acuícola es requerido para Owners
-                    </mat-error>
-                </mat-form-field>
-
-                <div class="button-container">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">
-                        Crear Usuario
-                    </button>
-                </div>
-            </form>
-        </mat-card-content>
-    </mat-card>
+    <div class="pagination-controls">
+        <button mat-button 
+                class="text-primary"
+                [disabled]="currentPage === 1"
+                (click)="previousPage()">
+            <mat-icon>chevron_left</mat-icon>
+            Anterior
+        </button>
+        <span class="page-indicator text-primary">Página {{currentPage}}</span>
+        <button mat-button 
+                class="text-primary"
+                [disabled]="!hasMorePages"
+                (click)="nextPage()">
+            Siguiente
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
 </div>

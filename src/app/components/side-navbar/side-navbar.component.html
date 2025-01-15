@@ -21,7 +21,7 @@
   
       <!-- Opciones del menú -->
       <div class="menu-options">
-        <button mat-button class="menu-item">
+        <button mat-button class="menu-item" (click)="goToSystemAdmin()">
           <mat-icon>home</mat-icon>
           <span *ngIf="isExpanded">Home</span>
         </button>

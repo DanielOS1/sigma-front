@@ -10,8 +10,8 @@ export interface OwnerUser extends BaseUser {
     aquacultureRut: string;
 }
 
-export type user = BaseUser | OwnerUser;
+export type User = BaseUser | OwnerUser;
 
-export function isOwnerUser(user: user): user is OwnerUser {
+export function isOwnerUser(user: User): user is OwnerUser {
     return user.role === 1; // Asumiendo que 1 es UserRole.OWNER
 }

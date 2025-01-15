@@ -43,3 +43,62 @@
 button[type="submit"] {
     min-width: 150px;
 }
+
+.user-list-container {
+    padding: 20px;
+    
+    .user-card {
+        margin-bottom: 16px;
+        background-color: var(--background-color);
+        
+        .user-info {
+            h3 {
+                margin: 0;
+                color: #000000;
+            }
+            
+            p {
+                margin: 8px 0;
+                color: #000000;
+            }
+        }
+    }
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 16px;
+
+    button {
+        min-width: 100px;
+        color: #000000;
+        
+        &:disabled {
+            opacity: 0.5;
+        }
+
+        mat-icon {
+            color: #000000;
+        }
+    }
+
+    .page-indicator {
+        min-width: 100px;
+        text-align: center;
+        color: #000000;
+    }
+}
+
+:host ::ng-deep {
+    .mat-mdc-card {
+        --mdc-elevated-card-container-color: var(--background-color);
+    }
+
+    .mat-mdc-button {
+        --mat-mdc-button-persistent-ripple-color: #000000;
+        --mat-mdc-button-ripple-color: rgba(0, 0, 0, 0.1);
+    }
+}

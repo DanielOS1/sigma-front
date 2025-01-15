@@ -39,6 +39,11 @@ export const routes: Routes = [
         path: 'system-admin',
         loadComponent: () =>
           import('./users/system-admin/system-admin.component').then((m) => m.SystemAdminComponent),
+      },
+      {
+        path: 'system-admin/create-user',
+        loadComponent: () =>
+          import('./users/system-admin/create-users/create-users.component').then((m) => m.CreateUsersComponent),
       }
     ]
   },

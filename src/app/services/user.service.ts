@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { user } from '../interfaces/users/usersDto';
+import { User } from '../interfaces/users/usersDto';
+import { ApiResponse, UsersApiResponse } from '../types/response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class UserService {
 
   private myInfoEndPoint = "/auth/get-my-info"
   private createUserEndPoint = "/system-admin/register"
+  private getUsersEndPoint = "/system-admin/show-users"
 
   getUser(): Observable<any> {
 
@@ -24,7 +26,7 @@ export class UserService {
     return this.http.get<any>(`${this.myInfoEndPoint}`, { headers });
   }
 
-  createUser(user: user): Observable<any> {
+  createUser(user: User): Observable<any> {
     const token = localStorage.getItem('access_token');
 
     const headers = new HttpHeaders({
@@ -32,5 +34,13 @@ export class UserService {
     });
 
     return this.http.post<any>(`${this.createUserEndPoint}`, user, { headers });
+  }
+
+  getUsers(page: number = 1): Observable<UsersApiResponse> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+    });
+    return this.http.get<UsersApiResponse>(`${this.getUsersEndPoint}?page=${page}`, { headers });
   }
 }

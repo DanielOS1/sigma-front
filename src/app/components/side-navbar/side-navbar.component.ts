@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { ApiResponse } from '../../types/response.interface';
-import { user } from '../../interfaces/users/usersDto';
+import { User } from '../../interfaces/users/usersDto';
 import { UserRole } from '../../interfaces/users/roles.enum';
 
 @Component({
@@ -29,7 +29,7 @@ export class SideNavComponent implements OnInit {
   isUserManagementExpanded = false;
   roles = UserRole;
 
-  user: user = {
+  user: User = {
     rut: '',
     name: '',
     lastName: '',
@@ -44,7 +44,7 @@ export class SideNavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe((user: ApiResponse<user>) => {
+    this.userService.getUser().subscribe((user: ApiResponse<User>) => {
       this.user = user.data;
     });
     

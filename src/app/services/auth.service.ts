@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 import { DecodedToken } from '../interfaces/token';
 import { jwtDecode } from "jwt-decode";
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,10 @@ export class AuthService {
   private tokenKey = 'access_token';
   private expirationKey = 'token_expiration';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   loginPasswordLess(loginTypeAdto: LoginTypeAdto): Observable<LoginTypeAdto> {
     return this.http.post<LoginTypeAdto>(this.endPointUrlA, loginTypeAdto);
@@ -32,18 +36,23 @@ export class AuthService {
   }
 
   setToken(token: string): void {
-    try {
-      const decodedToken: DecodedToken = jwtDecode(token);
-      const expiration = decodedToken.exp * 1000;
-      localStorage.setItem(this.tokenKey, token);
-      localStorage.setItem('tokenExpiration', expiration.toString());
-    } catch (error) {
-      console.error('Error al decodificar el token:', error);
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        const decodedToken: DecodedToken = jwtDecode(token);
+        const expiration = decodedToken.exp * 1000;
+        localStorage.setItem(this.tokenKey, token);
+        localStorage.setItem('tokenExpiration', expiration.toString());
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+      }
     }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem(this.tokenKey);
+    }
+    return null;
   }
 
   getTokenExpiration(): number | null {
@@ -52,26 +61,24 @@ export class AuthService {
   }
 
   clearToken(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('tokenExpiration');
-    
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(this.tokenKey);
+      localStorage.removeItem(this.expirationKey);
+    }
   }
   
   logout(): Observable<any> {
-
-    const token = localStorage.getItem('access_token');
+    const token = this.getToken();
 
     if (!token) {
       throw new Error('Token no encontrado');
     }
 
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
     });
 
-    return this.http.put<any>(`/auth/logout`, {}, {headers});
-
-   
+    return this.http.put<any>(`/auth/logout`, {}, { headers });
   }
 
   requestPasswordReset(rut: string): Observable<any> {

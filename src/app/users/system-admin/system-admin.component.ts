@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { UserRole } from '../../interfaces/users/roles.enum';
-import { ApiResponse } from '../../types/response.interface';
-import { user } from '../../interfaces/users/usersDto';
 import { UserService } from '../../services/user.service';
-import { BaseUser, OwnerUser } from '../../interfaces/users/usersDto';
+import {BaseUser, OwnerUser, isOwnerUser } from '../../interfaces/users/usersDto';
+import { UsersApiResponse } from '../../types/response.interface';
+import { User } from '../../interfaces/users/usersDto';
 
 @Component({
   selector: 'app-system-admin',
@@ -20,74 +14,77 @@ import { BaseUser, OwnerUser } from '../../interfaces/users/usersDto';
   imports: [
     CommonModule,
     MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     MatButtonModule,
-    MatIconModule,
-    ReactiveFormsModule
+    MatIconModule
   ],
   templateUrl: './system-admin.component.html',
   styleUrls: ['./system-admin.component.scss']
 })
 export class SystemAdminComponent implements OnInit {
-  userForm: FormGroup;
-  roles = UserRole;
-  
-  roleOptions = [
-    { value: UserRole.OWNER, label: 'Owner' },
-    { value: UserRole.SCIENTIST, label: 'Científico' },
-    { value: UserRole.AQUACULTURE_ADMIN, label: 'Administrador Acuícola' },
-    { value: UserRole.SYSTEM_ADMIN, label: 'Administrador de Sistemas' }
-  ];
+  users: (BaseUser | OwnerUser)[] = [];
+  currentPage = 1;
+  totalItems = 0;
+  limit = 10;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
-    this.userForm = this.fb.group({
-      name: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      rut: ['', Validators.required],
-      role: ['', Validators.required],
-      aquacultureRut: ['']
-    });
+  constructor(private userService: UserService) {}
 
-    this.userForm.get('role')?.valueChanges.subscribe(role => {
-      const aquacultureRutControl = this.userForm.get('aquacultureRut');
-      
-      if (role === UserRole.OWNER) {
-        aquacultureRutControl?.setValidators([Validators.required]);
-      } else {
-        aquacultureRutControl?.clearValidators();
+  ngOnInit() {
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.userService.getUsers(this.currentPage).subscribe({
+      next: (response: UsersApiResponse) => {
+        if (response.success) {
+          this.users = response.data.users;
+          this.totalItems = response.data.total;
+          this.currentPage = response.data.page;
+          this.limit = response.data.limit;
+        } else {
+          console.error('Error en la respuesta:', response.message);
+          this.users = [];
+        }
+      },
+      error: (error) => {
+        console.error('Error loading users:', error);
+        this.users = [];
       }
-      
-      aquacultureRutControl?.updateValueAndValidity();
     });
   }
 
-  ngOnInit(): void {  
-    console.log('Roles disponibles:', this.roleOptions);
+  get hasMorePages(): boolean {
+    return this.currentPage * this.limit < this.totalItems;
   }
 
-  onSubmit() {
-    if (this.userForm.valid) {
-      const formData = this.userForm.value;
-      const userData: BaseUser | OwnerUser = 
-        formData.role === UserRole.OWNER 
-          ? {
-              ...formData,
-              aquacultureRut: formData.aquacultureRut
-            }
-          : {
-              rut: formData.rut,
-              name: formData.name,
-              lastName: formData.lastName,
-              email: formData.email,
-              role: formData.role
-            };
+  nextPage() {
+    if (this.hasMorePages) {
+      this.currentPage++;
+      this.loadUsers();
+    }
+  }
 
-      this.userService.createUser(userData).subscribe(response => {
-        console.log('Usuario creado:', response);
-      });
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadUsers();
+    }
+  }
+  // Usar la función helper existente
+  isOwnerUser = isOwnerUser;
+
+  // Helper para obtener el nombre del rol
+  getRoleName(role: number): string {
+    switch (role) {
+      case 1:
+        return 'Owner';
+      case 2:
+        return 'Admin';
+      case 3:
+        return 'User';
+      case 4:
+        return 'Guest';
+      default:
+        return 'Unknown';
     }
   }
 }
