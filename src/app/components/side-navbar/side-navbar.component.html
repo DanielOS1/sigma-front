@@ -29,10 +29,31 @@
           <mat-icon>group</mat-icon>
           <span *ngIf="isExpanded">Profile</span>
         </button>
-        <button mat-button class="menu-item" (click)="goToSystemAdmin()" type="button">
-          <mat-icon>supervised_user_circle</mat-icon>
-          <span *ngIf="isExpanded">User Management</span>
-        </button>
+        <!-- Menú expandible para System Admin -->
+        <ng-container *ngIf="user.role === roles.SYSTEM_ADMIN">
+          <button mat-button class="menu-item" (click)="toggleUserManagement()">
+            <mat-icon>supervised_user_circle</mat-icon>
+            <span *ngIf="isExpanded">User Management</span>
+            <mat-icon *ngIf="isExpanded" class="expand-icon">
+              {{isUserManagementExpanded ? 'expand_less' : 'expand_more'}}
+            </mat-icon>
+          </button>
+          <!-- Submenú de User Management -->
+          <div class="submenu" *ngIf="isUserManagementExpanded && isExpanded">
+            <button mat-button class="submenu-item text-primary" (click)="goToCreateUser()">
+              <mat-icon>person_add</mat-icon>
+              <span>Create User</span>
+            </button>
+            <button mat-button class="submenu-item" (click)="goToUserList()">
+              <mat-icon>list</mat-icon>
+              <span>User List</span>
+            </button>
+            <button mat-button class="submenu-item" (click)="goToUserRoles()">
+              <mat-icon>admin_panel_settings</mat-icon>
+              <span>Manage Roles</span>
+            </button>
+          </div>
+        </ng-container>
   
         <div class="menu-section-title" *ngIf="isExpanded">Configure</div>
         <button mat-button class="menu-item">

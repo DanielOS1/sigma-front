@@ -123,3 +123,56 @@
     }
   }
   
+  .menu-item {
+    position: relative;
+    width: 100%;
+    justify-content: flex-start;
+    
+    .expand-icon {
+        position: absolute;
+        right: 8px;
+    }
+
+    mat-icon, span {
+        color: var(--text-color-primary);
+    }
+  }
+  
+  .submenu {
+    padding-left: 16px;
+    background-color: rgba(0, 0, 0, 0.1);
+    
+    .submenu-item {
+        width: 100%;
+        justify-content: flex-start;
+        font-size: 0.9rem;
+        height: 40px;
+        
+        mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            color: var(--text-color-primary);
+        }
+
+        span {
+            color: var(--text-color-primary);
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+  }
+  
+  /* Animación para el submenú */
+  .submenu {
+    overflow: hidden;
+    transition: height 0.3s ease;
+    
+    &.collapsed {
+        height: 0;
+    }
+  }
+  

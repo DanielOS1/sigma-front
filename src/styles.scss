@@ -35,8 +35,8 @@ $primary-palette: (
     )
 );
 
-$myapp-theme-primary: mat.m2-define-palette($primary-palette, A400, A100, A700);
-$myapp-theme-accent: mat.m2-define-palette($primary-palette);
+$myapp-theme-primary: mat.m2-define-palette($primary-palette);
+$myapp-theme-accent: mat.m2-define-palette(mat.$m2-grey-palette);
 $myapp-theme-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 $myapp-theme: mat.m2-define-light-theme((
@@ -49,11 +49,50 @@ $myapp-theme: mat.m2-define-light-theme((
 
 @include mat.all-component-themes($myapp-theme);
 
-// Variables CSS globales
+// Variables CSS globales para colores de texto
 :root {
-    --primary-color: #0068B7;
-    --secondary-color: #3C3F47;
-    --dark-color: #1E1E1E;
-    --black-color: #000000;
-    --primary-variant: #0069B9;
+    --text-color-primary: white;
+    --text-color-secondary: rgba(255, 255, 255, 0.7);
+    --text-color-disabled: rgba(255, 255, 255, 0.5);
+    --text-color-dark: #333333;
+}
+
+// Clases de utilidad para colores de texto
+.text-primary { color: var(--text-color-primary); }
+.text-secondary { color: var(--text-color-secondary); }
+.text-disabled { color: var(--text-color-disabled); }
+.text-dark { color: var(--text-color-dark); }
+
+// Aplicar color de texto predeterminado a elementos comunes
+body {
+    color: var(--text-color-primary);
+}
+
+// Sobrescribir colores de texto de Material
+.mat-mdc-card,
+.mat-mdc-form-field,
+.mat-mdc-select,
+.mat-mdc-option {
+    color: var(--text-color-primary) !important;
+}
+
+// Sobrescribir colores específicos de Material
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    .mdc-floating-label,
+    .mdc-text-field__input {
+        color: var(--text-color-primary);
+    }
+}
+
+.mat-mdc-form-field-label {
+    color: var(--text-color-primary) !important;
+}
+
+.mat-mdc-select-value-text {
+    color: var(--text-color-primary) !important;
+}
+
+// Permitir excepciones específicas
+.dark-text {
+    color: var(--text-color-dark) !important;
 }

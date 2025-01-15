@@ -12,6 +12,8 @@ import { UserRole } from '../../interfaces/users/roles.enum';
 import { ApiResponse } from '../../types/response.interface';
 import { user } from '../../interfaces/users/usersDto';
 import { UserService } from '../../services/user.service';
+import { BaseUser, OwnerUser } from '../../interfaces/users/usersDto';
+
 @Component({
   selector: 'app-system-admin',
   standalone: true,
@@ -45,7 +47,20 @@ export class SystemAdminComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       rut: ['', Validators.required],
-      role: ['', Validators.required]
+      role: ['', Validators.required],
+      aquacultureRut: ['']
+    });
+
+    this.userForm.get('role')?.valueChanges.subscribe(role => {
+      const aquacultureRutControl = this.userForm.get('aquacultureRut');
+      
+      if (role === UserRole.OWNER) {
+        aquacultureRutControl?.setValidators([Validators.required]);
+      } else {
+        aquacultureRutControl?.clearValidators();
+      }
+      
+      aquacultureRutControl?.updateValueAndValidity();
     });
   }
 
@@ -55,9 +70,23 @@ export class SystemAdminComponent implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log('Form Data:', this.userForm.value);
-      this.userService.createUser(this.userForm.value).subscribe((response: ApiResponse<user>) => {
-        console.log('Response:', response);
+      const formData = this.userForm.value;
+      const userData: BaseUser | OwnerUser = 
+        formData.role === UserRole.OWNER 
+          ? {
+              ...formData,
+              aquacultureRut: formData.aquacultureRut
+            }
+          : {
+              rut: formData.rut,
+              name: formData.name,
+              lastName: formData.lastName,
+              email: formData.email,
+              role: formData.role
+            };
+
+      this.userService.createUser(userData).subscribe(response => {
+        console.log('Usuario creado:', response);
       });
     }
   }

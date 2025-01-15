@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { ApiResponse } from '../../types/response.interface';
 import { user } from '../../interfaces/users/usersDto';
+import { UserRole } from '../../interfaces/users/roles.enum';
+
 @Component({
   selector: 'app-side-nav',
   standalone: true,
@@ -24,6 +26,8 @@ import { user } from '../../interfaces/users/usersDto';
 })
 export class SideNavComponent implements OnInit {
   isExpanded = true;
+  isUserManagementExpanded = false;
+  roles = UserRole;
 
   user: user = {
     rut: '',
@@ -49,6 +53,8 @@ export class SideNavComponent implements OnInit {
   onLogout(): void {
     this.authService.logout().subscribe({
       next: () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('tokenExpiration');
         this.toastr.success('Sesión cerrada con éxito.');
         this.router.navigate(['/login']); 
       },
@@ -67,5 +73,21 @@ export class SideNavComponent implements OnInit {
 
   goToSystemAdmin(): void {
     this.router.navigate(['/system-admin']);
+  }
+
+  toggleUserManagement(): void {
+    this.isUserManagementExpanded = !this.isUserManagementExpanded;
+  }
+
+  goToCreateUser(): void {
+    this.router.navigate(['/system-admin/create-user']);
+  }
+
+  goToUserList(): void {
+    this.router.navigate(['/system-admin/users']);
+  }
+
+  goToUserRoles(): void {
+    this.router.navigate(['/system-admin/roles']);
   }
 }

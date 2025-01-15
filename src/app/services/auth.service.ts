@@ -69,11 +69,9 @@ export class AuthService {
       Authorization: `Bearer ${token}`, 
     });
 
-    
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('tokenExpiration');
-   
     return this.http.put<any>(`/auth/logout`, {}, {headers});
+
+   
   }
 
   requestPasswordReset(rut: string): Observable<any> {

@@ -59,6 +59,14 @@
                     </mat-error>
                 </mat-form-field>
 
+                <mat-form-field appearance="outline" *ngIf="userForm.get('role')?.value === roles.OWNER">
+                    <mat-label>RUT Acuícola</mat-label>
+                    <input matInput formControlName="aquacultureRut" required>
+                    <mat-error *ngIf="userForm.get('aquacultureRut')?.hasError('required')">
+                        El RUT Acuícola es requerido para Owners
+                    </mat-error>
+                </mat-form-field>
+
                 <div class="button-container">
                     <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">
                         Crear Usuario
