@@ -1,0 +1,28 @@
+.create-aquaculture-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+
+  mat-card {
+    padding: 20px;
+
+    mat-card-title {
+      color: #000000;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      mat-form-field {
+        width: 100%;
+      }
+
+      button {
+        align-self: flex-end;
+      }
+    }
+  }
+}

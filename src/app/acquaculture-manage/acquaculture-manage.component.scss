@@ -1,0 +1,65 @@
+.aquaculture-container {
+    padding: 20px;
+    position: relative;
+
+    .create-button-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1;
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+
+    .aquaculture-card {
+        margin-bottom: 16px;
+        
+        .aquaculture-info {
+            h3 {
+                color: #000000;
+                margin: 0 0 16px 0;
+            }
+            
+            p {
+                color: #000000;
+                margin: 8px 0;
+                
+                strong {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        gap: 16px;
+
+        button {
+            min-width: 100px;
+            
+            &:disabled {
+                opacity: 0.5;
+            }
+        }
+
+        .page-indicator {
+            min-width: 100px;
+            text-align: center;
+            color: #000000;
+        }
+    }
+
+    .no-data {
+        text-align: center;
+        color: #000000;
+        margin-top: 40px;
+    }
+}

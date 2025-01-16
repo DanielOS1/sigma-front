@@ -45,8 +45,13 @@ export interface PasswordResetRequest {
     updatedAt: string;
 }
 
+export interface PasswordResetData {
+    requests: PasswordResetRequest[];
+    total: number;
+}
+
 export interface PasswordResetResponse {
     message: string;
-    data: PasswordResetRequest[];
+    data: PasswordResetData;
     success: boolean;
 }

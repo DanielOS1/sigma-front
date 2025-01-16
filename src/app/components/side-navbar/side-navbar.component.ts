@@ -90,6 +90,6 @@ export class SideNavComponent implements OnInit {
   }
 
   goToUserRoles(): void {
-    this.router.navigate(['/system-admin/roles']);
+    this.router.navigate(['/system-admin/acquaculture-manage']);
   }
 }

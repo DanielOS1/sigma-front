@@ -49,6 +49,16 @@ export const routes: Routes = [
         path: 'system-admin/reset-password',
         loadComponent: () =>
           import('./users/system-admin/reset-password/reset-password.component').then((m) => m.ResetPasswordComponent),
+      },
+      {
+        path: 'system-admin/acquaculture-manage',
+        loadComponent: () =>
+          import('./acquaculture-manage/acquaculture-manage.component').then((m) => m.AcquacultureManageComponent),
+      },
+      {
+        path: 'system-admin/create-aquaculture',
+        loadComponent: () =>
+          import('./acquaculture-manage/create-acquaculture/create-acquaculture.component').then((m) => m.CreateAquacultureComponent),
       }
     ]
   },

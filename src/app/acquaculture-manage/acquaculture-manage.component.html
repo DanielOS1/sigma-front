@@ -1,0 +1,44 @@
+<div class="aquaculture-container">
+    <!-- Botón para crear nueva acuicultura -->
+    <div class="create-button-container">
+        <button mat-raised-button color="primary" [routerLink]="['/system-admin/create-aquaculture']">
+            <mat-icon>add</mat-icon>
+            Nueva Acuicultura
+        </button>
+    </div>
+
+    <!-- Lista de acuiculturas -->
+    <div *ngIf="aquacultures.length > 0; else noAquacultures">
+        <mat-card *ngFor="let aquaculture of aquacultures" class="aquaculture-card">
+            <mat-card-content>
+                <div class="aquaculture-info">
+                    <h3>{{aquaculture.name}}</h3>
+                    <p><strong>RUT:</strong> {{aquaculture.rut}}</p>
+                    <p><strong>Email:</strong> {{aquaculture.email}}</p>
+                    <p><strong>Teléfono:</strong> {{aquaculture.phoneNumber}}</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Controles de paginación -->
+        <div class="pagination-controls">
+            <button mat-button 
+                    [disabled]="currentPage === 1"
+                    (click)="previousPage()">
+                <mat-icon>chevron_left</mat-icon>
+                Anterior
+            </button>
+            <span class="page-indicator">Página {{currentPage}} de {{lastPage}}</span>
+            <button mat-button 
+                    [disabled]="currentPage === lastPage"
+                    (click)="nextPage()">
+                Siguiente
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <ng-template #noAquacultures>
+        <p class="no-data">No hay acuiculturas registradas</p>
+    </ng-template>
+</div>
