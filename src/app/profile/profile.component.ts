@@ -5,11 +5,12 @@ import { User } from '../interfaces/users/usersDto';
 import { ApiResponse } from '../types/response.interface';
 import { RolePipe } from '../pipes/role.pipe';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatCardModule, RolePipe],
+  imports: [CommonModule, MatCardModule, RolePipe, MatIconModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })

@@ -46,13 +46,11 @@ export class ViewAquacultureComponent implements OnInit {
 
   loadAquacultureDetail() {
     if (this.selectedRut) {
-      console.log('Enviando RUT:', this.selectedRut);
-
       this.aquacultureService.getAquacultureByRut(this.selectedRut).subscribe({
-        next: (response: AquacultureDetailResponse) => {
+        next: (response) => {
           if (response.success) {
             console.log('Respuesta:', response);
-            this.aquacultureDetail = response.data;
+            this.aquacultureDetail = response.data.data;
           } else {
             console.error('Error en la respuesta:', response);
           }

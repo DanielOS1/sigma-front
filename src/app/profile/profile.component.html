@@ -1,15 +1,26 @@
 <div class="profile-container">
- <mat-card class="basic-info-card">
-    <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <h2>{{user.name}} {{user.lastName}}</h2>
-        <p>Rol: {{user.role | role}}</p>
-    </mat-card-header>
-   
-    <p></p>
-    <p>{{user.email}}</p>
-    <p>{{user.rut}}</p>
-    <p>{{user.role}}</p>
+    <mat-card class="basic-info-card w-1/3">
+        <mat-card-header>
+        
+                <div mat-card-avatar class="example-header-image"></div>
+                <h2 class="!m-0">{{user.name}} {{user.lastName}}</h2>
+                <p class="!m-0">{{user.role | role}}</p>
+
+        </mat-card-header>
+        <mat-card-content>
+            <div class="flex items-center gap-2">
+                <mat-icon>email</mat-icon>      
+                <p>{{user.email}}</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <mat-icon>badge</mat-icon>
+                <p>{{user.rut}}</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <mat-icon>badge</mat-icon>
+                <p>{{user.role}}</p>
+            </div>
+        </mat-card-content>
     </mat-card>
 
   <!-- Contenido específico según el tipo de usuario -->

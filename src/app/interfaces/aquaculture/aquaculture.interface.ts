@@ -19,6 +19,7 @@ export interface CenterAdmin {
 
 export interface OwnerUser {
   name: string;
+  lastName?: string;
   email: string;
   rut: string;
 }
@@ -28,12 +29,31 @@ export interface AquacultureDetail {
   email: string;
   rut: string;
   phoneNumber: string;
-  centerAdminCultive: CenterAdmin;
+  centerAdminCultive: CenterAdmin | null;
   ownerUsers: OwnerUser[];
+  
 }
 
 export interface AquacultureDetailResponse {
   message: string;
-  data: AquacultureDetail;
+  data: {
+    message: string;
+    data: {
+      name: string;
+      email: string;
+      rut: string;
+      phoneNumber: string;
+      centerAdminCultive: {
+        name: string;
+        rut: string;
+      } | null;
+      ownerUsers: {
+        name: string;
+        email: string;
+        rut: string;
+      }[];
+    };
+    success: boolean;
+  };
   success: boolean;
 }

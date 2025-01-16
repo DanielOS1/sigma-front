@@ -20,7 +20,7 @@ export class AquacultureService {
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this.http.get<ApiResponse<any>>('/system-admin/all', { headers, params });
+    return this.http.get<ApiResponse<any>>('/system-admin/all-aq', { headers, params });
   }
 
   createAquaculture(aquacultureData: any): Observable<ApiResponse<any>> {
@@ -34,17 +34,14 @@ export class AquacultureService {
 
   getAquacultureByRut(rut: string): Observable<AquacultureDetailResponse> {
     const token = localStorage.getItem('access_token');
-  
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
-  
-    const params = new HttpParams().set('rut', '112233445');
-  
-    return this.http.get<AquacultureDetailResponse>('/system-admin', {
-      headers,
-      params
-    });
+    
+    return this.http.get<AquacultureDetailResponse>(
+      `/system-admin/${rut}`,
+      { headers }
+    );
   }
 }

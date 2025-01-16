@@ -18,16 +18,16 @@
         <p><strong>Teléfono:</strong> {{aquacultureDetail.phoneNumber}}</p>
       </div>
 
-      <div class="admin-section">
+      <div class="admin-section" *ngIf="aquacultureDetail.centerAdminCultive">
         <h3>Administrador del Centro</h3>
         <p><strong>Nombre:</strong> {{aquacultureDetail.centerAdminCultive.name}}</p>
         <p><strong>RUT:</strong> {{aquacultureDetail.centerAdminCultive.rut}}</p>
       </div>
 
-      <div class="owners-section">
+      <div class="owners-section" *ngIf="aquacultureDetail.ownerUsers?.length">
         <h3>Dueños</h3>
         <div *ngFor="let owner of aquacultureDetail.ownerUsers" class="owner-info">
-          <p><strong>Nombre:</strong> {{owner.name}}</p>
+          <p><strong>Nombre:</strong> {{owner.name}} {{owner.lastName}}</p>
           <p><strong>Email:</strong> {{owner.email}}</p>
           <p><strong>RUT:</strong> {{owner.rut}}</p>
         </div>

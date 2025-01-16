@@ -1,6 +1,11 @@
 @use '@angular/material' as mat;
 @include mat.core();
 
+// Importar Tailwind
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // Definición de la paleta principal (basada en #0068B7)
 $primary-palette: (
     50: lighten(#0068B7, 40%),
@@ -96,3 +101,5 @@ body {
 .dark-text {
     color: var(--text-color-dark) !important;
 }
+
+
