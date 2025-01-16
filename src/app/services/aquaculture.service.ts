@@ -4,9 +4,16 @@ import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
 import { AquacultureDetailResponse } from '../interfaces/aquaculture/aquaculture.interface';
 
+interface AAqCad {
+  rutAq: string;
+  rut: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class AquacultureService {
   constructor(private http: HttpClient) {}
 
@@ -44,4 +51,24 @@ export class AquacultureService {
       { headers }
     );
   }
+
+  assignAqAdmin(centerAdminRut: string, aquacultureRut: string): Observable<ApiResponse<any>> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+  
+    const body: AAqCad = {
+      rutAq: aquacultureRut,
+      rut: centerAdminRut
+    };
+  
+    return this.http.post<ApiResponse<any>>(
+      '/system-admin/assingCenterAdminAquaculture',
+      body,
+      { headers }
+    );
+  }
+
+
 }

@@ -24,6 +24,7 @@ export class ViewAquacultureComponent implements OnInit {
   aquacultures: any[] = [];
   selectedRut: string = '';
   aquacultureDetail: AquacultureDetail | null = null;
+  adminRut: string = '';
 
   constructor(private aquacultureService: AquacultureService) {}
 
@@ -61,6 +62,23 @@ export class ViewAquacultureComponent implements OnInit {
       });
     } else {
       console.error('RUT no proporcionado');
+    }
+  }
+
+  assignAdmin(): void {
+    if (this.adminRut && this.selectedRut) {
+      this.aquacultureService.assignAqAdmin(this.adminRut, this.selectedRut).subscribe({
+        next: (response) => {
+          if (response.success) {
+            alert('Administrador asignado exitosamente');
+            this.loadAquacultureDetail(); // Recargar detalles
+          }
+        },
+        error: (error) => {
+          console.error('Error asignando admin:', error);
+          alert('Error al asignar administrador');
+        }
+      });
     }
   }
 }

@@ -18,10 +18,28 @@
         <p><strong>Teléfono:</strong> {{aquacultureDetail.phoneNumber}}</p>
       </div>
 
-      <div class="admin-section" *ngIf="aquacultureDetail.centerAdminCultive">
+      <div class="admin-section">
         <h3>Administrador del Centro</h3>
-        <p><strong>Nombre:</strong> {{aquacultureDetail.centerAdminCultive.name}}</p>
-        <p><strong>RUT:</strong> {{aquacultureDetail.centerAdminCultive.rut}}</p>
+        
+        <!-- Mostrar admin actual si existe -->
+        <div *ngIf="aquacultureDetail.centerAdminCultive">
+          <p><strong>Nombre:</strong> {{aquacultureDetail.centerAdminCultive.name}}</p>
+          <p><strong>RUT:</strong> {{aquacultureDetail.centerAdminCultive.rut}}</p>
+        </div>
+
+        <!-- Formulario para asignar nuevo admin -->
+        <div class="assign-admin-form">
+          <mat-form-field appearance="fill">
+            <mat-label>RUT del Administrador</mat-label>
+            <input matInput [(ngModel)]="adminRut" placeholder="Ingrese RUT">
+          </mat-form-field>
+          
+          <button mat-raised-button color="primary" 
+                  (click)="assignAdmin()" 
+                  [disabled]="!adminRut">
+            Asignar Administrador
+          </button>
+        </div>
       </div>
 
       <div class="owners-section" *ngIf="aquacultureDetail.ownerUsers?.length">

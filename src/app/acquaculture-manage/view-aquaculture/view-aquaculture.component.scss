@@ -63,3 +63,14 @@ mat-form-field {
     }
   }
 }
+
+.assign-admin-form {
+  margin-top: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  mat-form-field {
+    flex: 1;
+  }
+}
