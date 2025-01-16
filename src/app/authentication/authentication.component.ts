@@ -138,7 +138,7 @@ export class AuthenticationComponent {
     console.log('Respuesta del servidor:', response);
     console.log('AccessToken recibido:', response.data?.accessToken);
     this.toastr.success('Login exitoso', 'Éxito');
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/system-admin']);
   }
 
   /** Aplica el formato 10.123.456-7 al RUT */

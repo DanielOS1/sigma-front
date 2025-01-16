@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/users/usersDto';
 import { ApiResponse, PasswordResetResponse, UsersApiResponse } from '../types/response.interface';
+import { AuthService } from '../services/auth.service';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { ApiResponse, PasswordResetResponse, UsersApiResponse } from '../types/r
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   private myInfoEndPoint = "/auth/get-my-info"
   private createUserEndPoint = "/system-admin/register"
@@ -62,6 +63,32 @@ export class UserService {
 
     return this.http.get<ApiResponse<any>>(
       `/system-admin/reset-user-password?id=${requestId}`,
+      { headers }
+    );
+  }
+
+  changeUserDisabledStatus(rut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<ApiResponse<any>>(
+      `/system-admin/change-disable-user/${rut}`,
+      {},
+      { headers }
+    );
+  }
+
+  changeUserDeletedStatus(rut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<ApiResponse<any>>(
+      `/system-admin/change-delete-user/${rut}`,
+      {},
       { headers }
     );
   }

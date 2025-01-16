@@ -37,6 +37,8 @@ export class ProfileComponent{
     lastName: '',
     email: '',
     role: 0,
+    isActive: false,
+    isDeleted: false,
   };
 
   constructor(private userService: UserService){}

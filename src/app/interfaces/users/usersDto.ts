@@ -4,6 +4,8 @@ export interface BaseUser {
     lastName: string;
     email: string;
     role: number;
+    isActive: boolean;
+    isDeleted: boolean;
 }
 
 export interface OwnerUser extends BaseUser {

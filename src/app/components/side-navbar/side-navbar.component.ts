@@ -35,6 +35,8 @@ export class SideNavComponent implements OnInit {
     lastName: '',
     email: '',
     role: 0,
+    isActive: false,
+    isDeleted: false,
   };
 
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService, private userService: UserService) {}

@@ -30,6 +30,7 @@ export class ResetPasswordComponent implements OnInit {
   loadResetRequests() {
     this.userService.getResetPasswordRequests().subscribe({
       next: (response) => {
+        console.log(response);
         if (response.success) {
           this.resetRequests = response.data;
         }

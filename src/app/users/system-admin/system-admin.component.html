@@ -4,13 +4,18 @@
             <mat-card class="user-card">
                 <mat-card-content>
                     <div class="user-info">
-                        <h3 class="text-dark">{{user.name}} {{user.lastName}}</h3>
-                        <p class="text-primary">{{user.email}}</p>
-                        <p class="text-primary">RUT: {{user.rut}}</p>
-                        <p class="text-primary">Role: {{getRoleName(user.role)}}</p>
-                        <ng-container *ngIf="isOwnerUser(user)">
-                            <p class="text-primary">Aquaculture RUT: {{user.aquacultureRut}}</p>
-                        </ng-container>
+                        <h3>{{user.name}} {{user.lastName}}</h3>
+                        <p>{{user.email}}</p>
+                        <p>RUT: {{user.rut}}</p>
+                        <p>Role: {{getRoleName(user.role)}}</p>
+                        <div class="action-buttons">
+                            <button mat-button color="warn" (click)="toggleDisableUser(user.rut, user.isActive)">
+                                {{ user.isActive ? 'Desactivar' : 'Activar' }} Usuario
+                            </button>
+                            <button mat-button color="warn" (click)="toggleDeleteUser(user.rut, user.isDeleted)">
+                                {{ user.isDeleted ? 'Restaurar' : 'Eliminar' }} Usuario
+                            </button>
+                        </div>
                     </div>
                 </mat-card-content>
             </mat-card>

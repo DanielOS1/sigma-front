@@ -8,6 +8,8 @@ import {BaseUser, OwnerUser, isOwnerUser } from '../../interfaces/users/usersDto
 import { UsersApiResponse } from '../../types/response.interface';
 import { User } from '../../interfaces/users/usersDto';
 import { UserRole } from '../../interfaces/users/roles.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-system-admin',
@@ -27,7 +29,10 @@ export class SystemAdminComponent implements OnInit {
   totalItems = 0;
   limit = 10;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -87,5 +92,53 @@ export class SystemAdminComponent implements OnInit {
       default:
         return 'Unknown';
     }
+  }
+
+  toggleDisableUser(rut: string, isActive: boolean) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `${isActive ? 'Desactivar' : 'Activar'} Usuario`,
+        message: `¿Está seguro que desea ${isActive ? 'desactivar' : 'activar'} este usuario?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.changeUserDisabledStatus(rut).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.loadUsers();
+            }
+          },
+          error: (error) => {
+            console.error('Error changing user status:', error);
+          }
+        });
+      }
+    });
+  }
+
+  toggleDeleteUser(rut: string, isDeleted: boolean) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `${isDeleted ? 'Restaurar' : 'Eliminar'} Usuario`,
+        message: `¿Está seguro que desea ${isDeleted ? 'restaurar' : 'eliminar'} este usuario?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.changeUserDeletedStatus(rut).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.loadUsers();
+            }
+          },
+          error: (error) => {
+            console.error('Error changing user deleted status:', error);
+          }
+        });
+      }
+    });
   }
 }
