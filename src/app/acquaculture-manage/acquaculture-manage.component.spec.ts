@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AcquacultureManageComponent } from './acquaculture-manage.component';
+import { AcquacultureManageComponent } from './aquaculture-manage.component';
 
 describe('AcquacultureManageComponent', () => {
   let component: AcquacultureManageComponent;

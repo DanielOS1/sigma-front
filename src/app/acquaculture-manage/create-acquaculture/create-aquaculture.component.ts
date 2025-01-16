@@ -9,7 +9,7 @@ import { AquacultureService } from '../../services/aquaculture.service';
 import { CreateAquacultureDto } from '../../interfaces/aquaculture/aquaculture.interface';
 
 @Component({
-  selector: 'app-create-acquaculture',
+  selector: 'app-create-cquaculture',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,8 +19,8 @@ import { CreateAquacultureDto } from '../../interfaces/aquaculture/aquaculture.i
     MatButtonModule,
     MatCardModule
   ],
-  templateUrl: './create-acquaculture.component.html',
-  styleUrls: ['./create-acquaculture.component.scss']
+  templateUrl: './create-aquaculture.component.html',
+  styleUrls: ['./create-aquaculture.component.scss']
 })
 export class CreateAquacultureComponent {
   aquacultureForm: FormGroup;

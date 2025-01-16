@@ -89,7 +89,7 @@ export class SideNavComponent implements OnInit {
     this.router.navigate(['/system-admin/reset-password']);
   }
 
-  goToUserRoles(): void {
-    this.router.navigate(['/system-admin/acquaculture-manage']);
+  goToAquacultureManage(): void {
+    this.router.navigate(['/system-admin/aquaculture-manage']);
   }
 }

@@ -65,7 +65,7 @@ $myapp-theme: mat.m2-define-light-theme((
 
 // Aplicar color de texto predeterminado a elementos comunes
 body {
-    color: var(--text-color-primary);
+    color: var(--text-color-dark);
 }
 
 // Sobrescribir colores de texto de Material
@@ -73,23 +73,23 @@ body {
 .mat-mdc-form-field,
 .mat-mdc-select,
 .mat-mdc-option {
-    color: var(--text-color-primary) !important;
+    color: var(--text-color-dark) !important;
 }
 
 // Sobrescribir colores específicos de Material
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     .mdc-floating-label,
     .mdc-text-field__input {
-        color: var(--text-color-primary);
+        color: var(--text-color-dark);
     }
 }
 
 .mat-mdc-form-field-label {
-    color: var(--text-color-primary) !important;
+    color: var(--text-color-dark) !important;
 }
 
 .mat-mdc-select-value-text {
-    color: var(--text-color-primary) !important;
+    color: var(--text-color-dark) !important;
 }
 
 // Permitir excepciones específicas

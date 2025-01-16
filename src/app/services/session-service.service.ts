@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +8,10 @@ import { AuthService } from "./auth.service";
 export class SessionService {
   private timeoutId: any;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   startSessionMonitor(): void {
     this.clearSessionMonitor();
@@ -19,10 +23,12 @@ export class SessionService {
       if (timeLeft > 0) {
         this.timeoutId = setTimeout(() => {
           this.authService.clearToken();
+          this.router.navigate(['/login']);
           alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
         }, timeLeft);
       } else {
         this.authService.clearToken();
+        this.router.navigate(['/login']);
         alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
       }
     }

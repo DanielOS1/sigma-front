@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
+import { AquacultureDetailResponse } from '../interfaces/aquaculture/aquaculture.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,21 @@ export class AquacultureService {
     });
 
     return this.http.post<ApiResponse<any>>('/system-admin/create-aquaculture', aquacultureData, { headers });
+  }
+
+  getAquacultureByRut(rut: string): Observable<AquacultureDetailResponse> {
+    const token = localStorage.getItem('access_token');
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const params = new HttpParams().set('rut', '112233445');
+  
+    return this.http.get<AquacultureDetailResponse>('/system-admin', {
+      headers,
+      params
+    });
   }
 }

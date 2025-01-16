@@ -17,7 +17,7 @@ interface AquacultureResponse {
 }
 
 @Component({
-  selector: 'app-acquaculture-manage',
+  selector: 'app-aquaculture-manage',
   standalone: true,
   imports: [
     CommonModule,
@@ -26,10 +26,10 @@ interface AquacultureResponse {
     MatIconModule,
     RouterModule
   ],
-  templateUrl: './acquaculture-manage.component.html',
-  styleUrls: ['./acquaculture-manage.component.scss']
+  templateUrl: './aquaculture-manage.component.html',
+  styleUrls: ['./aquaculture-manage.component.scss']
 })
-export class AcquacultureManageComponent implements OnInit {
+export class AquacultureManageComponent implements OnInit {
   aquacultures: Aquaculture[] = [];
   currentPage = 1;
   totalItems = 0;

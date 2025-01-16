@@ -1,0 +1,65 @@
+.aquaculture-detail-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.detail-card {
+  margin-top: 20px;
+}
+
+.detail-section,
+.admin-section,
+.owners-section {
+  margin-bottom: 20px;
+
+  h2, h3 {
+    color: #000000;
+    margin-bottom: 16px;
+  }
+
+  p {
+    color: #000000;
+    margin: 8px 0;
+  }
+}
+
+.owner-info {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+:host ::ng-deep {
+  .mat-mdc-select-value-text {
+    color: #000000;
+  }
+
+  .mat-mdc-select-placeholder {
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .mdc-list-item__primary-text {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-option.mdc-list-item--selected {
+    .mdc-list-item__primary-text {
+      color: #000000 !important;
+    }
+  }
+
+  .mat-mdc-option:hover {
+    .mdc-list-item__primary-text {
+      color: #000000 !important;
+    }
+  }
+}

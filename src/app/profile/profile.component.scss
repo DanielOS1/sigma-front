@@ -1,0 +1,45 @@
+.profile-container {
+  padding: 20px;
+  max-width: 25vw;
+  margin: 0 auto;
+
+  .common-info {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+
+    h2 {
+      color: #000000;
+      margin-bottom: 16px;
+      font-size: 1.5em;
+    }
+
+    p {
+      color: #000000;
+      margin: 8px 0;
+      font-size: 1.1em;
+      
+      &:not(:last-child) {
+        margin-bottom: 12px;
+      }
+    }
+  }
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+  }
+
+
+  .basic-info-card{
+
+    mat-card-header{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+  }
+}

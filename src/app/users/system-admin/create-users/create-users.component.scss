@@ -1,0 +1,73 @@
+.admin-container {
+  padding: 20px;
+}
+
+.user-form-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  
+  mat-form-field {
+    flex: 1;
+  }
+}
+
+:host ::ng-deep {
+  .mat-mdc-select-value-text {
+    color: #000000;
+  }
+
+  .mat-mdc-select-placeholder {
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .mat-mdc-option {
+    color: #000000;
+  }
+
+  .mat-mdc-select-arrow {
+    color: #000000;
+  }
+
+  .mat-mdc-select-value {
+    color: #000000;
+  }
+
+  .mat-mdc-form-field-text-prefix,
+  .mat-mdc-form-field-text-suffix {
+    color: #000000;
+  }
+
+  .mdc-list-item__primary-text {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-option.mdc-list-item--selected {
+    .mdc-list-item__primary-text {
+      color: #000000 !important;
+    }
+  }
+
+  .mat-mdc-option:hover {
+    .mdc-list-item__primary-text {
+      color: #000000 !important;
+    }
+  }
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}

@@ -51,14 +51,21 @@ export const routes: Routes = [
           import('./users/system-admin/reset-password/reset-password.component').then((m) => m.ResetPasswordComponent),
       },
       {
-        path: 'system-admin/acquaculture-manage',
+        path: 'system-admin/aquaculture-manage',
         loadComponent: () =>
-          import('./acquaculture-manage/acquaculture-manage.component').then((m) => m.AcquacultureManageComponent),
+          import('./acquaculture-manage/aquaculture-manage.component').then((m) => m.AquacultureManageComponent),
       },
       {
         path: 'system-admin/create-aquaculture',
         loadComponent: () =>
-          import('./acquaculture-manage/create-acquaculture/create-acquaculture.component').then((m) => m.CreateAquacultureComponent),
+          import('./acquaculture-manage/create-acquaculture/create-aquaculture.component').then((m) => m.CreateAquacultureComponent),
+      },
+      {
+        path: 'system-admin/view-aquaculture',
+        loadComponent: () =>
+          import('./acquaculture-manage/view-aquaculture/view-aquaculture.component').then(
+            (m) => m.ViewAquacultureComponent
+          ),
       }
     ]
   },

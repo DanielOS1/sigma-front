@@ -1,1 +1,20 @@
-<p>profile works!</p>
+<div class="profile-container">
+ <mat-card class="basic-info-card">
+    <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <h2>{{user.name}} {{user.lastName}}</h2>
+        <p>Rol: {{user.role | role}}</p>
+    </mat-card-header>
+   
+    <p></p>
+    <p>{{user.email}}</p>
+    <p>{{user.rut}}</p>
+    <p>{{user.role}}</p>
+    </mat-card>
+
+  <!-- Contenido específico según el tipo de usuario -->
+  <ng-container [ngSwitch]="userType">
+    <!-- <app-admin-profile *ngSwitchCase="'admin'" [userData]="userData"></app-admin-profile> -->
+    <!-- <app-user-profile *ngSwitchCase="'user'" [userData]="userData"></app-user-profile> -->
+  </ng-container>
+</div>

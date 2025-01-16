@@ -1,0 +1,37 @@
+<div class="aquaculture-detail-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Seleccionar Acuicultura</mat-label>
+    <mat-select [(ngModel)]="selectedRut" (selectionChange)="loadAquacultureDetail()">
+      <mat-option *ngFor="let aquaculture of aquacultures" [value]="aquaculture.rut">
+        {{aquaculture.name}} - {{aquaculture.rut}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-card *ngIf="aquacultureDetail" class="detail-card">
+    <mat-card-content>
+      <h2>Detalles de la Acuicultura</h2>
+      <div class="detail-section">
+        <p><strong>Nombre:</strong> {{aquacultureDetail.name}}</p>
+        <p><strong>RUT:</strong> {{aquacultureDetail.rut}}</p>
+        <p><strong>Email:</strong> {{aquacultureDetail.email}}</p>
+        <p><strong>Teléfono:</strong> {{aquacultureDetail.phoneNumber}}</p>
+      </div>
+
+      <div class="admin-section">
+        <h3>Administrador del Centro</h3>
+        <p><strong>Nombre:</strong> {{aquacultureDetail.centerAdminCultive.name}}</p>
+        <p><strong>RUT:</strong> {{aquacultureDetail.centerAdminCultive.rut}}</p>
+      </div>
+
+      <div class="owners-section">
+        <h3>Dueños</h3>
+        <div *ngFor="let owner of aquacultureDetail.ownerUsers" class="owner-info">
+          <p><strong>Nombre:</strong> {{owner.name}}</p>
+          <p><strong>Email:</strong> {{owner.email}}</p>
+          <p><strong>RUT:</strong> {{owner.rut}}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
