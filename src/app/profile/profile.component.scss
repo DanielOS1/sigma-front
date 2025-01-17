@@ -1,44 +1,170 @@
 .profile-container {
-  padding: 20px;
-  margin: 0 auto;
+    padding: 2rem;
+    background-color: #f5f5f5;
+    min-height: 100vh;
 
-  .common-info {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    .cards-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 2rem;
+        
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
 
-    h2 {
-      color: #000000;
-      margin-bottom: 16px;
-      font-size: 1.5em;
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
     }
 
-    p {
-      color: #000000;
-      margin: 8px 0;
-      font-size: 1.1em;
-      
-      &:not(:last-child) {
-        margin-bottom: 12px;
-      }
+    .profile-card, .settings-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        height: fit-content;
     }
-  }
-  .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
-    width: 100px;
-    height: 100px;
-  }
 
+    .profile-card {
+        .theme-aware-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
 
-  .basic-info-card{
+        .profile-image {
+            background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+            background-size: cover;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
 
-    mat-card-header{
+        .user-info {
+            padding: 1.5rem;
+            
+            .info-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+
+                mat-icon {
+                    color: #666;
+                }
+
+                p {
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    .settings-card {
+        mat-card-header {
+            padding: 1.5rem 1.5rem 0;
+            
+            h2 {
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: 500;
+            }
+        }
+
+        .settings-list {
+            padding: 1.5rem;
+        }
+    }
+
+    .config-item {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
+        padding: 1rem;
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        p {
+            color: #666;
+            margin: 0.25rem 0 0;
+        }
+
+        button {
+            white-space: nowrap;
+        }
     }
-  }
+
+    .audit-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        mat-card-header {
+            padding: 1.5rem 1.5rem 0;
+            
+            h2 {
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: 500;
+            }
+        }
+
+        .audit-list {
+            padding: 1.5rem;
+        }
+
+        .audit-item {
+            padding: 1rem;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+
+            .audit-header {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: #666;
+                margin-bottom: 0.75rem;
+
+                mat-icon {
+                    font-size: 20px;
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+
+            .audit-content {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                p {
+                    margin: 0;
+                    font-size: 0.9rem;
+                    color: #333;
+                }
+            }
+
+            .audit-date {
+                font-size: 0.85rem;
+            }
+        }
+
+        mat-paginator {
+            margin-top: 1rem;
+        }
+    }
 }
+

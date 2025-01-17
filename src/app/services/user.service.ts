@@ -92,4 +92,19 @@ export class UserService {
       { headers }
     );
   }
+
+  getAudits(page: number = 1, limit: number = 10): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString())
+      .set('performedBy', this.authService.getDecodedToken().rut);
+
+    return this.http.get<any>(`/audit`, { headers, params });
+  }
 }
+

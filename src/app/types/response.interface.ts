@@ -1,9 +1,10 @@
 import { User } from "../interfaces/users/usersDto";
 
 export interface ApiResponse<T> {
-    data: T;
     message: string;
+    data: T;
     success: boolean;
+    total?: number;
 }
 
 export interface UserData{

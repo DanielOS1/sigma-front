@@ -85,6 +85,12 @@ export class AuthService {
     return this.http.get<any>(`/user/reset-password?rut=${rut}`);
   }
 
+  getDecodedToken() {
+    const token = this.getToken();
+    if (token) {
+        return JSON.parse(atob(token.split('.')[1]));
+    }
+    return null;
+  }
 
-  
 }
