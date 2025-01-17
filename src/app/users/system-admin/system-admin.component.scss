@@ -1,67 +1,41 @@
-.admin-container {
-    padding: 20px;
-}
+.container {
+    background-color: #f5f5f5;
+    min-height: 100vh;
 
-.user-form-card {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-}
-
-.user-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.form-row {
-    display: flex;
-    gap: 16px;
-    
-    mat-form-field {
-        flex: 1;
+    h1 {
+        color: #333;
     }
 }
 
-// Estilos específicos de Material
-::ng-deep {
-    .mat-mdc-form-field {
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.users-table-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    .mat-mdc-table {
         width: 100%;
     }
 
-    .mat-mdc-card {
-        background-color: white;
-    }
-}
-
-.button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 16px;
-}
-
-button[type="submit"] {
-    min-width: 150px;
-}
-
-.user-list-container {
-    padding: 20px;
-    
-    .user-card {
-        margin-bottom: 16px;
-        background-color: var(--background-color);
-        
-        .user-info {
-            h3 {
-                margin: 0;
-                color: #000000;
-            }
-            
-            p {
-                margin: 8px 0;
-                color: #000000;
-            }
+    .mat-mdc-row {
+        &:hover {
+            background-color: #f5f5f5;
         }
+    }
+
+    .mat-mdc-header-cell {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .mat-mdc-cell {
+        color: #666;
     }
 }
 
@@ -69,36 +43,32 @@ button[type="submit"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    gap: 16px;
-
-    button {
-        min-width: 100px;
-        color: #000000;
-        
-        &:disabled {
-            opacity: 0.5;
-        }
-
-        mat-icon {
-            color: #000000;
-        }
-    }
+    padding: 1rem;
+    gap: 1rem;
 
     .page-indicator {
         min-width: 100px;
         text-align: center;
-        color: #000000;
+        color: #666;
+    }
+
+    button {
+        &:disabled {
+            opacity: 0.5;
+        }
     }
 }
 
-:host ::ng-deep {
-    .mat-mdc-card {
-        --mdc-elevated-card-container-color: var(--background-color);
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .active-icon {
+        color: #22c55e; // verde
     }
 
-    .mat-mdc-button {
-        --mat-mdc-button-persistent-ripple-color: #000000;
-        --mat-mdc-button-ripple-color: rgba(0, 0, 0, 0.1);
+    .inactive-icon {
+        color: #ef4444; // rojo
     }
 }

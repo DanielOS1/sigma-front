@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { AquacultureService } from '../../services/aquaculture.service';
 import { AquacultureDetail, AquacultureDetailResponse } from '../../interfaces/aquaculture/aquaculture.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-aquaculture',
@@ -13,7 +17,10 @@ import { AquacultureDetail, AquacultureDetailResponse } from '../../interfaces/a
   imports: [
     CommonModule,
     MatCardModule,
-    MatSelectModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
     MatFormFieldModule,
     FormsModule
   ],
@@ -26,7 +33,10 @@ export class ViewAquacultureComponent implements OnInit {
   aquacultureDetail: AquacultureDetail | null = null;
   adminRut: string = '';
 
-  constructor(private aquacultureService: AquacultureService) {}
+  constructor(
+    private aquacultureService: AquacultureService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.loadAquacultures();
@@ -65,18 +75,23 @@ export class ViewAquacultureComponent implements OnInit {
     }
   }
 
+  selectAquaculture(rut: string) {
+    this.selectedRut = rut;
+    this.loadAquacultureDetail();
+  }
+
   assignAdmin(): void {
     if (this.adminRut && this.selectedRut) {
       this.aquacultureService.assignAqAdmin(this.adminRut, this.selectedRut).subscribe({
         next: (response) => {
           if (response.success) {
-            alert('Administrador asignado exitosamente');
-            this.loadAquacultureDetail(); // Recargar detalles
+            this.toastr.success('Administrador asignado exitosamente');
+            this.loadAquacultureDetail();
           }
         },
         error: (error) => {
+          this.toastr.error('Error al asignar administrador');
           console.error('Error asignando admin:', error);
-          alert('Error al asignar administrador');
         }
       });
     }

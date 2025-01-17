@@ -1,47 +1,60 @@
-<div class="aquaculture-container">
-    <div class="button-container">
-        <button mat-raised-button color="primary" [routerLink]="['/system-admin/create-aquaculture']">
-            <mat-icon>add</mat-icon>
-            Nueva Acuicultura
-        </button>
-        <button mat-raised-button color="primary" [routerLink]="['/system-admin/view-aquaculture']">
-            <mat-icon>visibility</mat-icon>
-            Ver Detalles
-        </button>
-    </div>
-
-    <!-- Lista de acuiculturas -->
-    <div *ngIf="aquacultures.length > 0; else noAquacultures">
-        <mat-card *ngFor="let aquaculture of aquacultures" class="aquaculture-card">
-            <mat-card-content>
-                <div class="aquaculture-info">
-                    <h3>{{aquaculture.name}}</h3>
-                    <p><strong>RUT:</strong> {{aquaculture.rut}}</p>
-                    <p><strong>Email:</strong> {{aquaculture.email}}</p>
-                    <p><strong>Teléfono:</strong> {{aquaculture.phoneNumber}}</p>
-                </div>
-            </mat-card-content>
-        </mat-card>
-
-        <!-- Controles de paginación -->
-        <div class="pagination-controls">
-            <button mat-button 
-                    [disabled]="currentPage === 1"
-                    (click)="previousPage()">
-                <mat-icon>chevron_left</mat-icon>
-                Anterior
-            </button>
-            <span class="page-indicator">Página {{currentPage}} de {{lastPage}}</span>
-            <button mat-button 
-                    [disabled]="currentPage === lastPage"
-                    (click)="nextPage()">
-                Siguiente
-                <mat-icon>chevron_right</mat-icon>
+<div class="container mx-auto p-6">
+    <div class="header-section">
+        <h1 class="text-3xl font-bold">Gestión de Acuícolas</h1>
+        <div class="button-container">
+            <button mat-raised-button color="primary" [routerLink]="['/system-admin/create-aquaculture']">
+                <mat-icon>add</mat-icon>
+                Nueva Acuicultura
             </button>
         </div>
     </div>
 
-    <ng-template #noAquacultures>
-        <p class="no-data">No hay acuiculturas registradas</p>
-    </ng-template>
+    <div class="aquaculture-grid">
+        <mat-card *ngFor="let aquaculture of aquacultures" 
+                  class="aquaculture-card"
+                  [routerLink]="['/system-admin/view-aquaculture']"
+                  (click)="selectAquaculture(aquaculture.rut)">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>business</mat-icon>
+                <mat-card-title>{{aquaculture.name}}</mat-card-title>
+                <mat-card-subtitle>{{aquaculture.rut}}</mat-card-subtitle>
+            </mat-card-header>
+            
+            <mat-card-content>
+                <div class="info-group">
+                    <label>Email</label>
+                    <p>{{aquaculture.email}}</p>
+                </div>
+                <div class="info-group">
+                    <label>Teléfono</label>
+                    <p>{{aquaculture.phoneNumber}}</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Estado vacío -->
+    <mat-card class="empty-state" *ngIf="aquacultures.length === 0">
+        <mat-card-content>
+            <mat-icon>business_off</mat-icon>
+            <p>No hay acuiculturas registradas</p>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Paginación -->
+    <div class="pagination-controls" *ngIf="aquacultures.length > 0">
+        <button mat-button 
+                [disabled]="currentPage === 1"
+                (click)="previousPage()">
+            <mat-icon>chevron_left</mat-icon>
+            Anterior
+        </button>
+        <span class="page-indicator">Página {{currentPage}} de {{lastPage}}</span>
+        <button mat-button 
+                [disabled]="currentPage === lastPage"
+                (click)="nextPage()">
+            Siguiente
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
 </div>

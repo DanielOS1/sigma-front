@@ -63,4 +63,6 @@ export class ProfileComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.loadAudits(this.currentPage);
   }
+
+  
 }

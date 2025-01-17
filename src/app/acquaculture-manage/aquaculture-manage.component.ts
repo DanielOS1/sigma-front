@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AquacultureService } from '../services/aquaculture.service';
 import { Aquaculture } from '../interfaces/aquaculture/aquaculture.interface';
 
@@ -35,7 +35,10 @@ export class AquacultureManageComponent implements OnInit {
   totalItems = 0;
   lastPage = 1;
 
-  constructor(private aquacultureService: AquacultureService) {}
+  constructor(
+    private aquacultureService: AquacultureService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadAquacultures();
@@ -69,5 +72,11 @@ export class AquacultureManageComponent implements OnInit {
       this.currentPage--;
       this.loadAquacultures();
     }
+  }
+
+  selectAquaculture(rut: string) {
+    this.router.navigate(['/system-admin/view-aquaculture'], {
+      queryParams: { rut: rut }
+    });
   }
 }

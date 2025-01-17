@@ -1,55 +1,111 @@
-<div class="aquaculture-detail-container">
-  <mat-form-field appearance="fill">
-    <mat-label>Seleccionar Acuicultura</mat-label>
-    <mat-select [(ngModel)]="selectedRut" (selectionChange)="loadAquacultureDetail()">
-      <mat-option *ngFor="let aquaculture of aquacultures" [value]="aquaculture.rut">
-        {{aquaculture.name}} - {{aquaculture.rut}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Gestión de Acuícolas</h1>
 
-  <mat-card *ngIf="aquacultureDetail" class="detail-card">
-    <mat-card-content>
-      <h2>Detalles de la Acuicultura</h2>
-      <div class="detail-section">
-        <p><strong>Nombre:</strong> {{aquacultureDetail.name}}</p>
-        <p><strong>RUT:</strong> {{aquacultureDetail.rut}}</p>
-        <p><strong>Email:</strong> {{aquacultureDetail.email}}</p>
-        <p><strong>Teléfono:</strong> {{aquacultureDetail.phoneNumber}}</p>
-      </div>
-
-      <div class="admin-section">
-        <h3>Administrador del Centro</h3>
-        
-        <!-- Mostrar admin actual si existe -->
-        <div *ngIf="aquacultureDetail.centerAdminCultive">
-          <p><strong>Nombre:</strong> {{aquacultureDetail.centerAdminCultive.name}}</p>
-          <p><strong>RUT:</strong> {{aquacultureDetail.centerAdminCultive.rut}}</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Lista de Acuícolas -->
+        <div class="md:col-span-1">
+            <mat-card class="aquaculture-list-card">
+                <mat-card-header>
+                    <mat-card-title>Acuícolas</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-nav-list>
+                        <a mat-list-item *ngFor="let aquaculture of aquacultures" 
+                           (click)="selectAquaculture(aquaculture.rut)"
+                           [class.selected]="selectedRut === aquaculture.rut">
+                            <mat-icon matListItemIcon>business</mat-icon>
+                            <div matListItemTitle>{{aquaculture.name}}</div>
+                            <div matListItemLine>{{aquaculture.rut}}</div>
+                        </a>
+                    </mat-nav-list>
+                </mat-card-content>
+            </mat-card>
         </div>
 
-        <!-- Formulario para asignar nuevo admin -->
-        <div class="assign-admin-form">
-          <mat-form-field appearance="fill">
-            <mat-label>RUT del Administrador</mat-label>
-            <input matInput [(ngModel)]="adminRut" placeholder="Ingrese RUT">
-          </mat-form-field>
-          
-          <button mat-raised-button color="primary" 
-                  (click)="assignAdmin()" 
-                  [disabled]="!adminRut">
-            Asignar Administrador
-          </button>
-        </div>
-      </div>
+        <!-- Detalles de la Acuícola -->
+        <div class="md:col-span-2">
+            <mat-card *ngIf="aquacultureDetail" class="detail-card">
+                <mat-card-header>
+                    <mat-icon mat-card-avatar>business</mat-icon>
+                    <mat-card-title>{{aquacultureDetail.name}}</mat-card-title>
+                    <mat-card-subtitle>{{aquacultureDetail.rut}}</mat-card-subtitle>
+                </mat-card-header>
 
-      <div class="owners-section" *ngIf="aquacultureDetail.ownerUsers?.length">
-        <h3>Dueños</h3>
-        <div *ngFor="let owner of aquacultureDetail.ownerUsers" class="owner-info">
-          <p><strong>Nombre:</strong> {{owner.name}} {{owner.lastName}}</p>
-          <p><strong>Email:</strong> {{owner.email}}</p>
-          <p><strong>RUT:</strong> {{owner.rut}}</p>
+                <mat-card-content class="p-6">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="info-group">
+                            <label>Email</label>
+                            <p>{{aquacultureDetail.email}}</p>
+                        </div>
+                        <div class="info-group">
+                            <label>Teléfono</label>
+                            <p>{{aquacultureDetail.phoneNumber}}</p>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Administrador -->
+                    <div class="section-card mb-6">
+                        <h3 class="section-title">
+                            <mat-icon>admin_panel_settings</mat-icon>
+                            Administrador del Centro
+                        </h3>
+                        
+                        <div *ngIf="aquacultureDetail.centerAdminCultive" class="current-admin">
+                            <div class="info-group">
+                                <label>Nombre</label>
+                                <p>{{aquacultureDetail.centerAdminCultive.name}}</p>
+                            </div>
+                            <div class="info-group">
+                                <label>RUT</label>
+                                <p>{{aquacultureDetail.centerAdminCultive.rut}}</p>
+                            </div>
+                        </div>
+
+                        <div class="assign-admin-form">
+                            <mat-form-field appearance="outline">
+                                <mat-label>RUT del Administrador</mat-label>
+                                <input matInput [(ngModel)]="adminRut" placeholder="Ingrese RUT">
+                                <mat-icon matSuffix>assignment_ind</mat-icon>
+                            </mat-form-field>
+                            
+                            <button mat-raised-button color="primary" 
+                                    (click)="assignAdmin()" 
+                                    [disabled]="!adminRut">
+                                <mat-icon>person_add</mat-icon>
+                                Asignar Administrador
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Dueños -->
+                    <div class="section-card" *ngIf="aquacultureDetail.ownerUsers?.length">
+                        <h3 class="section-title">
+                            <mat-icon>group</mat-icon>
+                            Dueños
+                        </h3>
+                        <div class="owners-grid">
+                            <mat-card *ngFor="let owner of aquacultureDetail.ownerUsers" class="owner-card">
+                                <div class="owner-info">
+                                    <mat-icon class="owner-icon">person</mat-icon>
+                                    <div>
+                                        <h4>{{owner.name}} {{owner.lastName}}</h4>
+                                        <p>{{owner.email}}</p>
+                                        <p class="rut">{{owner.rut}}</p>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Mensaje cuando no hay acuícola seleccionada -->
+            <mat-card *ngIf="!aquacultureDetail" class="empty-state-card">
+                <mat-card-content class="empty-state">
+                    <mat-icon>business</mat-icon>
+                    <p>Seleccione una acuícola para ver sus detalles</p>
+                </mat-card-content>
+            </mat-card>
         </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
 </div>

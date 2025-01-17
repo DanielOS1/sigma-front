@@ -13,6 +13,7 @@ import { ApiResponse } from '../../../types/response.interface';
 import { User } from '../../../interfaces/users/usersDto';
 import { UserService } from '../../../services/user.service';
 import { BaseUser, OwnerUser } from '../../../interfaces/users/usersDto';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-users',
@@ -41,7 +42,11 @@ export class CreateUsersComponent implements OnInit {
     { value: UserRole.SYSTEM_ADMIN, label: 'Administrador de Sistemas' }
   ];
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(
+    private fb: FormBuilder, 
+    private userService: UserService,
+    private toastr: ToastrService
+  ) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -68,6 +73,16 @@ export class CreateUsersComponent implements OnInit {
     console.log('Roles disponibles:', this.roleOptions);
   }
 
+  getRoleIcon(role: UserRole): string {
+    const icons: { [key in UserRole]: string } = {
+      [UserRole.OWNER]: 'business',
+      [UserRole.SCIENTIST]: 'science',
+      [UserRole.AQUACULTURE_ADMIN]: 'water',
+      [UserRole.SYSTEM_ADMIN]: 'admin_panel_settings'
+    };
+    return icons[role];
+  }
+
   onSubmit() {
     if (this.userForm.valid) {
       const formData = this.userForm.value;
@@ -85,8 +100,15 @@ export class CreateUsersComponent implements OnInit {
               role: formData.role
             };
 
-      this.userService.createUser(userData).subscribe(response => {
-        console.log('Usuario creado:', response);
+      this.userService.createUser(userData).subscribe({
+        next: (response) => {
+          this.toastr.success('Usuario creado exitosamente');
+          this.userForm.reset();
+        },
+        error: (error) => {
+          this.toastr.error('Error al crear el usuario');
+          console.error('Error:', error);
+        }
       });
     }
   }

@@ -1,178 +1,167 @@
 .sidenav-container {
     height: 100vh;
-    position: relative; 
+    background-color: #f8fafc;
+}
+
+.sidenav {
+    width: 260px;
     background-color: white;
-  }
-  
-  .sidenav {
-    width: 250px;
+    border-right: 1px solid #e2e8f0;
     transition: width 0.3s ease;
-    background-image: url('/media/bg-navbar.webp');
-    overflow: visible;
+    
     &.collapsed {
-      width: 80px; 
+        width: 80px;
     }
-  }
-  
-  /* Botón de toggle sobresaliente */
-  .toggle-button {
-    position: absolute; 
-    top: 1rem; 
-    right: -20px; 
-    z-index: 10; 
-    background: white; 
-    border-radius: 50%; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-    border: 1px solid #ddd;
-    width: 40px;
-    height: 40px;
+}
+
+.logo-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-  
-    mat-icon {
-      color: #0067b6;
-    }
-  
-    &:hover {
-      background-color: #f1f1f1; 
-    }
-  
-    transition: right 0.3s ease; 
-  }
-  
-  /* Ajuste cuando el sidebar está colapsado */
-  .sidenav.collapsed .toggle-button {
-    right: -20px; 
-  }
-  
-  .user-info {
-    text-align: center;
     padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  
-    .user-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 1rem;
-      border: 2px solid #0067b6;
-    }
-  
-    .user-name {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-  
-    .user-email {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-    }
-  }
-  
-  .menu-options {
-    flex-grow: 1;
-    padding: 1rem;
-  
-    .menu-item {
-      display: flex;
-      align-items: center;
-      color: white;
-      margin-bottom: 1rem;
-      text-transform: none;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-  
-      mat-icon {
-        margin-right: 1rem;
-        color: #0067b6;
-      }
-  
-      &:hover {
-        background-color: rgba(0, 103, 182, 0.1);
-      }
-    }
-  
-    .menu-section-title {
-      font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.5);
-      margin: 1.5rem 0 0.5rem 1rem;
-      text-transform: uppercase;
-    }
-  }
-  
-  .logout-section {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-  
-    .logout-button {
-      width: 100%;
-      text-align: left;
-      color: white;
-      text-transform: none;
-      font-size: 1rem;
-  
-      mat-icon {
-        margin-right: 1rem;
-        color: #ff3d00;
-      }
-  
-      &:hover {
-        background-color: rgba(255, 61, 0, 0.1);
-      }
-    }
-  }
-  
-  .menu-item {
-    position: relative;
-    width: 100%;
-    justify-content: flex-start;
+    border-bottom: 1px solid #e2e8f0;
     
-    .expand-icon {
-        position: absolute;
-        right: 8px;
-    }
-
-    mat-icon, span {
-        color: var(--text-color-primary);
-    }
-  }
-  
-  .submenu {
-    padding-left: 16px;
-    background-color: rgba(0, 0, 0, 0.1);
-    
-    .submenu-item {
-        width: 100%;
-        justify-content: flex-start;
-        font-size: 0.9rem;
+    .logo {
         height: 40px;
-        
-        mat-icon {
-            font-size: 20px;
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-            color: var(--text-color-primary);
-        }
-
-        span {
-            color: var(--text-color-primary);
-        }
-
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
+        margin-right: 1rem;
     }
-  }
-  
-  /* Animación para el submenú */
-  .submenu {
-    overflow: hidden;
-    transition: height 0.3s ease;
+    
+    .toggle-button {
+        margin-left: auto;
+        color: #64748b;
+    }
+}
+
+.user-profile {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
     
     &.collapsed {
-        height: 0;
+        padding: 1rem;
+        
+        .avatar-container {
+            margin: 0 auto;
+        }
     }
-  }
+    
+    .avatar-container {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+        
+        .user-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .status-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #10b981;
+            border: 2px solid white;
+        }
+    }
+    
+    .user-info {
+        .user-name {
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .user-role {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+    }
+}
+
+.nav-list {
+    padding: 1rem 0;
+    
+    .mat-mdc-list-item {
+        margin: 0.25rem 0.5rem;
+        border-radius: 0.5rem;
+        
+        &:hover {
+            background-color: #f1f5f9;
+        }
+        
+        &.active {
+            background-color: #e2e8f0;
+            
+            .mat-icon, .mdc-list-item__primary-text {
+                color: #2563eb;
+            }
+        }
+        
+        .mat-icon {
+            color: #64748b;
+            margin-right: 1rem;
+        }
+    }
+}
+
+.nav-expansion-panel {
+    background: transparent;
+    box-shadow: none;
+    margin: 0 0.5rem;
+    
+    .mat-expansion-panel-header {
+        padding: 0 1rem;
+        
+        .mat-panel-title {
+            display: flex;
+            align-items: center;
+            
+            .mat-icon {
+                margin-right: 1rem;
+                color: #64748b;
+            }
+        }
+    }
+    
+    .mat-expansion-panel-body {
+        padding: 0;
+    }
+}
+
+.nav-section {
+    padding: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.logout-item {
+    margin-top: auto !important;
+    
+    .mat-icon {
+        color: #ef4444 !important;
+    }
+}
+
+.content-wrapper {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+mat-sidenav-content {
+    transition: margin-left 0.3s ease;
+    
+    &.expanded {
+        margin-left: 80px;
+    }
+}
   

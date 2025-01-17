@@ -1,34 +1,39 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
+import { UserRole } from '../../interfaces/users/roles.enum';
 import { ApiResponse } from '../../types/response.interface';
 import { User } from '../../interfaces/users/usersDto';
-import { UserRole } from '../../interfaces/users/roles.enum';
 
 @Component({
   selector: 'app-side-nav',
   standalone: true,
   imports: [
+    CommonModule,
     MatSidenavModule,
     MatButtonModule,
     MatIconModule,
+    MatListModule,
+    MatExpansionModule,
+    MatDividerModule,
     RouterModule,
-    CommonModule,
   ],
   templateUrl: './side-navbar.component.html',
-  styleUrls: ['./side-navbar.component.scss'],
+  styleUrls: ['./side-navbar.component.scss']
 })
 export class SideNavComponent implements OnInit {
   isExpanded = true;
   isUserManagementExpanded = false;
   roles = UserRole;
-
   user: User = {
     rut: '',
     name: '',
@@ -39,17 +44,36 @@ export class SideNavComponent implements OnInit {
     isDeleted: false,
   };
 
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService, private userService: UserService) {}
-
-  toggleSidebar(): void {
-    this.isExpanded = !this.isExpanded;
-  }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.userService.getUser().subscribe((user: ApiResponse<User>) => {
       this.user = user.data;
     });
-    
+  }
+
+  getRoleDisplay(role: number): string {
+    switch (role) {
+      case UserRole.SYSTEM_ADMIN:
+        return 'Administrador del Sistema';
+      case UserRole.OWNER:
+        return 'Dueño';
+      case UserRole.SCIENTIST:
+        return 'Científico';
+      case UserRole.AQUACULTURE_ADMIN:
+        return 'Administrador Acuícola';
+      default:
+        return 'Usuario';
+    }
+  }
+
+  toggleSidebar(): void {
+    this.isExpanded = !this.isExpanded;
   }
 
   onLogout(): void {
@@ -66,7 +90,6 @@ export class SideNavComponent implements OnInit {
       },
     });
   }
-
 
   goToProfile(): void {
     console.log('goToProfile');

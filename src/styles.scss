@@ -102,4 +102,40 @@ body {
     color: var(--text-color-dark) !important;
 }
 
+// Arreglo para los inputs de Material
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 4px;
+}
+
+.mat-mdc-form-field {
+  .mdc-notched-outline__notch {
+    border-right: none;
+  }
+
+  .mat-mdc-form-field-infix {
+    min-height: 48px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+// Opcional: Si quieres un estilo más moderno para todos los inputs
+.mat-mdc-form-field.mat-form-field-appearance-outline {
+  .mat-mdc-text-field-wrapper {
+    background-color: white;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+
+  &:hover .mdc-notched-outline__leading,
+  &:hover .mdc-notched-outline__notch,
+  &:hover .mdc-notched-outline__trailing {
+    border-color: rgba(0, 0, 0, 0.38);
+  }
+}
+
 

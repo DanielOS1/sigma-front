@@ -10,6 +10,13 @@ import { User } from '../../interfaces/users/usersDto';
 import { UserRole } from '../../interfaces/users/roles.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-system-admin',
@@ -18,7 +25,13 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './system-admin.component.html',
   styleUrls: ['./system-admin.component.scss']
@@ -28,10 +41,14 @@ export class SystemAdminComponent implements OnInit {
   currentPage = 1;
   totalItems = 0;
   limit = 10;
+  displayedColumns: string[] = ['name', 'lastName', 'rut', 'email', 'role', 'status', 'actions'];
+  searchTerm: string = '';
+  loadingStates: { [key: string]: boolean } = {};
 
   constructor(
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -95,6 +112,7 @@ export class SystemAdminComponent implements OnInit {
   }
 
   toggleDisableUser(rut: string, isActive: boolean) {
+    this.loadingStates[rut] = true;
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: `${isActive ? 'Desactivar' : 'Activar'} Usuario`,
@@ -107,18 +125,26 @@ export class SystemAdminComponent implements OnInit {
         this.userService.changeUserDisabledStatus(rut).subscribe({
           next: (response) => {
             if (response.success) {
+              this.toastr.success(`Usuario ${isActive ? 'desactivado' : 'activado'} exitosamente`);
               this.loadUsers();
             }
           },
           error: (error) => {
+            this.toastr.error('Error al cambiar el estado del usuario');
             console.error('Error changing user status:', error);
+          },
+          complete: () => {
+            this.loadingStates[rut] = false;
           }
         });
+      } else {
+        this.loadingStates[rut] = false;
       }
     });
   }
 
   toggleDeleteUser(rut: string, isDeleted: boolean) {
+    this.loadingStates[rut] = true;
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: `${isDeleted ? 'Restaurar' : 'Eliminar'} Usuario`,
@@ -131,13 +157,20 @@ export class SystemAdminComponent implements OnInit {
         this.userService.changeUserDeletedStatus(rut).subscribe({
           next: (response) => {
             if (response.success) {
+              this.toastr.success(`Usuario ${isDeleted ? 'restaurado' : 'eliminado'} exitosamente`);
               this.loadUsers();
             }
           },
           error: (error) => {
+            this.toastr.error('Error al cambiar el estado del usuario');
             console.error('Error changing user deleted status:', error);
+          },
+          complete: () => {
+            this.loadingStates[rut] = false;
           }
         });
+      } else {
+        this.loadingStates[rut] = false;
       }
     });
   }

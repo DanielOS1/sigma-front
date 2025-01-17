@@ -6,6 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 interface PasswordRequest {
   id: string;
@@ -32,7 +35,9 @@ interface ApiPasswordResponse {
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
@@ -40,8 +45,13 @@ interface ApiPasswordResponse {
 export class ResetPasswordComponent implements OnInit {
   resetRequests: PasswordRequest[] = [];
   totalRequests = 0;
+  displayedColumns: string[] = ['user_rut', 'admin_rut', 'status', 'createdAt', 'updatedAt', 'actions'];
+  loadingStates: { [key: string]: boolean } = {};
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadResetRequests();
@@ -76,14 +86,20 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   approveRequest(requestId: string) {
+    this.loadingStates[requestId] = true;
     this.userService.approvePasswordReset(requestId).subscribe({
       next: (response) => {
         if (response.success) {
+          this.toastr.success('Contraseña reseteada exitosamente');
           this.loadResetRequests();
         }
       },
       error: (error) => {
+        this.toastr.error('Error al resetear la contraseña');
         console.error('Error approving request:', error);
+      },
+      complete: () => {
+        this.loadingStates[requestId] = false;
       }
     });
   }
