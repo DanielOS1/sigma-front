@@ -14,6 +14,7 @@ import { User } from '../../../interfaces/users/usersDto';
 import { UserService } from '../../../services/user.service';
 import { BaseUser, OwnerUser } from '../../../interfaces/users/usersDto';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-users',
@@ -45,7 +46,8 @@ export class CreateUsersComponent implements OnInit {
   constructor(
     private fb: FormBuilder, 
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
@@ -104,6 +106,7 @@ export class CreateUsersComponent implements OnInit {
         next: (response) => {
           this.toastr.success('Usuario creado exitosamente');
           this.userForm.reset();
+          this.router.navigate(['/system-admin']);
         },
         error: (error) => {
           this.toastr.error('Error al crear el usuario');

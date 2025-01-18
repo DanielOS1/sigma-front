@@ -14,7 +14,7 @@ import { ForgotPasswordDialogComponent } from '../components/forgot-password/for
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceService } from '../services/device.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-authentication',
   standalone: true,
@@ -26,6 +26,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CommonModule,
     FormsModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss'],
@@ -37,7 +38,7 @@ export class AuthenticationComponent {
   showPasswordIcon: boolean = false;
   previousRut: string = ''; 
   rememberMe: boolean = false;
-
+  isLoading: boolean = false;
   constructor(
     private authService: AuthService,
     private sessionService: SessionService, 
@@ -95,6 +96,7 @@ export class AuthenticationComponent {
 
   /** Envía los datos del formulario al servicio de autenticación */
   async onSumbit(): Promise<void> {
+    this.isLoading = true;
     const formattedRut = this.formatRut(this.rut);
     const deviceId = await this.deviceService.getDeviceId();
     
@@ -107,9 +109,11 @@ export class AuthenticationComponent {
       this.authService.loginPasswordLess(loginDataTypeA).subscribe({
         next: (response: any) => {
           this.handleLoginSuccess(response);
+          this.isLoading = false;
         },
         error: () => {
           this.toastr.error('Su RUT es incorrecto');
+          this.isLoading = false;
         },
       });
     } else {
@@ -122,9 +126,11 @@ export class AuthenticationComponent {
       this.authService.loginPassword(loginDataTypeB).subscribe({
         next: (response: any) => {
           this.handleLoginSuccess(response);
+          this.isLoading = false;
         },
         error: () => {
           this.toastr.error('Su contraseña es incorrecta');
+          this.isLoading = false;
         },
       });
     }
@@ -140,6 +146,7 @@ export class AuthenticationComponent {
 
     this.toastr.success('Login exitoso', 'Éxito');
     this.router.navigate(['/system-admin']);
+    this.isLoading = false;
   }
 
   /** Aplica el formato 10.123.456-7 al RUT */

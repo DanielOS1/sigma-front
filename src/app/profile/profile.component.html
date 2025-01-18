@@ -43,8 +43,10 @@
                                     color="primary" 
                                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
                                     (click)="openResetPasswordModal()">
-                                <mat-icon>key</mat-icon>
-                                Cambiar Contraseña
+                                <div class="btn-text-container">
+                                    <mat-icon>key</mat-icon>
+                                    <p class="!text-white !mb-0 !ml-2">Cambiar Contraseña</p>
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -69,9 +71,10 @@
                                 [routerLink]="['/my-devices']"
                                 class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
                                 >
-                                
-                            <mat-icon>devices</mat-icon>
-                            Ver mis Dispositivos
+                                <div class="btn-text-container">
+                                    <mat-icon>devices</mat-icon>
+                                    <p class="!text-white !mb-0 !ml-2">Ver mis Dispositivos</p>
+                                </div>
                         </button>
                     </div>
                 </div>

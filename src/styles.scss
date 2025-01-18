@@ -71,7 +71,10 @@ $myapp-theme: mat.m2-define-light-theme((
 // Aplicar color de texto predeterminado a elementos comunes
 body {
     color: var(--text-color-dark);
+    font-family: 'Montserrat' !important;
 }
+
+
 
 // Sobrescribir colores de texto de Material
 .mat-mdc-card,

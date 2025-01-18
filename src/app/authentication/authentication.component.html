@@ -50,7 +50,10 @@
 
         <div class="btn-container">
           <button mat-flat-button type="submit" class="btn-style" [disabled]="!isFormValid()">
-            Ingresar
+            <div class="btn-text-container">
+              <mat-spinner *ngIf="isLoading" diameter="24" strokeWidth="2" color="accent"></mat-spinner>
+              <p class="!mb-0 !ml-2">Ingresar</p>
+            </div>
           </button>
         </div>
       </form>

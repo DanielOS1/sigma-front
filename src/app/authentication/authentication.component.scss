@@ -89,7 +89,8 @@
 .btn-container {
   width: 100%;
   margin-top: 1rem;
-  
+
+
   .btn-style {
     width: 100%;
     height: 48px;
@@ -98,10 +99,17 @@
     background-color: #0068b7;
     color: white;
     transition: background-color 0.2s;
+
     
     &:hover {
       background-color: #004d8a;
     }
+  }
+  .btn-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
   }
 }
 
