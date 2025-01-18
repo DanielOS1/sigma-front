@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
 import { AquacultureDetailResponse } from '../interfaces/aquaculture/aquaculture.interface';
+import { AuthService } from './auth.service';
 
 interface AAqCad {
   rutAq: string;
@@ -15,10 +16,10 @@ interface AAqCad {
 
 
 export class AquacultureService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getAllAquacultures(page: number = 1, limit: number = 10): Observable<ApiResponse<any>> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -31,7 +32,7 @@ export class AquacultureService {
   }
 
   createAquaculture(aquacultureData: any): Observable<ApiResponse<any>> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -40,7 +41,7 @@ export class AquacultureService {
   }
 
   getAquacultureByRut(rut: string): Observable<AquacultureDetailResponse> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -53,7 +54,7 @@ export class AquacultureService {
   }
 
   assignAqAdmin(centerAdminRut: string, aquacultureRut: string): Observable<ApiResponse<any>> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });

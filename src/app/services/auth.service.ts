@@ -16,6 +16,7 @@ export class AuthService {
   private shouldPasswordUrl = '/user/should-password';
   private tokenKey = 'access_token';
   private expirationKey = 'token_expiration';
+  private rememberMeKey = 'remember_me';
 
   constructor(
     private http: HttpClient,
@@ -25,23 +26,29 @@ export class AuthService {
   loginPasswordLess(loginTypeAdto: LoginTypeAdto): Observable<LoginTypeAdto> {
     return this.http.post<LoginTypeAdto>(this.endPointUrlA, loginTypeAdto);
   }
-  loginPassword(loginTypeBdto: LoginTypeBdto): Observable<LoginTypeBdto> {
 
+  loginPassword(loginTypeBdto: LoginTypeBdto): Observable<LoginTypeBdto> {
     return this.http.post<LoginTypeBdto>(this.endPointUrlB, loginTypeBdto);
   }
+
 
   checkShouldPassword(rut: string): Observable<boolean> {
     console.log('Verificando si el RUT requiere contraseña...');
     return this.http.get<boolean>(`${this.shouldPasswordUrl}/${rut}`);
   }
 
-  setToken(token: string): void {
+  setToken(token: string, rememberMe: boolean = false): void {
     if (isPlatformBrowser(this.platformId)) {
       try {
         const decodedToken: DecodedToken = jwtDecode(token);
         const expiration = decodedToken.exp * 1000;
-        localStorage.setItem(this.tokenKey, token);
-        localStorage.setItem('tokenExpiration', expiration.toString());
+        
+        const storage = rememberMe ? localStorage : sessionStorage;
+        storage.setItem(this.tokenKey, token);
+        storage.setItem(this.expirationKey, expiration.toString());
+        
+        
+        localStorage.setItem(this.rememberMeKey, rememberMe.toString());
       } catch (error) {
         console.error('Error al decodificar el token:', error);
       }
@@ -50,21 +57,46 @@ export class AuthService {
 
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(this.tokenKey);
+        const sessionToken = sessionStorage.getItem(this.tokenKey);
+      if (sessionToken) {
+        return sessionToken;
+      }
+      
+      const localToken = localStorage.getItem(this.tokenKey);
+      if (localToken) {
+        return localToken;
+      }
     }
     return null;
   }
 
   getTokenExpiration(): number | null {
-    const expiration = localStorage.getItem('tokenExpiration');
-    return expiration ? parseInt(expiration, 10) : null;
+    if (isPlatformBrowser(this.platformId)) {
+      const sessionExpiration = sessionStorage.getItem(this.expirationKey);
+      if (sessionExpiration) {
+        return parseInt(sessionExpiration, 10);
+      }
+
+      const localExpiration = localStorage.getItem(this.expirationKey);
+      if (localExpiration) {
+        return parseInt(localExpiration, 10);
+      }
+    }
+    return null;
   }
 
   clearToken(): void {
     if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.removeItem(this.tokenKey);
+      sessionStorage.removeItem(this.expirationKey);
       localStorage.removeItem(this.tokenKey);
       localStorage.removeItem(this.expirationKey);
+      localStorage.removeItem(this.rememberMeKey);
     }
+  }
+
+  isRememberMeActive(): boolean {
+    return localStorage.getItem(this.rememberMeKey) === 'true';
   }
   
   logout(): Observable<any> {

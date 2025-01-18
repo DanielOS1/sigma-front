@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ApiResponse } from '../types/response.interface';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 export interface Device {
   id: string;
@@ -25,7 +26,7 @@ export class DeviceService {
   private fingerprintPromise!: Promise<FingerprintJS.Agent>;
   private showMyDevicesEndpoint = '/auth/show-my-devices';
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient, private authService: AuthService) {
     if (isPlatformBrowser(this.platformId)) {
       this.fingerprintPromise = FingerprintJS.load();
     }
@@ -41,7 +42,7 @@ export class DeviceService {
   }
 
   getMyDevices(): Observable<DeviceResponse> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });

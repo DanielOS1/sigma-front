@@ -39,7 +39,12 @@
         </mat-form-field>
 
         <div class="options-container">
-          <span>Recuérdame</span>
+          <mat-checkbox
+            [(ngModel)]="rememberMe"
+            name="rememberMe"
+            color="primary">
+            Recuérdame
+          </mat-checkbox>
           <span class="link" (click)="openForgotPasswordDialog()">¿Olvidaste tu contraseña?</span>
         </div>
 

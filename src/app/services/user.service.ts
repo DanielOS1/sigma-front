@@ -20,7 +20,7 @@ export class UserService {
 
   getUser(): Observable<any> {
 
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, 
@@ -30,7 +30,7 @@ export class UserService {
   }
 
   createUser(user: User): Observable<any> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, 
@@ -40,7 +40,7 @@ export class UserService {
   }
 
   getUsers(page: number = 1): Observable<UsersApiResponse> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, 
     });
@@ -48,7 +48,7 @@ export class UserService {
   }
 
   getResetPasswordRequests(page: number = 1): Observable<PasswordResetResponse> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, 
     });
@@ -56,7 +56,7 @@ export class UserService {
   }
 
   approvePasswordReset(requestId: string): Observable<ApiResponse<any>> {
-    const token = localStorage.getItem('access_token');
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });

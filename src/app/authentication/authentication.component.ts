@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ForgotPasswordDialogComponent } from '../components/forgot-password/forgot-password.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceService } from '../services/device.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-authentication',
@@ -24,6 +25,7 @@ import { DeviceService } from '../services/device.service';
     MatIconModule,
     CommonModule,
     FormsModule,
+    MatCheckboxModule,
   ],
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss'],
@@ -34,6 +36,7 @@ export class AuthenticationComponent {
   showPassword: boolean = false; 
   showPasswordIcon: boolean = false;
   previousRut: string = ''; 
+  rememberMe: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -92,21 +95,15 @@ export class AuthenticationComponent {
 
   /** Envía los datos del formulario al servicio de autenticación */
   async onSumbit(): Promise<void> {
-    const formattedRut = this.formatRut(this.rut); 
+    const formattedRut = this.formatRut(this.rut);
     const deviceId = await this.deviceService.getDeviceId();
-    const loginDataTypeA: LoginTypeAdto = {
-      rut: formattedRut,
-      deviceId
-    };
-
-    const loginDataTypeB: LoginTypeBdto = {
-      rut: formattedRut,
-      password: this.password,
-      deviceId
-    };
-    console.log(deviceId);
+    
     if (!this.showPassword) {
-      // Login sin contraseña
+      const loginDataTypeA: LoginTypeAdto = {
+        rut: formattedRut,
+        deviceId
+      };
+
       this.authService.loginPasswordLess(loginDataTypeA).subscribe({
         next: (response: any) => {
           this.handleLoginSuccess(response);
@@ -116,7 +113,12 @@ export class AuthenticationComponent {
         },
       });
     } else {
-      // Login con contraseña
+      const loginDataTypeB: LoginTypeBdto = {
+        rut: formattedRut,
+        password: this.password,
+        deviceId
+      };
+
       this.authService.loginPassword(loginDataTypeB).subscribe({
         next: (response: any) => {
           this.handleLoginSuccess(response);
@@ -131,12 +133,11 @@ export class AuthenticationComponent {
   /** Maneja el éxito en el login */
   private handleLoginSuccess(response: any): void {
     const accessToken = response.data?.accessToken;
-
-    this.authService.setToken(accessToken);
+    
+    // Pasar el estado de rememberMe al servicio
+    this.authService.setToken(accessToken, this.rememberMe);
     this.sessionService.startSessionMonitor();
 
-    console.log('Respuesta del servidor:', response);
-    console.log('AccessToken recibido:', response.data?.accessToken);
     this.toastr.success('Login exitoso', 'Éxito');
     this.router.navigate(['/system-admin']);
   }
