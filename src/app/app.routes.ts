@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { MyDevicesComponent } from './devices/my-devices/my-devices.component';
 
 export const routes: Routes = [
   {
@@ -66,6 +67,10 @@ export const routes: Routes = [
           import('./acquaculture-manage/view-aquaculture/view-aquaculture.component').then(
             (m) => m.ViewAquacultureComponent
           ),
+      },
+      {
+        path: 'my-devices',
+        component: MyDevicesComponent
       }
     ]
   },

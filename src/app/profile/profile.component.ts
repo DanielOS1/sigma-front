@@ -9,11 +9,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuditLog } from '../interfaces/users/audits.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { ResetPasswordModalComponent } from '../shared/reset-password-modal/reset-password-modal.component';
+import { UserRole } from '../interfaces/users/roles.enum';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatCardModule, RolePipe, MatIconModule, MatDividerModule, MatPaginatorModule],
+  imports: [CommonModule, MatCardModule, RolePipe, MatIconModule, MatDividerModule, MatPaginatorModule, RouterModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
@@ -33,7 +38,10 @@ export class ProfileComponent implements OnInit {
   pageSize: number = 10;
   currentPage: number = 0;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private dialog: MatDialog
+  ) {}
   
   userType: string = '';
 
@@ -64,5 +72,21 @@ export class ProfileComponent implements OnInit {
     this.loadAudits(this.currentPage);
   }
 
-  
+  openResetPasswordModal(): void {
+    const dialogRef = this.dialog.open(ResetPasswordModalComponent, {
+      width: '400px',
+      disableClose: true,
+      data: { 
+        rut: this.user.rut,
+        isSystemAdmin: this.user.role === UserRole.SYSTEM_ADMIN 
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // La solicitud fue enviada exitosamente
+        console.log('Solicitud de cambio de contraseña enviada');
+      }
+    });
+  }
 }

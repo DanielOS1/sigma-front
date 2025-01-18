@@ -1,14 +1,12 @@
 <section class="auth-container">
-  <mat-card
-    appearance="outlined"
-    class="card-container"
-    [class.expanded]="showPassword"
-  >
-    <mat-card-header>
+  <mat-card class="card-container" [class.expanded]="showPassword">
+    <div class="logo-container">
+      <img src="/logo/twlog.png" alt="Logo troughtworks" class="logo">
       <h2>Iniciar Sesión</h2>
-    </mat-card-header>
-    <mat-card-content>
-      <form class="card-body-container" (ngSubmit)="onSumbit()">
+    </div>
+
+    <div class="card-body-container">
+      <form (ngSubmit)="onSumbit()">
         <mat-form-field class="rut-field" appearance="outline">
           <mat-icon matPrefix>badge</mat-icon>
           <mat-label>Ingrese su Rut con puntos y guión</mat-label>
@@ -32,26 +30,25 @@
           <input
             matInput
             [(ngModel)]="password"
-            type="password"
+            [type]="showPasswordIcon ? 'text' : 'password'"
             name="password"
           />
+          <mat-icon matSuffix (click)="togglePasswordVisibility()">
+            {{showPasswordIcon ? 'visibility_off' : 'visibility'}}
+          </mat-icon>
         </mat-form-field>
 
         <div class="options-container">
-          <span>Recuerdame</span>
-          <span class="link" (click)="openForgotPasswordDialog()">Olvidaste tu contraseña?</span>
+          <span>Recuérdame</span>
+          <span class="link" (click)="openForgotPasswordDialog()">¿Olvidaste tu contraseña?</span>
         </div>
-        <mat-card-actions class="btn-container">
-          <button
-            mat-flat-button
-            type="submit"
-            color="accent"
-            class="btn-style"
-          >
+
+        <div class="btn-container">
+          <button mat-flat-button type="submit" class="btn-style">
             Ingresar
           </button>
-        </mat-card-actions>
+        </div>
       </form>
-    </mat-card-content>
+    </div>
   </mat-card>
 </section>

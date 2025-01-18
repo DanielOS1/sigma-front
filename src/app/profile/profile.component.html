@@ -38,7 +38,15 @@
                                 <p >Cambia tu contraseña para mantener tu cuenta segura</p>
                             </div>
                         </div>
-                        <button mat-raised-button color="primary" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Cambiar</button>
+                        <div class="flex items-center">
+                            <button mat-raised-button 
+                                    color="primary" 
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
+                                    (click)="openResetPasswordModal()">
+                                <mat-icon>key</mat-icon>
+                                Cambiar Contraseña
+                            </button>
+                        </div>
                     </div>
                     <div class="config-item">
                         <div class="flex items-center gap-4">
@@ -56,7 +64,15 @@
                                 <p >Revisa los dispositivos que se han registrado en tu cuenta</p>
                             </div>
                         </div>
-                        <button mat-raised-button color="primary" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Ver mis Dispositivos</button>
+                        <button mat-raised-button 
+                                color="primary" 
+                                [routerLink]="['/my-devices']"
+                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
+                                >
+                                
+                            <mat-icon>devices</mat-icon>
+                            Ver mis Dispositivos
+                        </button>
                     </div>
                 </div>
             </mat-card-content>

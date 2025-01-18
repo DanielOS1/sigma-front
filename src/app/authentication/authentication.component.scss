@@ -6,83 +6,126 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-image: url('/media/bg-login.webp');
+  background-image: url('/media/bg-auth.jpg');
   background-size: cover;
-  background-position: center ; 
+  background-position: center;
   background-repeat: no-repeat;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 }
 
 .card-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   width: 100%;
-  max-width: 450px; /* Ancho máximo de la tarjeta */
-  max-height: 400px; /* Altura inicial de la tarjeta */
-  padding: 2rem;
+  max-width: 450px;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 12px;
-  border: 2px solid #0068B7;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  gap: 30px;
-  overflow: hidden; /* Evita que el contenido se desborde */
-  transition: max-height 0.3s ease-in-out; /* Transición suave de altura */
+  background: linear-gradient(135deg, #ffffff, #f8fbff);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 104, 183, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 104, 183, 0.1);
+  
+  h2 {
+    color: #0068b7;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
 }
-
-.card-container.expanded {
-  max-height: 550px; /* Altura cuando se muestra la contraseña */
-}
-
 
 .card-body-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%; /* Ancho completo del contenedor */
-  gap: 20px; /* Espaciado entre elementos */
+  width: 100%;
+  gap: 1.5rem;
 }
 
 .rut-field,
 .password-field {
-  width: 375px ; /* Ocupa el 75% del ancho de la tarjeta */
-  max-width: 375px; /* Limita el ancho máximo */
-  box-sizing: border-box;
+  width: 100%;
+  
+  .mat-icon {
+    color: #0068b7;
+  }
+  
+  ::ng-deep .mat-mdc-form-field-outline {
+    background: rgba(255, 255, 255, 0.9);
+  }
 }
 
 .options-container {
   display: flex;
-  justify-content: space-between; /* Espaciado entre los elementos */
-  width: 375px; /* Mismo ancho que los inputs */
+  justify-content: space-between;
+  width: 100%;
   font-size: 0.9rem;
-  color: #ffffff;
-  text-align: center;
+  color: #0068b7;
+  
+  .link {
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: #004d8a;
+    }
+  }
 }
 
 .btn-container {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-  width: 375px; /* Mismo ancho que los inputs */
-  margin-top: 20px;
-  box-sizing: border-box;
-}
-
-.btn-style{
   width: 100%;
+  margin-top: 1rem;
+  
+  .btn-style {
+    width: 100%;
+    height: 48px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background-color: #0068b7;
+    color: white;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: #004d8a;
+    }
+  }
 }
 
-.mat-icon {
-  color: #0068b7; /* Color de los íconos */
+// Animación para expandir la card
+.card-container {
+  transition: max-height 0.3s ease-in-out;
+  max-height: 400px;
+  overflow: hidden;
+  
+  &.expanded {
+    max-height: 550px;
+  }
 }
 
-.input-style {
-  font-size: 1rem;
+.logo-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  flex-direction: column;
+  
+  .logo {
+      height: 40px;
+      margin-right: 1rem;
+  }
+  
 }

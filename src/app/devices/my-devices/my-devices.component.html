@@ -1,0 +1,28 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Mis Dispositivos</h1>
+
+    <div class="devices-grid">
+        <mat-card *ngFor="let device of devices" class="device-card">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>devices</mat-icon>
+                <mat-card-title>Dispositivo {{device.deviceId.slice(0, 8)}}</mat-card-title>
+                <mat-card-subtitle>ID: {{device.id}}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div class="info-group">
+                    <label>Último acceso</label>
+                    <p>{{device.lastUsed | date:'dd/MM/yyyy HH:mm'}}</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Estado vacío -->
+    <mat-card class="empty-state" *ngIf="!isLoading && devices.length === 0">
+        <mat-card-content>
+            <mat-icon>devices_other</mat-icon>
+            <p>No hay dispositivos registrados</p>
+        </mat-card-content>
+    </mat-card>
+</div>
