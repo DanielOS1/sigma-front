@@ -164,4 +164,10 @@ export class AuthenticationComponent {
   private formatRut(rut: string): string {
     return rut.replace(/[.\-]/g, ''); 
   }
+
+  isFormValid(): boolean {
+    const isRutValid = !!this.rut && this.isValidRutFormat(this.rut); 
+    const isPasswordValid = this.showPassword ? this.password.trim().length > 0 : true;
+    return isRutValid && isPasswordValid;
+  }
 }
