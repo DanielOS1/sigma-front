@@ -18,6 +18,10 @@ interface DeviceResponse {
   success: boolean;
 }
 
+interface ResponseMessage {
+  message: string;
+  success: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -48,5 +52,23 @@ export class DeviceService {
     });
 
     return this.http.get<DeviceResponse>(this.showMyDevicesEndpoint, { headers });
+  }
+
+  deleteDevice(deviceId: string): Observable<ResponseMessage> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post<ResponseMessage>(`/auth/delete-device`, { deviceId }, { headers });
+  }
+
+  deleteAllDevices(): Observable<ResponseMessage> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post<ResponseMessage>(`/auth/delete-all-devices`, {}, { headers });
   }
 }

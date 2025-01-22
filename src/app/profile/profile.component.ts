@@ -11,9 +11,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuditLog } from '../interfaces/users/audits.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { ResetPasswordModalComponent } from '../shared/reset-password-modal/reset-password-modal.component';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
 import { UserRole } from '../interfaces/users/roles.enum';
 import { RouterModule } from '@angular/router';
-
+import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -40,7 +42,9 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
   
   userType: string = '';
@@ -73,7 +77,7 @@ export class ProfileComponent implements OnInit {
   }
 
   openResetPasswordModal(): void {
-    const dialogRef = this.dialog.open(ResetPasswordModalComponent, {
+    const dialogRef = this.dialog.open(ResetPasswordModalComponent, { 
       width: '400px',
       disableClose: true,
       data: { 
@@ -86,6 +90,31 @@ export class ProfileComponent implements OnInit {
       if (result) {
         // La solicitud fue enviada exitosamente
         console.log('Solicitud de cambio de contraseña enviada');
+      }
+    });
+  }
+
+  open2FASetup(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Activar Doble Verificación',
+        message: '¿Estás seguro de que deseas activar la doble verificación?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Aquí puedes llamar a tu servicio para activar la doble verificación
+        this.authService.request2FASetup().subscribe({
+          next: () => {
+            console.log('Doble verificación activada con éxito');
+            this.toastr.success('Doble verificación activada con éxito');
+          },
+          error: (error) => {
+            console.error('Error al activar la doble verificación:', error);
+            this.toastr.error('Error al activar la doble verificación');
+          }
+        });
       }
     });
   }

@@ -1,0 +1,41 @@
+<div class="container">
+    <h2>Crear Piscina</h2>
+    <form [formGroup]="pondForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="aquacultureRut">RUT Acuícola:</label>
+        <input id="aquacultureRut" formControlName="aquacultureRut" required />
+      </div>
+      <div>
+        <label for="waterType">Tipo de Agua:</label>
+        <select id="waterType" formControlName="waterType" required>
+          <option [value]="WaterType.SALT">Salada</option>
+          <option [value]="WaterType.FRESH">Dulce</option>
+        </select>
+      </div>
+      <div>
+        <label for="depth">Profundidad:</label>
+        <input id="depth" type="number" formControlName="depth" required />
+      </div>
+      <div>
+        <label for="pondType">Tipo de Estanque:</label>
+        <select id="pondType" formControlName="pondType" (change)="onPondTypeChange()" required>
+          <option [value]="PondType.POND">Estanque</option>
+          <option [value]="PondType.POOL">Piscina</option>
+        </select>
+      </div>
+      <div *ngIf="showAdditionalFields">
+        <div *ngIf="pondForm.get('pondType')?.value === PondType.POND">
+          <label for="radius">Radio:</label>
+          <input id="radius" type="number" formControlName="radius" />
+        </div>
+        <div *ngIf="pondForm.get('pondType')?.value === PondType.POOL">
+          <label for="length">Longitud:</label>
+          <input id="length" type="number" formControlName="length" required />
+          <label for="height">Altura:</label>
+          <input id="height" type="number" formControlName="height" required />
+        </div>
+      </div>
+      <button type="submit">Crear Piscina</button>
+    </form>
+  </div>
+  

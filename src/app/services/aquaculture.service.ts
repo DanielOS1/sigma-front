@@ -48,7 +48,7 @@ export class AquacultureService {
     });
     
     return this.http.get<AquacultureDetailResponse>(
-      `/system-admin/${rut}`,
+      `/system-admin/aquacultures/${rut}`,
       { headers }
     );
   }

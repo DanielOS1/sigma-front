@@ -15,8 +15,14 @@
                     <p>{{device.lastUsed | date:'dd/MM/yyyy HH:mm'}}</p>
                 </div>
             </mat-card-content>
+
+            <mat-card-actions>
+                <button mat-button (click)="deleteDevice(device.id)">Eliminar Dispositivo</button>
+            </mat-card-actions>
         </mat-card>
     </div>
+
+    <button mat-raised-button color="warn" (click)="deleteAllDevices()">Eliminar Todos los Dispositivos</button>
 
     <!-- Estado vacío -->
     <mat-card class="empty-state" *ngIf="!isLoading && devices.length === 0">

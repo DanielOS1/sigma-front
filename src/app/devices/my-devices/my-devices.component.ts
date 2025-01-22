@@ -46,4 +46,38 @@ export class MyDevicesComponent implements OnInit {
       }
     });
   }
+
+  deleteDevice(deviceId: string): void {
+    this.deviceService.deleteDevice(deviceId).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.devices = this.devices.filter(device => device.id !== deviceId);
+          this.toastr.success('Dispositivo eliminado con éxito');
+        } else {
+          this.toastr.error('Error al eliminar el dispositivo');
+        }
+      },
+      error: (error) => {
+        this.toastr.error('Error al eliminar el dispositivo');
+        console.error('Error:', error);
+      }
+    });
+  }
+
+  deleteAllDevices(): void {
+    this.deviceService.deleteAllDevices().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.devices = [];
+          this.toastr.success('Todos los dispositivos han sido eliminados');
+        } else {
+          this.toastr.error('Error al eliminar todos los dispositivos');
+        }
+      },
+      error: (error) => {
+        this.toastr.error('Error al eliminar todos los dispositivos');
+        console.error('Error:', error);
+      }
+    });
+  }
 } 

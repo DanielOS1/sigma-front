@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Verificación en Dos Pasos</h2>
+<mat-dialog-content>
+  <p>Por favor, ingresa el código de verificación que has recibido:</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Código de Verificación</mat-label>
+    <input matInput [(ngModel)]="verificationCode" maxlength="6" required>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeModal()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="submitCode()">Enviar</button>
+</mat-dialog-actions>

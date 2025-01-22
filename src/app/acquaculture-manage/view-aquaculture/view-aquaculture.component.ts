@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { AquacultureService } from '../../services/aquaculture.service';
 import { AquacultureDetail, AquacultureDetailResponse } from '../../interfaces/aquaculture/aquaculture.interface';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-aquaculture',
@@ -35,7 +36,8 @@ export class ViewAquacultureComponent implements OnInit {
 
   constructor(
     private aquacultureService: AquacultureService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -95,5 +97,9 @@ export class ViewAquacultureComponent implements OnInit {
         }
       });
     }
+  }
+
+  goToCreatePool(): void {
+    this.router.navigate(['/system-admin/pool-managment/create-pool']);
   }
 }

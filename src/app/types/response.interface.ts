@@ -56,3 +56,20 @@ export interface PasswordResetResponse {
     data: PasswordResetData;
     success: boolean;
 }
+
+export interface LoginResponse {
+    message: string;
+    data: any;
+    success: boolean;
+  }
+
+export interface LoginResponse2FA {
+    token?: string;
+    twoFactorEnabled?: boolean;
+  }
+
+export interface LoginApiResponse {
+    message: string;
+    data: LoginResponse2FA;
+    success: boolean;
+}

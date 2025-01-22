@@ -5,6 +5,7 @@ import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 import { DecodedToken } from '../interfaces/token';
 import { jwtDecode } from "jwt-decode";
 import { isPlatformBrowser } from '@angular/common';
+import { ApiResponse, LoginApiResponse, LoginResponse } from '../types/response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +24,15 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  loginPasswordLess(loginTypeAdto: LoginTypeAdto): Observable<LoginTypeAdto> {
-    return this.http.post<LoginTypeAdto>(this.endPointUrlA, loginTypeAdto);
+  loginPasswordLess(loginTypeAdto: LoginTypeAdto): Observable<LoginApiResponse> {
+    return this.http.post<LoginApiResponse>(this.endPointUrlA, loginTypeAdto);
   }
 
-  loginPassword(loginTypeBdto: LoginTypeBdto): Observable<LoginTypeBdto> {
-    return this.http.post<LoginTypeBdto>(this.endPointUrlB, loginTypeBdto);
+  loginPassword(loginTypeBdto: LoginTypeBdto): Observable<LoginApiResponse> {
+    return this.http.post<LoginApiResponse>(this.endPointUrlB, loginTypeBdto);
   }
 
+  
 
   checkShouldPassword(rut: string): Observable<boolean> {
     console.log('Verificando si el RUT requiere contraseña...');
@@ -125,4 +127,21 @@ export class AuthService {
     return null;
   }
 
+  request2FASetup(): Observable<any> {
+    const token = this.getToken();
+
+    if (!token) {
+      throw new Error('Token no encontrado');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<any>(`/auth/enable-two-step-auth`, {}, { headers });  
+  }
+
+  verify2FA(code: string, rut: string, deviceId: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`/auth/verify-2fa`, { code, rut, deviceId });
+  }
 }

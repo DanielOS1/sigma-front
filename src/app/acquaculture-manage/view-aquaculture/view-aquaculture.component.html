@@ -26,9 +26,17 @@
         <div class="md:col-span-2">
             <mat-card *ngIf="aquacultureDetail" class="detail-card">
                 <mat-card-header>
-                    <mat-icon mat-card-avatar>business</mat-icon>
-                    <mat-card-title>{{aquacultureDetail.name}}</mat-card-title>
-                    <mat-card-subtitle>{{aquacultureDetail.rut}}</mat-card-subtitle>
+                    <div>
+                        <mat-icon mat-card-avatar>business</mat-icon>
+                        <mat-card-title>{{aquacultureDetail.name}}</mat-card-title>
+                        <mat-card-subtitle>{{aquacultureDetail.rut}}</mat-card-subtitle>
+                    </div>
+                    <div>
+                        <button mat-icon-button (click)="goToCreatePool()"> 
+                            <mat-icon>add_circle</mat-icon> 
+                            <p>Agregar Piscina / Estanque</p>
+                        </button>
+                    </div>
                 </mat-card-header>
 
                 <mat-card-content class="p-6">

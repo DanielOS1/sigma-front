@@ -79,8 +79,7 @@ export class SideNavComponent implements OnInit {
   onLogout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('tokenExpiration');
+          
         this.toastr.success('Sesión cerrada con éxito.');
         this.router.navigate(['/login']); 
       },

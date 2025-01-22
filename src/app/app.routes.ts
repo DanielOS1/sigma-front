@@ -69,6 +69,16 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'system-admin/pool-managment',
+        loadComponent: () =>
+          import('./ResourcesManagment/pool-managment/pool-managment.component').then((m) => m.PoolManagmentComponent),
+      },
+      {
+        path: 'system-admin/pool-managment/create-pool',
+        loadComponent: () =>
+          import('./ResourcesManagment/pool-managment/create-pool/create-pool.component').then((m) => m.CreatePoolComponent),
+      },
+      {
         path: 'my-devices',
         component: MyDevicesComponent
       }
