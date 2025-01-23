@@ -52,17 +52,15 @@ export class CreatePoolComponent implements OnInit {
   }
 
   onPondTypeChange(): void {
-    const pondType = Number(this.pondForm.get('pondType')?.value);
-    console.log('Tipo de estanque seleccionado:', pondType);
-
+    const pondType = Number(this.pondForm.get('pondType')?.value); 
+  
     if (pondType === PondType.POND) {
-      console.log('Estanque seleccionado');
+  
       this.showAdditionalFields = true;
       this.pondForm.get('radius')?.setValidators([Validators.required, Validators.min(1), Validators.max(50)]);
       this.pondForm.get('length')?.clearValidators();
       this.pondForm.get('height')?.clearValidators();
     } else if (pondType === PondType.POOL) {
-      console.log('Piscina seleccionada');
       this.showAdditionalFields = true;
       this.pondForm.get('length')?.setValidators([Validators.required, Validators.min(1), Validators.max(150)]);
       this.pondForm.get('height')?.setValidators([Validators.required, Validators.min(1)]);
@@ -70,19 +68,27 @@ export class CreatePoolComponent implements OnInit {
     } else {
       this.showAdditionalFields = false;
     }
-
+  
     // Actualiza la validez de los campos
     this.pondForm.get('radius')?.updateValueAndValidity();
     this.pondForm.get('length')?.updateValueAndValidity();
     this.pondForm.get('height')?.updateValueAndValidity();
-
+  
     // Forzar detección de cambios
     this.cdr.detectChanges();
   }
-
+  
   onSubmit(): void {
     if (this.pondForm.valid) {
-      this.poolService.createPool(this.pondForm.value).subscribe({
+      const payload = {
+        ...this.pondForm.value,
+        waterType: Number(this.pondForm.value.waterType), // Convertir a número
+        pondType: Number(this.pondForm.value.pondType),   // Convertir a número
+      };
+
+      console.log("Payload a enviar:", payload); // Log para verificar el payload
+
+      this.poolService.createPool(payload).subscribe({
         next: () => {
           this.toastr.success('Piscina creada con éxito');
           this.pondForm.reset();

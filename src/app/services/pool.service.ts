@@ -17,6 +17,6 @@ export class PoolService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<ApiResponse<any>>('/system-admin/create-pool', poolData, { headers });
+    return this.http.post<ApiResponse<any>>('/system-admin/createPond', poolData, { headers });
   }
 }

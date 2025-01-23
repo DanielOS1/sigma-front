@@ -18,17 +18,17 @@
       </div>
       <div>
         <label for="pondType">Tipo de Estanque:</label>
-        <select id="pondType" formControlName="pondType" (change)="onPondTypeChange()" required>
+        <select id="pondType" formControlName="pondType" (change)="onPondTypeChange()">
           <option [value]="PondType.POND">Estanque</option>
           <option [value]="PondType.POOL">Piscina</option>
         </select>
       </div>
       <div *ngIf="showAdditionalFields">
-        <div *ngIf="pondForm.get('pondType')?.value === PondType.POND">
+        <div *ngIf="+(pondForm.get('pondType')?.value) === PondType.POND">
           <label for="radius">Radio:</label>
           <input id="radius" type="number" formControlName="radius" />
         </div>
-        <div *ngIf="pondForm.get('pondType')?.value === PondType.POOL">
+        <div *ngIf="+(pondForm.get('pondType')?.value) === PondType.POOL">
           <label for="length">Longitud:</label>
           <input id="length" type="number" formControlName="length" required />
           <label for="height">Altura:</label>

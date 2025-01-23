@@ -25,5 +25,10 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './pool-managment.component.scss'
 })
 export class PoolManagmentComponent {
+  showElement: boolean = false;
+  selectedOption: string = '';
 
+  toggleElement(): void {
+    this.showElement = !this.showElement;
+  }
 }

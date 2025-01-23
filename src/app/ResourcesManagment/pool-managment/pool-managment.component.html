@@ -1,1 +1,32 @@
 <p>pool-managment works!</p>
+<button (click)="toggleElement()">
+    Cambiar Estado
+</button>
+
+<p *ngIf="showElement">
+    Este parrafo aparece y  desaparece cuando haces clic en el boton
+</p>
+
+
+<div>
+    <label> Selecciona una opcion:</label>
+    <select id="menu" [(ngModel)]="selectedOption">
+        <option value="Roberto">Opcion 1</option>
+        <option value="opcion2">Opcion 2</option>
+        <option value="opcion3">Opcion 3</option>
+    </select>
+</div>
+
+<p>Opcion seleccionada: {{ selectedOption }}</p>
+
+<div *ngIf="selectedOption === 'Roberto'">
+    <input type="text"> 
+</div>
+
+<div *ngIf="selectedOption === 'opcion2'">
+    <p>opcion2 es la mejor</p>
+</div>
+
+<div *ngIf="selectedOption === 'opcion3'">
+    <p>opcion3 es la mejor</p>
+</div>
