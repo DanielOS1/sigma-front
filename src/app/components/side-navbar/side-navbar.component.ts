@@ -79,7 +79,7 @@ export class AdminSystemSideNavComponent implements OnInit {
   onLogout(): void {
     this.authService.logout().subscribe({
       next: () => {
-          
+        this.authService.clearToken();
         this.toastr.success('Sesión cerrada con éxito.');
         this.router.navigate(['/login']); 
       },
