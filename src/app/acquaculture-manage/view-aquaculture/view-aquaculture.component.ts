@@ -8,9 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { AquacultureService } from '../../services/aquaculture.service';
-import { AquacultureDetail, AquacultureDetailResponse } from '../../interfaces/aquaculture/aquaculture.interface';
+import { AquacultureDetail, AquacultureDetailResponse, Pool } from '../../interfaces/aquaculture/aquaculture.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { PoolService } from '../../services/pool.service';
+import { ApiResponse } from '../../types/response.interface';
+
 
 @Component({
   selector: 'app-view-aquaculture',
@@ -33,11 +36,13 @@ export class ViewAquacultureComponent implements OnInit {
   selectedRut: string = '';
   aquacultureDetail: AquacultureDetail | null = null;
   adminRut: string = '';
+  pools: Pool[] = [];
 
   constructor(
     private aquacultureService: AquacultureService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private poolService: PoolService
   ) {}
 
   ngOnInit() {
@@ -64,6 +69,8 @@ export class ViewAquacultureComponent implements OnInit {
           if (response.success) {
             console.log('Respuesta:', response);
             this.aquacultureDetail = response.data.data;
+            this.pools = response.data.data.pools;
+            this.getPoolofAquarium(this.selectedRut);
           } else {
             console.error('Error en la respuesta:', response);
           }
@@ -101,5 +108,14 @@ export class ViewAquacultureComponent implements OnInit {
 
   goToCreatePool(): void {
     this.router.navigate(['/system-admin/pool-managment/create-pool']);
+  }
+
+  getPoolofAquarium(aquariumRut: string): void {
+    this.poolService.getPoolofAquarium(aquariumRut).subscribe({
+      next: (response: ApiResponse<any>) => {
+        console.log(response);
+        this.aquacultureDetail!.pools = response.data.data;
+      }
+    });
   }
 }

@@ -36,6 +36,7 @@ export interface AquacultureDetail {
   phoneNumber: string;
   centerAdminCultive: CenterAdmin | null;
   ownerUsers: OwnerUser[];
+  pools: Pool[];
 }
 
 export interface AquacultureDetailResponse {
@@ -46,4 +47,14 @@ export interface AquacultureDetailResponse {
     success: boolean;
   };
   success: boolean;
+}
+
+export interface Pool {
+  ponds_id: string;
+  ponds_depth: number;
+  ponds_pondType: number;
+  ponds_waterType: number;
+  poollength: number;
+  poolheight: number;
+  pondradius?: number | null;
 }

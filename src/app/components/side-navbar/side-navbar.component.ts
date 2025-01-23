@@ -30,7 +30,7 @@ import { User } from '../../interfaces/users/usersDto';
   templateUrl: './side-navbar.component.html',
   styleUrls: ['./side-navbar.component.scss']
 })
-export class SideNavComponent implements OnInit {
+export class AdminSystemSideNavComponent implements OnInit {
   isExpanded = true;
   isUserManagementExpanded = false;
   roles = UserRole;

@@ -19,4 +19,12 @@ export class PoolService {
 
     return this.http.post<ApiResponse<any>>('/system-admin/createPond', poolData, { headers });
   }
+
+  getPoolofAquarium(aquariumRut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<ApiResponse<any>>(`/system-admin/ponds/${aquariumRut}`, { headers });
+  }
 }

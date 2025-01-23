@@ -104,6 +104,23 @@
                             </mat-card>
                         </div>
                     </div>
+
+                    <!-- Nueva Sección de Piscinas -->
+                    <div class="section-card" *ngIf="aquacultureDetail.pools?.length">
+                        <h3 class="section-title">
+                            <mat-icon>pool</mat-icon>
+                            Piscinas
+                        </h3>
+                        <div *ngFor="let pool of aquacultureDetail.pools" class="info-group">
+                            <p><strong>ID de la Piscina:</strong> {{ pool.ponds_id }}</p>
+                            <p><strong>Profundidad:</strong> {{ pool.ponds_depth }} m</p>
+                            <p><strong>Tipo de Piscina:</strong> {{ pool.ponds_pondType === 1 ? 'Estanque' : 'Piscina' }}</p>
+                            <p><strong>Tipo de Agua:</strong> {{ pool.ponds_waterType === 1 ? 'Dulce' : 'Salada' }}</p>
+                            <p><strong>Longitud:</strong> {{ pool.poollength }} m</p>
+                            <p><strong>Altura:</strong> {{ pool.poolheight }} m</p>
+                            <p><strong>Radio:</strong> {{ pool.pondradius ? pool.pondradius + ' m' : 'N/A' }}</p>
+                        </div>
+                    </div>
                 </mat-card-content>
             </mat-card>
 
