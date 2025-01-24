@@ -1,0 +1,109 @@
+.modal-container {
+    min-width: 400px;
+    max-width: 600px;
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+
+        h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            mat-icon {
+                color: #2196f3;
+                background: #e3f2fd;
+                padding: 8px;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .modal-content {
+        padding: 24px;
+        min-height: 200px;
+
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 32px;
+
+            p {
+                color: #666;
+                margin: 0;
+            }
+        }
+
+        .pool-details {
+            .info-grid {
+                display: grid;
+                gap: 16px;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+                .info-item {
+                    background: #f8fafc;
+                    border-radius: 8px;
+                    padding: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+
+                    .label {
+                        color: #64748b;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                    }
+
+                    .value {
+                        color: #333;
+                        font-size: 1rem;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 32px;
+            color: #ef4444;
+
+            mat-icon {
+                font-size: 48px;
+                width: 48px;
+                height: 48px;
+                margin-bottom: 16px;
+            }
+
+            p {
+                margin: 0;
+                font-size: 1rem;
+            }
+        }
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding: 16px 24px;
+        gap: 8px;
+
+        button {
+            min-width: 100px;
+        }
+    }
+}
+
+::ng-deep .mat-mdc-dialog-container {
+    padding: 0 !important;
+}

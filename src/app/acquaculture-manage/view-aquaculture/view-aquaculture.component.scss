@@ -226,3 +226,122 @@
     flex: 1;
   }
 }
+
+.pools-section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    .section-title {
+      margin: 0;
+    }
+  }
+
+  .pools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .pool-card {
+    background: white;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    mat-card-header {
+      padding: 16px 16px 0;
+
+      .mat-icon {
+        color: #2196f3;
+        background: #e3f2fd;
+        padding: 8px;
+        border-radius: 50%;
+      }
+
+      mat-card-title {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      mat-card-subtitle {
+        color: #666;
+      }
+    }
+
+    .pool-info-grid {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+        background: #f8fafc;
+        border-radius: 4px;
+
+        .label {
+          color: #666;
+          font-weight: 500;
+        }
+
+        .value {
+          color: #333;
+          font-weight: 400;
+        }
+      }
+    }
+
+    mat-card-actions {
+      padding: 8px 16px;
+      border-top: 1px solid #e5e7eb;
+
+      button {
+        mat-icon {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-top: 1rem;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
+}

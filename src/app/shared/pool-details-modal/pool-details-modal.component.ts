@@ -8,11 +8,12 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '../../types/response.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-pool-details-modal',
   standalone: true,
-  imports: [ CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule   ], 
+  imports: [ CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatDividerModule ],   
   templateUrl: './pool-details-modal.component.html',
   styleUrl: './pool-details-modal.component.scss'
 })

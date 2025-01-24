@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-create-pool',
@@ -21,6 +23,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   templateUrl: './create-pool.component.html',
   styleUrls: ['./create-pool.component.scss'],
@@ -31,6 +35,7 @@ export class CreatePoolComponent implements OnInit {
   PondType = PondType;
   showAdditionalFields: boolean = false; 
   aquacultureRut: string = '';
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -93,29 +98,36 @@ export class CreatePoolComponent implements OnInit {
   
   onSubmit(): void {
     if (this.pondForm.valid) {
+      this.loading = true;
       const payload = {
         ...this.pondForm.value,
-        aquacultureRut: this.aquacultureRut, 
         waterType: Number(this.pondForm.value.waterType),
         pondType: Number(this.pondForm.value.pondType),
+        aquacultureRut: this.aquacultureRut
       };
-  
-      console.log("Payload a enviar:", payload);
   
       this.poolService.createPool(payload).subscribe({
         next: () => {
-          this.toastr.success('Piscina creada con éxito');
+          this.toastr.success('Estructura creada con éxito');
+          this.loading = false;
           this.pondForm.reset();
           this.showAdditionalFields = false;
           this.router.navigate(['/system-admin/view-aquaculture']);
         },
         error: (err) => {
-          this.toastr.error('Error al crear la piscina: ' + err.message);
-        },
+          this.loading = false;
+          this.toastr.error('Error al crear la estructura: ' + err.message);
+        }
       });
     } else {
-      this.toastr.error('Por favor, completa todos los campos requeridos');
+      this.toastr.error('Por favor, completa todos los campos requeridos correctamente');
     }
+  }
+
+  cancelCreation(): void {
+    this.pondForm.reset();
+    this.showAdditionalFields = false;
+    this.router.navigate(['/system-admin/view-aquaculture']);
   }
   
 }

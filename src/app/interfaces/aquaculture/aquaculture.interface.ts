@@ -1,5 +1,3 @@
-
-
 export interface BaseUser {
   name: string;
   lastName?: string;
@@ -34,18 +32,29 @@ export interface AquacultureDetail {
   email: string;
   rut: string;
   phoneNumber: string;
-  centerAdminCultive: CenterAdmin | null;
-  ownerUsers: OwnerUser[];
-  pools: Pool[];
+  centerAdminCultive?: {
+    name: string;
+    rut: string;
+  };
+  ownerUsers?: Array<{
+    name: string;
+    email: string;
+    rut: string;
+  }>;
+  pools?: Array<{
+    ponds_id: string;
+    ponds_depth: number;
+    ponds_pondType: number;
+    ponds_waterType: number;
+    poollength?: number;
+    poolheight?: number;
+    pondradius?: number | null;
+  }>;
 }
 
 export interface AquacultureDetailResponse {
   message: string;
-  data: {
-    message: string;
-    data: AquacultureDetail;
-    success: boolean;
-  };
+  data: AquacultureDetail;
   success: boolean;
 }
 

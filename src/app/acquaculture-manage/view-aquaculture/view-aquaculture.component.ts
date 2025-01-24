@@ -8,14 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { AquacultureService } from '../../services/aquaculture.service';
-import { AquacultureDetail, AquacultureDetailResponse, Pool } from '../../interfaces/aquaculture/aquaculture.interface';
+import { AquacultureDetail, AquacultureDetailResponse } from '../../interfaces/aquaculture/aquaculture.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { PoolService } from '../../services/pool.service';
-import { ApiResponse } from '../../types/response.interface';
-import { PoolDetailsModalComponent } from '../../shared/pool-details-modal/pool-details-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { PoolDetailsModalComponent } from '../../shared/pool-details-modal/pool-details-modal.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-view-aquaculture',
@@ -28,7 +27,8 @@ import { MatDialog } from '@angular/material/dialog';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './view-aquaculture.component.html',
   styleUrls: ['./view-aquaculture.component.scss']
@@ -38,7 +38,7 @@ export class ViewAquacultureComponent implements OnInit {
   selectedRut: string = '';
   aquacultureDetail: AquacultureDetail | null = null;
   adminRut: string = '';
-  pools: Pool[] = [];
+  loading: boolean = false;
 
   constructor(
     private aquacultureService: AquacultureService,
@@ -53,87 +53,112 @@ export class ViewAquacultureComponent implements OnInit {
   }
 
   loadAquacultures() {
+    this.loading = true;
     this.aquacultureService.getAllAquacultures().subscribe({
       next: (response) => {
         if (response.success) {
           this.aquacultures = response.data.aquacultures;
+        } else {
+          this.toastr.error('Error al cargar las acuícolas');
         }
       },
       error: (error) => {
+        this.toastr.error('Error al cargar las acuícolas');
         console.error('Error loading aquacultures:', error);
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
-  }
-
-  loadAquacultureDetail() {
-    if (this.selectedRut) {
-      this.aquacultureService.getAquacultureByRut(this.selectedRut).subscribe({
-        next: (response) => {
-          if (response.success) {
-            console.log('Respuesta:', response);
-            this.aquacultureDetail = response.data.data;
-            this.pools = response.data.data.pools;
-            this.getPoolofAquarium(this.selectedRut);
-          } else {
-            console.error('Error en la respuesta:', response);
-          }
-        },
-        error: (error) => {
-          console.error('Error completo:', error);
-        }
-      });
-    } else {
-      console.error('RUT no proporcionado');
-    }
   }
 
   selectAquaculture(rut: string) {
     this.selectedRut = rut;
-    this.loadAquacultureDetail();
-  }
-
-  assignAdmin(): void {
-    if (this.adminRut && this.selectedRut) {
-      this.aquacultureService.assignAqAdmin(this.adminRut, this.selectedRut).subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.toastr.success('Administrador asignado exitosamente');
-            this.loadAquacultureDetail();
-          }
-        },
-        error: (error) => {
-          this.toastr.error('Error al asignar administrador');
-          console.error('Error asignando admin:', error);
+    this.loading = true;
+    
+    // Primero cargamos los detalles básicos de la acuícola
+    this.aquacultureService.getAquacultureByRut(rut).subscribe({
+      next: (response) => {
+        if (response.success) {
+          // Asignamos directamente los datos de la respuesta
+          this.aquacultureDetail = response.data;
+          
+          // Luego cargamos las piscinas asociadas
+          this.loadPools(rut);
+        } else {
+          this.toastr.error('Error al cargar los detalles de la acuícola');
         }
-      });
-    }
-  }
-
-  goToCreatePool(): void {
-    console.log('Rut de la acuícola:', this.selectedRut);
-    this.router.navigate(['/system-admin/pool-managment/create-pool'], { queryParams: { rut: this.selectedRut } });
-  }
-
-  getPoolofAquarium(aquariumRut: string): void {
-    this.poolService.getPoolofAquarium(aquariumRut).subscribe({
-      next: (response: ApiResponse<any>) => {
-        console.log(response);
-        this.aquacultureDetail!.pools = response.data.data;
+      },
+      error: (error) => {
+        this.toastr.error('Error al cargar los detalles de la acuícola');
+        console.error('Error loading aquaculture details:', error);
+        this.loading = false;
       }
     });
   }
 
-  openPoolDetails(id: number): void {
-    console.log("funciona");
-    this.dialog.open(PoolDetailsModalComponent, {
-      data: { id: id },
-      width: '500px',
-      height: '500px'
+  loadPools(aquacultureRut: string) {
+    this.poolService.getPoolofAquarium(aquacultureRut).subscribe({
+      next: (response) => {
+        if (response.success && this.aquacultureDetail) {
+          this.aquacultureDetail.pools = response.data;
+          console.log('Piscinas cargadas:', this.aquacultureDetail.pools);
+        } else {
+          this.toastr.error('Error al cargar las piscinas');
+        }
+      },
+      error: (error) => {
+        this.toastr.error('Error al cargar las piscinas');
+        console.error('Error loading pools:', error);
+      },
+      complete: () => {
+        this.loading = false;
+      }
     });
   }
 
-  openScientificAssignModal(id: number): void {
+  assignAdmin(): void {
+    if (!this.adminRut || !this.selectedRut) {
+      this.toastr.error('Por favor, ingrese un RUT de administrador válido');
+      return;
+    }
+
+    this.loading = true;
+    this.aquacultureService.assignAqAdmin(this.adminRut, this.selectedRut).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.toastr.success('Administrador asignado exitosamente');
+          this.selectAquaculture(this.selectedRut); // Recargamos los detalles
+        } else {
+          this.toastr.error('Error al asignar administrador');
+        }
+      },
+      error: (error) => {
+        this.toastr.error('Error al asignar administrador');
+        console.error('Error assigning admin:', error);
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 
+  goToCreatePool(): void {
+    if (!this.selectedRut) {
+      this.toastr.error('Por favor, seleccione una acuícola primero');
+      return;
+    }
+    this.router.navigate(['/system-admin/pool-managment/create-pool'], {
+      queryParams: { rut: this.selectedRut }
+    });
+  }
 
+  openPoolDetails(id: string): void {
+    this.dialog.open(PoolDetailsModalComponent, {
+      data: { id },
+      width: '500px',
+      height: 'auto',
+      maxHeight: '90vh'
+    });
+  }
 }
