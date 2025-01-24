@@ -1,0 +1,15 @@
+<div>
+    <h1>Detalles de la Estructura</h1>
+
+    <div *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading">
+        <p>Profundidad: {{ pool?.depth }}</p>
+        <p>Tipo de agua: {{ pool?.watertype }}</p>
+        <p>Radio: {{ pool?.radius }}</p>
+        <p>Longitud: {{ pool?.length }}</p>
+        <p>Altura: {{ pool?.height }}</p>
+      </div>
+</div>

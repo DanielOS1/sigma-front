@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
 import { AuthService } from './auth.service';
+import { PoolResponse } from '../interfaces/Pool/Pool.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,5 +27,13 @@ export class PoolService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<ApiResponse<any>>(`/system-admin/ponds/${aquariumRut}`, { headers });
+  }
+
+  getPoolbyId(id: string): Observable<ApiResponse<PoolResponse>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<ApiResponse<PoolResponse>>(`/system-admin/dataPond/${id}`, { headers });
   }
 }

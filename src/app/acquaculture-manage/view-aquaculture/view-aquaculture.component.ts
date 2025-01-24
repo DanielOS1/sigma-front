@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { PoolService } from '../../services/pool.service';
 import { ApiResponse } from '../../types/response.interface';
+import { PoolDetailsModalComponent } from '../../shared/pool-details-modal/pool-details-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -42,7 +44,8 @@ export class ViewAquacultureComponent implements OnInit {
     private aquacultureService: AquacultureService,
     private toastr: ToastrService,
     private router: Router,
-    private poolService: PoolService
+    private poolService: PoolService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -107,7 +110,8 @@ export class ViewAquacultureComponent implements OnInit {
   }
 
   goToCreatePool(): void {
-    this.router.navigate(['/system-admin/pool-managment/create-pool']);
+    console.log('Rut de la acuícola:', this.selectedRut);
+    this.router.navigate(['/system-admin/pool-managment/create-pool'], { queryParams: { rut: this.selectedRut } });
   }
 
   getPoolofAquarium(aquariumRut: string): void {
@@ -118,4 +122,18 @@ export class ViewAquacultureComponent implements OnInit {
       }
     });
   }
+
+  openPoolDetails(id: number): void {
+    console.log("funciona");
+    this.dialog.open(PoolDetailsModalComponent, {
+      data: { id: id },
+      width: '500px',
+      height: '500px'
+    });
+  }
+
+  openScientificAssignModal(id: number): void {
+  }
+
+
 }

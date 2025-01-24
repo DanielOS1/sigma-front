@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-pool',
@@ -28,16 +29,19 @@ export class CreatePoolComponent implements OnInit {
   pondForm: FormGroup;
   WaterType = WaterType;
   PondType = PondType;
-  showAdditionalFields: boolean = false; // Para mostrar campos adicionales dinámicamente
+  showAdditionalFields: boolean = false; 
+  aquacultureRut: string = '';
 
   constructor(
     private fb: FormBuilder,
     private poolService: PoolService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private router: Router
+    
   ) {
     this.pondForm = this.fb.group({
-      aquacultureRut: ['', Validators.required],
       waterType: [null, Validators.required],
       depth: [null, [Validators.required, Validators.min(1), Validators.max(15)]],
       pondType: [null, Validators.required],
@@ -48,9 +52,18 @@ export class CreatePoolComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Componente CreatePoolComponent inicializado');
-  }
 
+    this.route.queryParams.subscribe((params) => {
+      this.aquacultureRut = params['rut'] || '';
+      console.log('RUT recibido:', this.aquacultureRut);
+      if (!this.aquacultureRut) {
+        this.toastr.error('El RUT de la acuícola no fue proporcionado.');
+      } else {
+        console.log('RUT recibido:', this.aquacultureRut);
+      }
+    });
+  }
+  
   onPondTypeChange(): void {
     const pondType = Number(this.pondForm.get('pondType')?.value); 
   
@@ -82,17 +95,19 @@ export class CreatePoolComponent implements OnInit {
     if (this.pondForm.valid) {
       const payload = {
         ...this.pondForm.value,
-        waterType: Number(this.pondForm.value.waterType), // Convertir a número
-        pondType: Number(this.pondForm.value.pondType),   // Convertir a número
+        aquacultureRut: this.aquacultureRut, 
+        waterType: Number(this.pondForm.value.waterType),
+        pondType: Number(this.pondForm.value.pondType),
       };
-
-      console.log("Payload a enviar:", payload); // Log para verificar el payload
-
+  
+      console.log("Payload a enviar:", payload);
+  
       this.poolService.createPool(payload).subscribe({
         next: () => {
           this.toastr.success('Piscina creada con éxito');
           this.pondForm.reset();
           this.showAdditionalFields = false;
+          this.router.navigate(['/system-admin/view-aquaculture']);
         },
         error: (err) => {
           this.toastr.error('Error al crear la piscina: ' + err.message);
@@ -102,4 +117,5 @@ export class CreatePoolComponent implements OnInit {
       this.toastr.error('Por favor, completa todos los campos requeridos');
     }
   }
+  
 }

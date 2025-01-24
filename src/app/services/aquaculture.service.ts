@@ -71,5 +71,16 @@ export class AquacultureService {
     );
   }
 
+  assignScientist(rut: string, rutScientist: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<ApiResponse<any>>(
+      `/system-admin/assign-scientist-aq/${rutScientist}/${rut}`,
+      {},
+      { headers }
+    );
+  }
 
 }

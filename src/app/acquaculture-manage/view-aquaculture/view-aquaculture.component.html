@@ -111,7 +111,7 @@
                             <mat-icon>pool</mat-icon>
                             Piscinas
                         </h3>
-                        <div *ngFor="let pool of aquacultureDetail.pools" class="info-group">
+                        <div *ngFor="let pool of aquacultureDetail.pools" class="info-group" (click)="openPoolDetails(pool.ponds_id)">
                             <p><strong>ID de la Piscina:</strong> {{ pool.ponds_id }}</p>
                             <p><strong>Profundidad:</strong> {{ pool.ponds_depth }} m</p>
                             <p><strong>Tipo de Piscina:</strong> {{ pool.ponds_pondType === 1 ? 'Estanque' : 'Piscina' }}</p>
@@ -119,6 +119,7 @@
                             <p><strong>Longitud:</strong> {{ pool.poollength }} m</p>
                             <p><strong>Altura:</strong> {{ pool.poolheight }} m</p>
                             <p><strong>Radio:</strong> {{ pool.pondradius ? pool.pondradius + ' m' : 'N/A' }}</p>
+                            <button mat-raised-button color="primary" (click)="openScientificAssignModal(pool.ponds_id)"> Asignar Cientifico </button>
                         </div>
                     </div>
                 </mat-card-content>

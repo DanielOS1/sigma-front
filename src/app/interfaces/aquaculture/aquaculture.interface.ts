@@ -50,7 +50,7 @@ export interface AquacultureDetailResponse {
 }
 
 export interface Pool {
-  ponds_id: string;
+  ponds_id: number;
   ponds_depth: number;
   ponds_pondType: number;
   ponds_waterType: number;

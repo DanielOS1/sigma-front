@@ -18,4 +18,13 @@ export enum WaterType {
     FRESH = 1,
     SALT = 2,
 }
+
+export interface PoolResponse {
+    id: string;
+    depth: number;
+    waterType: WaterType;
+    radius: number;
+    length: number;
+    height: number;
+}
   
