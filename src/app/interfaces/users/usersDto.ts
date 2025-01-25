@@ -4,6 +4,7 @@ export interface BaseUser {
     lastName: string;
     email: string;
     role: number;
+    twoStepAuth: boolean;
     isActive: boolean;
     isDeleted: boolean;
 }

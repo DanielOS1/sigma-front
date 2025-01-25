@@ -144,4 +144,12 @@ export class AuthService {
   verify2FA(code: string, rut: string, deviceId: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`/auth/verify-2fa`, { code, rut, deviceId });
   }
+
+  disable2FA(password: string): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(`/auth/disable-two-step-auth`, { password }, { headers });
+  }
 }

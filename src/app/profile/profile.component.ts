@@ -16,6 +16,9 @@ import { UserRole } from '../interfaces/users/roles.enum';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { TwoFAStatusModalComponent } from '../shared/2fa-status-modal/2fa-status-modal.component';
+import { BaseUser } from '../interfaces/users/usersDto';
+import { PasswordConfirmDialogComponent } from '../shared/password-confirm-dialog/password-confirm-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -25,21 +28,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  user: User = {
-    rut: '',
-    name: '',
-    lastName: '',
-    email: '',
-    role: 0,
-    isActive: false,
-    isDeleted: false,
-  };
+  user!: BaseUser;
 
   audits: AuditLog[] = [];
   totalAudits: number = 0;
   pageSize: number = 10;
   currentPage: number = 0;
-
+  is2FAEnabled: boolean = false;
   constructor(
     private userService: UserService,
     private dialog: MatDialog,
@@ -94,27 +89,44 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  open2FASetup(): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Activar Doble Verificación',
-        message: '¿Estás seguro de que deseas activar la doble verificación?'
-      }
+  openSecuritySettings(): void {
+    const dialogRef = this.dialog.open(TwoFAStatusModalComponent, {
+      data: { is2FAEnabled: this.user.twoStepAuth },
+      width: '100%',
+      maxWidth: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Aquí puedes llamar a tu servicio para activar la doble verificación
-        this.authService.request2FASetup().subscribe({
-          next: () => {
-            console.log('Doble verificación activada con éxito');
-            this.toastr.success('Doble verificación activada con éxito');
-          },
-          error: (error) => {
-            console.error('Error al activar la doble verificación:', error);
-            this.toastr.error('Error al activar la doble verificación');
-          }
-        });
+        if (this.user.twoStepAuth) {
+          // Abre un nuevo diálogo para pedir la contraseña
+          const passwordDialog = this.dialog.open(PasswordConfirmDialogComponent);
+          passwordDialog.afterClosed().subscribe(password => {
+            if (password) {
+              this.authService.disable2FA(password).subscribe({
+                next: () => {
+                  this.user.twoStepAuth = false;
+                  this.toastr.success('Verificación en dos pasos desactivada');
+                },
+                error: (error) => {
+                  console.error('Error al desactivar 2FA:', error);
+                  this.toastr.error('Error al desactivar la verificación en dos pasos');
+                }
+              });
+            }
+          });
+        } else {
+          this.authService.request2FASetup().subscribe({
+            next: () => {
+              this.user.twoStepAuth = true;
+              this.toastr.success('Verificación en dos pasos activada');
+            },
+            error: (error) => {
+              console.error('Error al activar 2FA:', error);
+              this.toastr.error('Error al activar la verificación en dos pasos');
+            }
+          });
+        }
       }
     });
   }

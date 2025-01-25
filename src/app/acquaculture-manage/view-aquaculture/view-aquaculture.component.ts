@@ -126,16 +126,19 @@ export class ViewAquacultureComponent implements OnInit {
   }
 
   loadScientists(aquacultureRut: string) {
-    console.log('Loading scientists for aquaculture:', aquacultureRut);
+    // Reiniciamos el array antes de la nueva carga
+    this.scientists = [];
+    
     this.aquacultureService.getAqScientists(aquacultureRut).subscribe({
       next: (response) => {
         if (response.success) {
           this.scientists = response.data.scientists;
         } else {
-          this.toastr.error('Error al cargar los científicos');
+
         }
       },
       error: (error) => {
+    
         console.error('Error loading scientists:', error);
       },
       complete: () => {

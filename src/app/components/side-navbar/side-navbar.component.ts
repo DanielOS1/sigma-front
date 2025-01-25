@@ -40,6 +40,7 @@ export class AdminSystemSideNavComponent implements OnInit {
     lastName: '',
     email: '',
     role: 0,
+    twoStepAuth: false,
     isActive: false,
     isDeleted: false,
   };
