@@ -1,7 +1,7 @@
 <div class="modal-container">
     <div class="modal-header">
         <h2>
-            <mat-icon>{{ pool?.ponds_pondType === 1 ? 'waves' : 'pool' }}</mat-icon>
+            <mat-icon>{{ pool?.pondtype === 1 ? 'waves' : 'pool' }}</mat-icon>
             Detalles de la Estructura
         </h2>
         <button mat-icon-button (click)="close()">
@@ -20,37 +20,44 @@
         <div *ngIf="!loading && pool" class="pool-details">
             <div class="info-grid">
                 <div class="info-item">
-                    <span class="label">Tipo de Estructura</span>
-                    <span class="value">{{ pool.ponds_pondType === 1 ? 'Estanque' : 'Piscina' }}</span>
+                    <span class="label">ID</span>
+                    <span class="value">{{ pool.id }}</span>
                 </div>
                 
                 <div class="info-item">
-                    <span class="label">Tipo de Agua</span>
-                    <span class="value">{{ pool.ponds_waterType === 1 ? 'Dulce' : 'Salada' }}</span>
+                    <span class="label">Profundidad</span>
+                    <span class="value">{{ pool.depth }} metros</span>
                 </div>
 
                 <div class="info-item">
-                    <span class="label">Profundidad</span>
-                    <span class="value">{{ pool.ponds_depth }} metros</span>
+                    <span class="label">Tipo de Agua</span>
+                    <span class="value">{{ pool.watertype === '1' ? 'Dulce' : 'Salada' }}</span>
                 </div>
 
-                <ng-container *ngIf="pool.ponds_pondType === 1">
-                    <div class="info-item" *ngIf="pool.pondradius">
-                        <span class="label">Radio</span>
-                        <span class="value">{{ pool.pondradius }} metros</span>
-                    </div>
-                </ng-container>
+                <div class="info-item" *ngIf="pool.radius">
+                    <span class="label">Radio</span>
+                    <span class="value">{{ pool.radius }} metros</span>
+                </div>
 
-                <ng-container *ngIf="pool.ponds_pondType === 2">
-                    <div class="info-item" *ngIf="pool.poollength">
-                        <span class="label">Longitud</span>
-                        <span class="value">{{ pool.poollength }} metros</span>
-                    </div>
-                    <div class="info-item" *ngIf="pool.poolheight">
-                        <span class="label">Altura</span>
-                        <span class="value">{{ pool.poolheight }} metros</span>
-                    </div>
-                </ng-container>
+                <div class="info-item" *ngIf="pool.length">
+                    <span class="label">Longitud</span>
+                    <span class="value">{{ pool.length }} metros</span>
+                </div>
+
+                <div class="info-item" *ngIf="pool.height">
+                    <span class="label">Altura</span>
+                    <span class="value">{{ pool.height }} metros</span>
+                </div>
+
+                <div class="info-item" *ngIf="pool.ownername">
+                    <span class="label">Nombre del Propietario</span>
+                    <span class="value">{{ pool.ownername }}</span>
+                </div>
+
+                <div class="info-item" *ngIf="pool.ownerrut">
+                    <span class="label">RUT del Propietario</span>
+                    <span class="value">{{ pool.ownerrut }}</span>
+                </div>
             </div>
         </div>
 

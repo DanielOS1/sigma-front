@@ -1,14 +1,14 @@
-<div class="container mx-auto p-6">
+<div class="container mx-auto p-4 md:p-6">
     <h1 class="text-3xl font-bold mb-6">Gestión de Acuícolas</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         <!-- Lista de Acuícolas -->
         <div class="md:col-span-1">
             <mat-card class="aquaculture-list-card">
                 <mat-card-header>
                     <mat-card-title>Acuícolas</mat-card-title>
                 </mat-card-header>
-                <mat-card-content>
+                <mat-card-content class="overflow-auto max-h-[calc(100vh-200px)]">
                     <mat-nav-list>
                         <a mat-list-item *ngFor="let aquaculture of aquacultures" 
                            (click)="selectAquaculture(aquaculture.rut)"
@@ -25,161 +25,207 @@
         <!-- Detalles de la Acuícola -->
         <div class="md:col-span-2">
             <mat-card *ngIf="aquacultureDetail" class="detail-card">
-                <mat-card-header>
-                    <div class="header-content">
-                        <mat-icon mat-card-avatar>business</mat-icon>
-                        <div class="header-text">
-                            <mat-card-title>{{aquacultureDetail.name}}</mat-card-title>
-                            <mat-card-subtitle>{{aquacultureDetail.rut}}</mat-card-subtitle>
-                        </div>
+                <!-- Información Básica -->
+                <section class="info-section">
+                    <div class="section-header">
+                        <h2>
+                            <mat-icon>business</mat-icon>
+                            Información Básica
+                        </h2>
                     </div>
-                    <button mat-raised-button color="primary" (click)="goToCreatePool()">
-                        <mat-icon>add</mat-icon>
-                        Agregar Estructura
-                    </button>
-                </mat-card-header>
-
-                <mat-card-content class="p-6">
-                    <!-- Información Básica -->
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="info-group">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Nombre</label>
+                            <p>{{aquacultureDetail.name}}</p>
+                        </div>
+                        <div class="info-item">
+                            <label>RUT</label>
+                            <p>{{aquacultureDetail.rut}}</p>
+                        </div>
+                        <div class="info-item">
                             <label>Email</label>
                             <p>{{aquacultureDetail.email}}</p>
                         </div>
-                        <div class="info-group">
+                        <div class="info-item">
                             <label>Teléfono</label>
                             <p>{{aquacultureDetail.phoneNumber}}</p>
                         </div>
                     </div>
+                </section>
 
-                    <!-- Sección de Administrador -->
-                    <div class="section-card mb-6">
-                        <h3 class="section-title">
-                            <mat-icon>admin_panel_settings</mat-icon>
-                            Administrador del Centro
-                        </h3>
-                        
-                        <div *ngIf="aquacultureDetail.centerAdminCultive" class="current-admin">
-                            <div class="info-group">
-                                <label>Nombre</label>
-                                <p>{{aquacultureDetail.centerAdminCultive.name}}</p>
-                            </div>
-                            <div class="info-group">
-                                <label>RUT</label>
-                                <p>{{aquacultureDetail.centerAdminCultive.rut}}</p>
-                            </div>
-                        </div>
+                <mat-divider></mat-divider>
 
-                        <div class="assign-admin-form">
-                            <mat-form-field appearance="outline">
-                                <mat-label>RUT del Administrador</mat-label>
-                                <input matInput [(ngModel)]="adminRut" placeholder="Ingrese RUT">
-                                <mat-icon matSuffix>assignment_ind</mat-icon>
-                            </mat-form-field>
-                            
-                            <button mat-raised-button color="primary" 
-                                    (click)="assignAdmin()" 
-                                    [disabled]="!adminRut">
+                <!-- Personal Asignado -->
+                <section class="personnel-section">
+                    <div class="section-header">
+                        <h2>
+                            <mat-icon>people</mat-icon>
+                            Personal Asignado
+                        </h2>
+                    </div>
+
+                    <!-- Administrador -->
+                    <div class="personnel-card">
+                        <div class="card-header">
+                            <h3>
+                                <mat-icon>admin_panel_settings</mat-icon>
+                                Administrador del Centro
+                            </h3>
+                            <button mat-raised-button color="primary" *ngIf="!aquacultureDetail.centerAdminCultive">
                                 <mat-icon>person_add</mat-icon>
                                 Asignar Administrador
                             </button>
                         </div>
-                    </div>
-
-                    <!-- Sección de Dueños -->
-                    <div class="section-card mb-6" *ngIf="aquacultureDetail.ownerUsers?.length">
-                        <h3 class="section-title">
-                            <mat-icon>group</mat-icon>
-                            Dueños
-                        </h3>
-                        <div class="owners-grid">
-                            <mat-card *ngFor="let owner of aquacultureDetail.ownerUsers" class="owner-card">
-                                <div class="owner-info">
-                                    <mat-icon class="owner-icon">person</mat-icon>
-                                    <div>
-                                        <h4>{{owner.name}}</h4>
-                                        <p>{{owner.email}}</p>
-                                        <p class="rut">{{owner.rut}}</p>
-                                    </div>
+                        
+                        <div class="card-content" *ngIf="aquacultureDetail.centerAdminCultive">
+                            <div class="person-info">
+                                <mat-icon>person</mat-icon>
+                                <div>
+                                    <h4>{{aquacultureDetail.centerAdminCultive.name}}</h4>
+                                    <p>{{aquacultureDetail.centerAdminCultive.rut}}</p>
                                 </div>
-                            </mat-card>
+                                <button mat-icon-button color="warn" (click)="removeAdmin()">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Sección de Piscinas -->
-                    <div class="section-card pools-section" *ngIf="aquacultureDetail.pools?.length">
-                        <div class="section-header">
-                            <h3 class="section-title">
-                                <mat-icon>pool</mat-icon>
-                                Estructuras de Cultivo
+                    <!-- Dueño -->
+                    <div class="personnel-card">
+                        <div class="card-header">
+                            <h3>
+                                <mat-icon>business_center</mat-icon>
+                                Dueño
                             </h3>
-                            <button mat-raised-button color="primary" (click)="goToCreatePool()">
-                                <mat-icon>add</mat-icon>
-                                Nueva Estructura
+                            <button mat-raised-button color="primary" *ngIf="!aquacultureDetail.ownerUsers?.length">
+                                <mat-icon>person_add</mat-icon>
+                                Asignar Dueño
                             </button>
                         </div>
-
-                        <div class="pools-grid">
-                            <mat-card *ngFor="let pool of aquacultureDetail.pools" class="pool-card">
-                                <mat-card-header>
-                                    <mat-icon mat-card-avatar>
-                                        {{ pool.ponds_pondType === 1 ? 'waves' : 'pool' }}
-                                    </mat-icon>
-                                    <mat-card-title>
-                                        {{ pool.ponds_pondType === 1 ? 'Estanque' : 'Piscina' }}
-                                    </mat-card-title>
-                                    <mat-card-subtitle>ID: {{ pool.ponds_id }}</mat-card-subtitle>
-                                </mat-card-header>
-
-                                <mat-card-content>
-                                    <div class="pool-info-grid">
-                                        <div class="info-item">
-                                            <span class="label">Profundidad:</span>
-                                            <span class="value">{{ pool.ponds_depth }} metros</span>
-                                        </div>
-                                        <div class="info-item">
-                                            <span class="label">Tipo de Agua:</span>
-                                            <span class="value">{{ pool.ponds_waterType === 1 ? 'Dulce' : 'Salada' }}</span>
-                                        </div>
-                                        <ng-container *ngIf="pool.ponds_pondType === 1">
-                                            <div class="info-item" *ngIf="pool.pondradius">
-                                                <span class="label">Radio:</span>
-                                                <span class="value">{{ pool.pondradius }} metros</span>
-                                            </div>
-                                        </ng-container>
-                                        <ng-container *ngIf="pool.ponds_pondType === 2">
-                                            <div class="info-item" *ngIf="pool.poollength">
-                                                <span class="label">Longitud:</span>
-                                                <span class="value">{{ pool.poollength }} metros</span>
-                                            </div>
-                                            <div class="info-item" *ngIf="pool.poolheight">
-                                                <span class="label">Altura:</span>
-                                                <span class="value">{{ pool.poolheight }} metros</span>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </mat-card-content>
-
-                                <mat-card-actions align="end">
-                                    <button mat-button color="primary" (click)="openPoolDetails(pool.ponds_id)">
-                                        <mat-icon>visibility</mat-icon>
-                                        Ver Detalles
-                                    </button>
-                                </mat-card-actions>
-                            </mat-card>
+                        
+                        <div class="card-content" *ngIf="aquacultureDetail.ownerUsers?.length">
+                            <div class="person-info" *ngFor="let owner of aquacultureDetail.ownerUsers">
+                                <mat-icon>person</mat-icon>
+                                <div>
+                                    <h4>{{owner.name}}</h4>
+                                    <p>{{owner.email}}</p>
+                                    <p>{{owner.rut}}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Mensaje cuando no hay estructuras -->
-                    <div *ngIf="!aquacultureDetail.pools?.length" class="empty-state">
-                        <mat-icon>pool</mat-icon>
-                        <p>No hay estructuras registradas</p>
+                    <!-- Científicos -->
+                    <div class="personnel-card">
+                        <div class="card-header">
+                            <h3>
+                                <mat-icon>science</mat-icon>
+                                Científicos Asignados
+                            </h3>
+                            <button mat-raised-button color="primary" (click)="openAddScientistModal()">
+                                <mat-icon>person_add</mat-icon>
+                                Asignar Científico
+                            </button>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="scientists-list" *ngIf="scientists && scientists.length > 0">
+                                <div class="person-info" *ngFor="let scientist of scientists">
+                                    <mat-icon>science</mat-icon>
+                                    <div class="scientist-details">
+                                        <h4>RUT: {{scientist.scientistRut}}</h4>
+                                        <p>Asignado por: {{scientist.assignedBy}}</p>
+                                        <p class="date">Fecha: {{scientist.assignedAt | date:'dd/MM/yyyy HH:mm'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="empty-state" *ngIf="!scientists?.length">
+                                <mat-icon>science_off</mat-icon>
+                                <p>No hay científicos asignados</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <mat-divider></mat-divider>
+
+                <!-- Sección de Estructuras -->
+                <section class="pools-section">
+                    <div class="section-header">
+                        <h2>
+                            <mat-icon>pool</mat-icon>
+                            Estructuras de Cultivo
+                        </h2>
                         <button mat-raised-button color="primary" (click)="goToCreatePool()">
                             <mat-icon>add</mat-icon>
-                            Agregar Primera Estructura
+                            <span class="hidden sm:inline">Nueva Estructura</span>
                         </button>
                     </div>
-                </mat-card-content>
+
+                    <div class="pools-grid">
+                        <mat-card *ngFor="let pool of aquacultureDetail.pools" class="pool-card">
+                            <mat-card-header>
+                                <mat-icon mat-card-avatar>
+                                    {{ pool.ponds_pondType === 1 ? 'waves' : 'pool' }}
+                                </mat-icon>
+                                <mat-card-title>
+                                    {{ pool.ponds_pondType === 1 ? 'Estanque' : 'Piscina' }}
+                                </mat-card-title>
+                                <mat-card-subtitle>ID: {{ pool.ponds_id }}</mat-card-subtitle>
+                            </mat-card-header>
+
+                            <mat-card-content>
+                                <div class="pool-info-grid">
+                                    <div class="info-item">
+                                        <span class="label">Profundidad:</span>
+                                        <span class="value">{{ pool.ponds_depth }} metros</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">Tipo de Agua:</span>
+                                        <span class="value">{{ pool.ponds_waterType === 1 ? 'Dulce' : 'Salada' }}</span>
+                                    </div>
+                                    <ng-container *ngIf="pool.ponds_pondType === 1">
+                                        <div class="info-item" *ngIf="pool.pondradius">
+                                            <span class="label">Radio:</span>
+                                            <span class="value">{{ pool.pondradius }} metros</span>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="pool.ponds_pondType === 2">
+                                        <div class="info-item" *ngIf="pool.poollength">
+                                            <span class="label">Longitud:</span>
+                                            <span class="value">{{ pool.poollength }} metros</span>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="pool.ponds_pondType === 2">
+                                        <div class="info-item" *ngIf="pool.poolheight">
+                                            <span class="label">Altura:</span>
+                                            <span class="value">{{ pool.poolheight }} metros</span>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </mat-card-content>
+
+                            <mat-card-actions align="end">
+                                <button mat-button color="primary" (click)="openPoolDetails(pool.ponds_id)">
+                                    <mat-icon>visibility</mat-icon>
+                                    Ver Detalles
+                                </button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </section>
+
+                <!-- Mensaje cuando no hay estructuras -->
+                <div *ngIf="!aquacultureDetail.pools?.length" class="empty-state">
+                    <mat-icon>pool</mat-icon>
+                    <p>No hay estructuras registradas</p>
+                    <button mat-raised-button color="primary" (click)="goToCreatePool()">
+                        <mat-icon>add</mat-icon>
+                        Agregar Primera Estructura
+                    </button>
+                </div>
             </mat-card>
 
             <!-- Estado de carga -->

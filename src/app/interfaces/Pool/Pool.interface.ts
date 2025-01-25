@@ -22,7 +22,7 @@ export enum WaterType {
 export interface PoolResponse {
     id: string;
     depth: number;
-    waterType: WaterType;
+    waterType: string;
     radius: number;
     length: number;
     height: number;

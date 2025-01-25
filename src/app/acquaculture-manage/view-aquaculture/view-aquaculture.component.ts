@@ -15,6 +15,14 @@ import { PoolService } from '../../services/pool.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PoolDetailsModalComponent } from '../../shared/pool-details-modal/pool-details-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Scientist } from '../../interfaces/users/usersDto';
+import { AddScientistModalComponent } from '../../shared/add-scientist-modal/add-scientist-modal.component';
+
+interface ScientistResponse {
+  scientistRut: string;
+  assignedBy: string;
+  assignedAt: string;
+}
 
 @Component({
   selector: 'app-view-aquaculture',
@@ -39,6 +47,7 @@ export class ViewAquacultureComponent implements OnInit {
   aquacultureDetail: AquacultureDetail | null = null;
   adminRut: string = '';
   loading: boolean = false;
+  scientists: ScientistResponse[] = [];
 
   constructor(
     private aquacultureService: AquacultureService,
@@ -76,15 +85,14 @@ export class ViewAquacultureComponent implements OnInit {
     this.selectedRut = rut;
     this.loading = true;
     
-    // Primero cargamos los detalles básicos de la acuícola
+    // Cargamos los detalles básicos
     this.aquacultureService.getAquacultureByRut(rut).subscribe({
       next: (response) => {
         if (response.success) {
-          // Asignamos directamente los datos de la respuesta
           this.aquacultureDetail = response.data;
-          
-          // Luego cargamos las piscinas asociadas
+          // Cargamos las piscinas y científicos
           this.loadPools(rut);
+          this.loadScientists(rut);
         } else {
           this.toastr.error('Error al cargar los detalles de la acuícola');
         }
@@ -117,6 +125,25 @@ export class ViewAquacultureComponent implements OnInit {
     });
   }
 
+  loadScientists(aquacultureRut: string) {
+    console.log('Loading scientists for aquaculture:', aquacultureRut);
+    this.aquacultureService.getAqScientists(aquacultureRut).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.scientists = response.data.scientists;
+        } else {
+          this.toastr.error('Error al cargar los científicos');
+        }
+      },
+      error: (error) => {
+        console.error('Error loading scientists:', error);
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
   assignAdmin(): void {
     if (!this.adminRut || !this.selectedRut) {
       this.toastr.error('Por favor, ingrese un RUT de administrador válido');
@@ -125,7 +152,7 @@ export class ViewAquacultureComponent implements OnInit {
 
     this.loading = true;
     this.aquacultureService.assignAqAdmin(this.adminRut, this.selectedRut).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         if (response.success) {
           this.toastr.success('Administrador asignado exitosamente');
           this.selectAquaculture(this.selectedRut); // Recargamos los detalles
@@ -133,7 +160,7 @@ export class ViewAquacultureComponent implements OnInit {
           this.toastr.error('Error al asignar administrador');
         }
       },
-      error: (error) => {
+      error: (error: any) => {
         this.toastr.error('Error al asignar administrador');
         console.error('Error assigning admin:', error);
       },
@@ -159,6 +186,34 @@ export class ViewAquacultureComponent implements OnInit {
       width: '500px',
       height: 'auto',
       maxHeight: '90vh'
+    });
+  }
+
+  removeAdmin(): void {
+    this.aquacultureService.removeAquacultureAdmin(this.selectedRut).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.toastr.success('Administrador eliminado exitosamente');
+        }
+      }
+    });
+  }
+
+  openAddScientistModal(): void {
+    const dialogRef = this.dialog.open(AddScientistModalComponent, {
+      data: { aquacultureRut: this.selectedRut }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.aquacultureService.assignScientist(this.selectedRut, result).subscribe({
+          next: (response: any) => {
+            this.toastr.success('Científico asignado exitosamente');
+          }
+        });
+      } else {
+        this.toastr.error('No se encontró el científico');
+      }
     });
   }
 }

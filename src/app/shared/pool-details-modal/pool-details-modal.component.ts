@@ -10,6 +10,17 @@ import { ApiResponse } from '../../types/response.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 
+interface Pool {
+  id: string;
+  depth: number;
+  watertype: string;
+  radius: number | null;
+  length: number | null;
+  height: number | null;
+  ownername: string | null;
+  ownerrut: string | null;
+}
+
 @Component({
   selector: 'app-pool-details-modal',
   standalone: true,

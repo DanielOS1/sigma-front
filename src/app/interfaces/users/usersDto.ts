@@ -16,8 +16,13 @@ export interface CenterAdmin extends BaseUser {
     aquacultureRut: string;
 }
 
-export type User = BaseUser | OwnerUser;
+export interface Scientist extends BaseUser {
+    aquacultureRut: string;
+}
+
+export type User = BaseUser | OwnerUser | Scientist;
 
 export function isOwnerUser(user: User): user is OwnerUser {
     return user.role === 1; // Asumiendo que 1 es UserRole.OWNER
 }
+

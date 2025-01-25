@@ -83,4 +83,22 @@ export class AquacultureService {
     );
   }
 
+  removeAquacultureAdmin(rut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.patch<ApiResponse<any>>(`/system-admin/removeCenterAdmin/${rut}`, {}, { headers });
+  }
+
+  getAqScientists(rut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<ApiResponse<any>>(`/center-admin/get-aq-scientists/${rut}`, { headers });
+  }
+
+  
+
 }

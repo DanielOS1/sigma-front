@@ -2,6 +2,10 @@
     <div class="header-section">
         <h1 class="text-3xl font-bold">Gestión de Acuícolas</h1>
         <div class="button-container">
+            <button mat-raised-button color="primary" [routerLink]="['/system-admin/view-aquaculture']">
+                <mat-icon>visibility</mat-icon>
+                Ver Detalles de Acuícolas
+            </button>
             <button mat-raised-button color="primary" [routerLink]="['/system-admin/create-aquaculture']">
                 <mat-icon>add</mat-icon>
                 Nueva Acuicultura
