@@ -99,6 +99,12 @@ export class AquacultureService {
     return this.http.get<ApiResponse<any>>(`/center-admin/get-aq-scientists/${rut}`, { headers });
   }
 
-  
+  removeScientist(aquacultureRut: string, scientistRut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.delete<ApiResponse<any>>(`/center-admin/remove-scientist-aq/${aquacultureRut}/${scientistRut}`, { headers });
+  }
 
 }

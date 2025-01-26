@@ -36,4 +36,45 @@ export class PoolService {
     });
     return this.http.get<ApiResponse<PoolResponse>>(`/system-admin/dataPond/${id}`, { headers });
   }
+
+  assignScientistToPool(poolId: string, scientistRut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<ApiResponse<any>>(`/center-admin/assign-scientist-pond/${scientistRut}/${poolId}`, {}, { headers });
+  }
+
+
+  removeScientistFromPool(poolId: string, scientistRut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<ApiResponse<any>>(`/center-admin/remove-assigned-scientist-pond/${scientistRut}/${poolId}`, {}, { headers });
+  }
+
+  assignOwnerToPool(poolId: string, ownerRut: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<ApiResponse<any>>(`/center-admin/assign-owner-pond`, {poolId, ownerRut}, { headers });
+  }
+
+  removeOwnerFromPool(poolId: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.patch<ApiResponse<any>>(`/center-admin/unassign-owner-pond/${poolId}`, {}, { headers });
+  }
+
+  getPoolScientists(poolId: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<ApiResponse<any>>(`/center-admin/get-pond-scientists/${poolId}`, { headers });
+  }
 }

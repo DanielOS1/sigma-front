@@ -17,6 +17,8 @@ import { PoolDetailsModalComponent } from '../../shared/pool-details-modal/pool-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Scientist } from '../../interfaces/users/usersDto';
 import { AddScientistModalComponent } from '../../shared/add-scientist-modal/add-scientist-modal.component';
+import { AssignPersonnelModalComponent } from '../../shared/assign-personnel-modal/assign-personnel-modal.component';
+import { PoolTypePipe } from '../../pipes/pool-type.pipe';
 
 interface ScientistResponse {
   scientistRut: string;
@@ -36,7 +38,8 @@ interface ScientistResponse {
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    PoolTypePipe
   ],
   templateUrl: './view-aquaculture.component.html',
   styleUrls: ['./view-aquaculture.component.scss']
@@ -116,7 +119,6 @@ export class ViewAquacultureComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.toastr.error('Error al cargar las piscinas');
         console.error('Error loading pools:', error);
       },
       complete: () => {
@@ -203,20 +205,71 @@ export class ViewAquacultureComponent implements OnInit {
   }
 
   openAddScientistModal(): void {
-    const dialogRef = this.dialog.open(AddScientistModalComponent, {
-      data: { aquacultureRut: this.selectedRut }
+    const dialogRef = this.dialog.open(AssignPersonnelModalComponent, {
+      data: { 
+        type: 'scientist',
+        aquacultureRut: this.selectedRut
+      }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.aquacultureService.assignScientist(this.selectedRut, result).subscribe({
-          next: (response: any) => {
-            this.toastr.success('Científico asignado exitosamente');
+    dialogRef.afterClosed().subscribe(scientistRut => {
+      if (scientistRut) {
+        this.aquacultureService.assignScientist(this.selectedRut, scientistRut).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.loadScientists(this.selectedRut);
+              this.toastr.success('Científico asignado exitosamente');
+            }
+          },
+          error: (error) => {
+            console.error('Error assigning scientist:', error);
+            this.toastr.error('Error al asignar científico');
           }
         });
-      } else {
-        this.toastr.error('No se encontró el científico');
       }
     });
   }
+
+  removeScientist(scientistRut: string): void {
+    this.aquacultureService.removeScientist(this.selectedRut, scientistRut).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.loadScientists(this.selectedRut);
+          this.toastr.success('Científico removido exitosamente');
+        }
+      },
+      error: (error) => {
+        console.error('Error removing scientist:', error);
+        this.toastr.error('Error al remover científico');
+      }
+    });
+  }
+
+  openAddAdminModal(): void {
+    const dialogRef = this.dialog.open(AssignPersonnelModalComponent, {
+      data: { 
+        type: 'admin',
+        aquacultureRut: this.selectedRut
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(adminRut => {
+      if (adminRut) {
+        this.aquacultureService.assignAqAdmin(adminRut, this.selectedRut).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.selectAquaculture(this.selectedRut); // Recargar detalles
+              this.toastr.success('Administrador asignado exitosamente');
+            }
+          },
+          error: (error) => {
+            console.error('Error assigning admin:', error);
+            this.toastr.error('Error al asignar administrador');
+          }
+        });
+      }
+    });
+  }
+
+
 }

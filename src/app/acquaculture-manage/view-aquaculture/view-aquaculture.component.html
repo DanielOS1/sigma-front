@@ -1,7 +1,7 @@
 <div class="container mx-auto p-4 md:p-6">
     <h1 class="text-3xl font-bold mb-6">Gestión de Acuícolas</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
         <!-- Lista de Acuícolas -->
         <div class="md:col-span-1">
             <mat-card class="aquaculture-list-card">
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Detalles de la Acuícola -->
-        <div class="md:col-span-2">
+        <div class="md:col-span-3">
             <mat-card *ngIf="aquacultureDetail" class="detail-card">
                 <!-- Información Básica -->
                 <section class="info-section">
@@ -71,7 +71,9 @@
                                 <mat-icon>admin_panel_settings</mat-icon>
                                 Administrador del Centro
                             </h3>
-                            <button mat-raised-button color="primary" *ngIf="!aquacultureDetail.centerAdminCultive">
+                            <button mat-raised-button color="primary" 
+                                    *ngIf="!aquacultureDetail.centerAdminCultive"
+                                    (click)="openAddAdminModal()">
                                 <mat-icon>person_add</mat-icon>
                                 Asignar Administrador
                             </button>
@@ -98,10 +100,7 @@
                                 <mat-icon>business_center</mat-icon>
                                 Dueño
                             </h3>
-                            <button mat-raised-button color="primary" *ngIf="!aquacultureDetail.ownerUsers?.length">
-                                <mat-icon>person_add</mat-icon>
-                                Asignar Dueño
-                            </button>
+
                         </div>
                         
                         <div class="card-content" *ngIf="aquacultureDetail.ownerUsers?.length">
@@ -131,14 +130,18 @@
                         
                         <div class="card-content">
                             <div class="scientists-list" *ngIf="scientists && scientists.length > 0">
-                                <div class="person-info" *ngFor="let scientist of scientists">
-                                    <mat-icon>science</mat-icon>
-                                    <div class="scientist-details">
-                                        <h4>RUT: {{scientist.scientistRut}}</h4>
-                                        <p>Asignado por: {{scientist.assignedBy}}</p>
-                                        <p class="date">Fecha: {{scientist.assignedAt | date:'dd/MM/yyyy HH:mm'}}</p>
-                                    </div>
-                                </div>
+                                <mat-card class="scientist-card" *ngFor="let scientist of scientists">
+                                    <mat-card-content>
+                                        <div class="person-info">
+                                            <mat-icon>science</mat-icon>
+                                            <div class="scientist-details">
+                                                <h4>RUT: {{scientist.scientistRut}}</h4>
+                                                <p>Asignado por: {{scientist.assignedBy}}</p>
+                                                <p class="date">Fecha: {{scientist.assignedAt | date:'dd/MM/yyyy HH:mm'}}</p>
+                                            </div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
                             </div>
 
                             <div class="empty-state" *ngIf="!scientists?.length">
@@ -171,7 +174,7 @@
                                     {{ pool.ponds_pondType === 1 ? 'waves' : 'pool' }}
                                 </mat-icon>
                                 <mat-card-title>
-                                    {{ pool.ponds_pondType === 1 ? 'Estanque' : 'Piscina' }}
+                                    {{ pool.ponds_pondType | poolType }} #{{pool.ponds_id.slice(0,8)}}
                                 </mat-card-title>
                                 <mat-card-subtitle>ID: {{ pool.ponds_id }}</mat-card-subtitle>
                             </mat-card-header>
@@ -229,10 +232,6 @@
             </mat-card>
 
             <!-- Estado de carga -->
-            <div *ngIf="loading" class="loading-state">
-                <mat-spinner></mat-spinner>
-                <p>Cargando información...</p>
-            </div>
 
             <!-- Mensaje cuando no hay acuícola seleccionada -->
             <mat-card *ngIf="!aquacultureDetail && !loading" class="empty-state-card">

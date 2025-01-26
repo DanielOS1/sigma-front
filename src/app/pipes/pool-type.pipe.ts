@@ -1,17 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { PondType } from '../interfaces/Pool/Pool.interface';
 
 @Pipe({
   name: 'poolType',
   standalone: true
 })
 export class PoolTypePipe implements PipeTransform {
-
-  transform(value: unknown, ...args: unknown[]): unknown {
-    if(value === PondType.POND) {
-      return 'Pond';
-    }
-    return 'Pool';
+  transform(value: string | number): string {
+    // "1" es estanque (tiene radio)
+    // "2" es piscina (tiene largo y alto)
+    return value === 1 || value === "1" ? 'Estanque' : 'Piscina';
   }
-
 }
