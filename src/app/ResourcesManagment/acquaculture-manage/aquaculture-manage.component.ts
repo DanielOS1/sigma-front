@@ -4,8 +4,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Router } from '@angular/router';
-import { AquacultureService } from '../services/aquaculture.service';
-import { Aquaculture } from '../interfaces/aquaculture/aquaculture.interface';
+import { AquacultureService } from '../../services/aquaculture.service';
+import { Aquaculture } from '../../interfaces/aquaculture/aquaculture.interface';
 
 interface AquacultureResponse {
   aquacultures: Aquaculture[];
@@ -75,8 +75,6 @@ export class AquacultureManageComponent implements OnInit {
   }
 
   selectAquaculture(rut: string) {
-    this.router.navigate(['/system-admin/view-aquaculture'], {
-      queryParams: { rut: rut }
-    });
+
   }
 }

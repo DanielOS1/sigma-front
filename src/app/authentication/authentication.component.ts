@@ -17,6 +17,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoginApiResponse } from '../types/response.interface';
 import { TwoFactorModalComponent } from '../shared/2FA-modal/two-factor-modal.component';
+import { NavigationService } from '../services/navigation.service';
+
 @Component({
   selector: 'app-authentication',
   standalone: true,
@@ -29,6 +31,7 @@ import { TwoFactorModalComponent } from '../shared/2FA-modal/two-factor-modal.co
     FormsModule,
     MatCheckboxModule,
     MatProgressSpinnerModule
+
   ],
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss'],
@@ -50,7 +53,8 @@ export class AuthenticationComponent {
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
     private dialog: MatDialog,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private navigationService: NavigationService
   ) {}
 
   /** Detecta cambios en el RUT y verifica si requiere contraseña */
@@ -153,17 +157,40 @@ export class AuthenticationComponent {
   }
 
   /** Maneja el éxito en el login */
-  private handleLoginSuccess(response: any): void {
-    const accessToken = response.data?.accessToken;
+// components/login/login.component.ts
+private handleLoginSuccess(response: any): void {
+  console.log('🔍 handleLoginSuccess: Iniciando proceso de login', response);
+  
+  try {
+    const { accessToken, role } = response.data;
+    console.log(`✅ handleLoginSuccess: Token recibido, rol: ${role}`);
     
-    // Pasar el estado de rememberMe al servicio
+    // Manejo del token y sesión
     this.authService.setToken(accessToken, this.rememberMe);
+    console.log('✅ handleLoginSuccess: Token almacenado');
+    
     this.sessionService.startSessionMonitor();
+    console.log('✅ handleLoginSuccess: Monitor de sesión iniciado');
 
+    // Notificación de éxito
     this.toastr.success('Login exitoso', 'Éxito');
-    this.router.navigate(['/system-admin']);
+    console.log('✅ handleLoginSuccess: Notificación mostrada');
+
+    // Navegación basada en rol
+    console.log(`➡️ handleLoginSuccess: Intentando navegar según rol: ${role}`);
+    this.navigationService.navigateByRole(role)
+      .catch(error => {
+        console.error('❌ handleLoginSuccess: Error en navegación:', error);
+        throw error; // Re-lanzar para ser capturado por el catch exterior
+      });
+  } catch (error) {
+    console.error('❌ handleLoginSuccess: Error general:', error);
+    this.toastr.error('Error al procesar el login', 'Error');
+  } finally {
+    console.log('🏁 handleLoginSuccess: Proceso finalizado');
     this.isLoading = false;
   }
+}
 
   /** Aplica el formato 10.123.456-7 al RUT */
   private applyRutFormat(rut: string): string {

@@ -24,6 +24,6 @@ export interface Scientist extends BaseUser {
 export type User = BaseUser | OwnerUser | Scientist;
 
 export function isOwnerUser(user: User): user is OwnerUser {
-    return user.role === 1; // Asumiendo que 1 es UserRole.OWNER
+    return user.role === 1; 
 }
 

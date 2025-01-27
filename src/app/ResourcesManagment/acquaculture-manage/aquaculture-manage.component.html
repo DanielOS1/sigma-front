@@ -16,7 +16,6 @@
     <div class="aquaculture-grid">
         <mat-card *ngFor="let aquaculture of aquacultures" 
                   class="aquaculture-card"
-                  [routerLink]="['/system-admin/view-aquaculture']"
                   (click)="selectAquaculture(aquaculture.rut)">
             <mat-card-header>
                 <mat-icon mat-card-avatar>business</mat-icon>

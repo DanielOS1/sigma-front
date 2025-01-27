@@ -1,0 +1,90 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened class="sidenav" [class.collapsed]="!isExpanded">
+        <!-- Logo y Toggle -->
+        <div class="logo-container">
+            <img src="logo/twlog.png" alt="Logo" class="logo" *ngIf="isExpanded"/>
+            <button mat-icon-button class="toggle-button" (click)="toggleSidebar()">
+                <mat-icon>{{ isExpanded ? 'menu_open' : 'menu' }}</mat-icon>
+            </button>
+        </div>
+
+        <!-- Perfil Usuario -->
+        <div class="user-profile" [class.collapsed]="!isExpanded">
+            <div class="avatar-container">
+                <img src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="User Avatar" class="user-avatar"/>
+                <div class="status-badge"></div>
+            </div>
+            <div class="user-info" *ngIf="isExpanded">
+                <h3 class="user-name">{{user.name}} {{user.lastName}}</h3>
+                <span class="user-role">{{getRoleDisplay(user.role)}}</span>
+            </div>
+        </div>
+
+        <!-- Navegación -->
+        <mat-nav-list class="nav-list">
+            <a mat-list-item (click)="goToSystemAdmin()" routerLinkActive="active">
+                <mat-icon matListItemIcon>dashboard</mat-icon>
+                <span matListItemTitle *ngIf="isExpanded">Dashboard</span>
+            </a>
+
+            <a mat-list-item (click)="goToProfile()" routerLinkActive="active">
+                <mat-icon matListItemIcon>person</mat-icon>
+                <span matListItemTitle *ngIf="isExpanded">Mi Perfil</span>
+            </a>
+
+            <!-- Menú System Admin -->
+            <ng-container *ngIf="user.role === roles.SYSTEM_ADMIN">
+                <mat-expansion-panel 
+                    [expanded]="isUserManagementExpanded"
+                    (opened)="isUserManagementExpanded = true"
+                    (closed)="isUserManagementExpanded = false"
+                    class="nav-expansion-panel">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon>admin_panel_settings</mat-icon>
+                            <span *ngIf="isExpanded">Administración</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <mat-nav-list dense>
+                        <a mat-list-item (click)="goToCreateUser()" routerLinkActive="active">
+                            <mat-icon matListItemIcon>person_add</mat-icon>
+                            <span matListItemTitle>Crear Usuario</span>
+                        </a>
+                        <a mat-list-item (click)="goToResetPassword()" routerLinkActive="active">
+                            <mat-icon matListItemIcon>key</mat-icon>
+                            <span matListItemTitle>Reseteo Contraseñas</span>
+                        </a>
+                        <a mat-list-item (click)="goToAquacultureManage()" routerLinkActive="active">
+                            <mat-icon matListItemIcon>business</mat-icon>
+                            <span matListItemTitle>Gestión Acuícolas</span>
+                        </a>
+                    </mat-nav-list>
+                </mat-expansion-panel>
+            </ng-container>
+
+            <mat-divider></mat-divider>
+
+            <!-- Configuración -->
+            <div class="nav-section" *ngIf="isExpanded">Configuración</div>
+            
+            <a mat-list-item routerLinkActive="active">
+                <mat-icon matListItemIcon>settings</mat-icon>
+                <span matListItemTitle *ngIf="isExpanded">Ajustes</span>
+            </a>
+
+            <a mat-list-item (click)="onLogout()" class="logout-item">
+                <mat-icon matListItemIcon>logout</mat-icon>
+                <span matListItemTitle *ngIf="isExpanded">Cerrar Sesión</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Contenido Principal -->
+    <mat-sidenav-content [class.expanded]="!isExpanded">
+        <div class="content-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+  

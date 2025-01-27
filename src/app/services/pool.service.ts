@@ -54,12 +54,12 @@ export class PoolService {
     return this.http.post<ApiResponse<any>>(`/center-admin/remove-assigned-scientist-pond/${scientistRut}/${poolId}`, {}, { headers });
   }
 
-  assignOwnerToPool(poolId: string, ownerRut: string): Observable<ApiResponse<any>> {
+  assignOwnerToPool(idPond: string, rutOwner: string): Observable<ApiResponse<any>> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<ApiResponse<any>>(`/center-admin/assign-owner-pond`, {poolId, ownerRut}, { headers });
+    return this.http.post<ApiResponse<any>>(`/center-admin/assign-owner-pond`, {idPond, rutOwner}, { headers });
   }
 
   removeOwnerFromPool(poolId: string): Observable<ApiResponse<any>> {

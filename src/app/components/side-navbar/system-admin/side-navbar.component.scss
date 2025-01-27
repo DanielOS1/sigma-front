@@ -1,0 +1,167 @@
+.sidenav-container {
+    height: 100vh;
+    background-color: #f8fafc;
+}
+
+.sidenav {
+    width: 260px;
+    background-color: white;
+    border-right: 1px solid #e2e8f0;
+    transition: width 0.3s ease;
+    
+    &.collapsed {
+        width: 80px;
+    }
+} 
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    
+    .logo {
+        height: 40px;
+        margin-right: 1rem;
+    }
+    
+    .toggle-button {
+        margin-left: auto;
+        color: #64748b;
+    }
+}
+
+.user-profile {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    
+    &.collapsed {
+        padding: 1rem;
+        
+        .avatar-container {
+            margin: 0 auto;
+        }
+    }
+    
+    .avatar-container {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+        
+        .user-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .status-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #10b981;
+            border: 2px solid white;
+        }
+    }
+    
+    .user-info {
+        .user-name {
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .user-role {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+    }
+}
+
+.nav-list {
+    padding: 1rem 0;
+    
+    .mat-mdc-list-item {
+        margin: 0.25rem 0.5rem;
+        border-radius: 0.5rem;
+        
+        &:hover {
+            background-color: #f1f5f9;
+        }
+        
+        &.active {
+            background-color: #e2e8f0;
+            
+            .mat-icon, .mdc-list-item__primary-text {
+                color: #2563eb;
+            }
+        }
+        
+        .mat-icon {
+            color: #64748b;
+            margin-right: 1rem;
+        }
+    }
+}
+
+.nav-expansion-panel {
+    background: transparent;
+    box-shadow: none;
+    margin: 0 0.5rem;
+    
+    .mat-expansion-panel-header {
+        padding: 0 1rem;
+        
+        .mat-panel-title {
+            display: flex;
+            align-items: center;
+            
+            .mat-icon {
+                margin-right: 1rem;
+                color: #64748b;
+            }
+        }
+    }
+    
+    .mat-expansion-panel-body {
+        padding: 0;
+    }
+}
+
+.nav-section {
+    padding: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.logout-item {
+    margin-top: auto !important;
+    
+    .mat-icon {
+        color: #ef4444 !important;
+    }
+}
+
+.content-wrapper {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+mat-sidenav-content {
+    transition: margin-left 0.3s ease;
+    
+    &.expanded {
+        margin-left: 80px;
+    }
+}
+  

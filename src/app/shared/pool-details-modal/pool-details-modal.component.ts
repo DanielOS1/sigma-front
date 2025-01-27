@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { AssignPersonnelModalComponent } from '../assign-personnel-modal/assign-personnel-modal.component';
 
 interface Pool {
   id: string;
@@ -19,8 +20,8 @@ interface Pool {
   radius: number | null;
   length: number | null;
   height: number | null;
-  ownername: string | null;
-  ownerrut: string | null;
+  ownerName: string | null;
+  ownerRut: string | null;
 }
 
 @Component({
@@ -89,22 +90,22 @@ interface Pool {
                 <mat-icon>person</mat-icon>
                 Dueño
               </h3>
-              <button mat-stroked-button color="primary" *ngIf="!pool.ownerrut" (click)="assignOwner()">
+              <button mat-stroked-button color="primary" *ngIf="!pool.ownerRut" (click)="assignOwner()">
                 <mat-icon>person_add</mat-icon>
                 Asignar Dueño
               </button>
-              <button mat-stroked-button color="warn" *ngIf="pool.ownerrut" (click)="removeOwner()">
+              <button mat-stroked-button color="warn" *ngIf="pool.ownerRut" (click)="removeOwner()">
                 <mat-icon>person_remove</mat-icon>
                 Remover Dueño
               </button>
             </div>
             
-            <div class="person-info" *ngIf="pool.ownerrut">
-              <p><strong>Nombre:</strong> {{pool.ownername}}</p>
-              <p><strong>RUT:</strong> {{pool.ownerrut}}</p>
+            <div class="person-info" *ngIf="pool.ownerRut">
+              <p><strong>Nombre:</strong> {{pool.ownerName}}</p>
+              <p><strong>RUT:</strong> {{pool.ownerRut}}</p>
             </div>
             
-            <div class="empty-state" *ngIf="!pool.ownerrut">
+            <div class="empty-state" *ngIf="!pool.ownerRut">
               <p>No hay dueño asignado</p>
             </div>
           </div>
@@ -244,6 +245,8 @@ interface Pool {
 export class PoolDetailsModalComponent implements OnInit {
   pool: any;
   scientists: any[] = [];
+  selectedAquacultureRut: string | null = null;
+
 
   constructor(
     public dialogRef: MatDialogRef<PoolDetailsModalComponent>,
@@ -254,7 +257,7 @@ export class PoolDetailsModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Cargar los detalles de la piscina
+    
     this.loadPoolDetails();
   }
 
@@ -282,21 +285,42 @@ export class PoolDetailsModalComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading scientists:', error);
-        this.toastr.error('Error al cargar científicos');
+
       }
     });
   }
 
   assignOwner() {
-    // Implementar lógica para abrir modal de asignación de dueño
+    const dialogRef = this.dialog.open(AssignPersonnelModalComponent, {
+      data: { 
+        type: 'owner',
+        aquacultureRut: this.pool.aquacultureRut
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(ownerRut => { 
+      if (ownerRut) {
+        this.poolService.assignOwnerToPool(this.pool.id, ownerRut).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.loadPoolDetails();
+              this.toastr.success('Dueño asignado exitosamente');
+            }
+          },
+          error: (error) => {
+            console.error('Error assigning owner:', error);
+            this.toastr.error('Error al asignar dueño');
+          }
+        });
+      }
+    });
   }
 
   removeOwner() {
     this.poolService.removeOwnerFromPool(this.pool.id).subscribe({
       next: (response) => {
         if (response.success) {
-          this.pool.ownerrut = null;
-          this.pool.ownername = null;
+          this.loadPoolDetails();
           this.toastr.success('Dueño removido exitosamente');
         }
       },
@@ -308,14 +332,36 @@ export class PoolDetailsModalComponent implements OnInit {
   }
 
   assignScientist() {
-    // Implementar lógica para abrir modal de asignación de científico
+    const dialogRef = this.dialog.open(AssignPersonnelModalComponent, {
+      data: { 
+        type: 'scientist',
+        aquacultureRut: this.pool.aquacultureRut
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(scientistRut => {
+      if (scientistRut) {
+        this.poolService.assignScientistToPool(this.pool.id, scientistRut).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.loadScientists();
+          this.toastr.success('Científico asignado exitosamente');
+        }
+      },
+      error: (error) => {
+        console.error('Error assigning scientist:', error);
+            this.toastr.error('Error al asignar científico');
+          }
+        });
+      }
+    });
   }
 
   removeScientist(scientistRut: string) {
     this.poolService.removeScientistFromPool(this.pool.id, scientistRut).subscribe({
       next: (response) => {
         if (response.success) {
-          this.loadScientists();
+          this.scientists = this.scientists.filter(scientist => scientist.scientistRut !== scientistRut);
           this.toastr.success('Científico removido exitosamente');
         }
       },

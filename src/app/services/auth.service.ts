@@ -1,11 +1,13 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { NavigationService } from './navigation.service';
 import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
 import { DecodedToken } from '../interfaces/token';
 import { jwtDecode } from "jwt-decode";
 import { isPlatformBrowser } from '@angular/common';
 import { ApiResponse, LoginApiResponse, LoginResponse } from '../types/response.interface';
+import { UserRole } from '../interfaces/users/roles.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +23,29 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
+    private navigationService: NavigationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   loginPasswordLess(loginTypeAdto: LoginTypeAdto): Observable<LoginApiResponse> {
-    return this.http.post<LoginApiResponse>(this.endPointUrlA, loginTypeAdto);
+    return this.http.post<LoginApiResponse>(this.endPointUrlA, loginTypeAdto).pipe(
+      tap(response => {
+        if (response.success) {
+          this.navigationService.navigateByRole(response.data.role as UserRole);
+        }
+      })
+    );
   }
 
   loginPassword(loginTypeBdto: LoginTypeBdto): Observable<LoginApiResponse> {
-    return this.http.post<LoginApiResponse>(this.endPointUrlB, loginTypeBdto);
+    return this.http.post<LoginApiResponse>(this.endPointUrlB, loginTypeBdto).pipe(
+      tap(response => {
+        if (response.success) {
+          this.navigationService.navigateByRole(response.data.role as UserRole);
+        }
+      })
+    );
   }
-
-  
 
   checkShouldPassword(rut: string): Observable<boolean> {
     console.log('Verificando si el RUT requiere contraseña...');

@@ -5,8 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { AquacultureService } from '../../services/aquaculture.service';
-import { CreateAquacultureDto } from '../../interfaces/aquaculture/aquaculture.interface';
+import { AquacultureService } from '../../../services/aquaculture.service';
+import { CreateAquacultureDto } from '../../../interfaces/aquaculture/aquaculture.interface';
 
 @Component({
   selector: 'app-create-cquaculture',

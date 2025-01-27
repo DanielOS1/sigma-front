@@ -6,7 +6,7 @@ import { AdminSystemSideNavComponent } from '../../components/side-navbar/side-n
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, FooterComponent, AdminSystemSideNavComponent],
+  imports: [AdminSystemSideNavComponent],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
 })

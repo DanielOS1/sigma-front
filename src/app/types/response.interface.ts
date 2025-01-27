@@ -66,6 +66,7 @@ export interface LoginResponse {
 export interface LoginResponse2FA {
     token?: string;
     twoFactorEnabled?: boolean;
+    role?: number;
   }
 
 export interface LoginApiResponse {

@@ -4,8 +4,8 @@
         <mat-card class="profile-card">
             <mat-card-header class="theme-aware-header">
                 <div mat-card-avatar class="profile-image"></div>
-                <h2 class="!m-0">{{user.name}} {{user.lastName}}</h2>
-                <p class="">{{user.role | role}}</p>
+                <h2 class="!m-0">{{user?.name}} {{user?.lastName}}</h2>
+                <p class="">{{user?.role || 0 | role}}</p>
 
         </mat-card-header>
         <mat-divider></mat-divider>
@@ -13,11 +13,11 @@
             <div class="flex flex-col gap-2 mt-5">
                 <div class="flex items-center gap-2">
                     <mat-icon>email</mat-icon>      
-                    <p>{{user.email}}</p>
+                    <p>{{user?.email}}</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <mat-icon>badge</mat-icon>
-                    <p>{{user.rut}}</p>
+                    <p>{{user?.rut}}</p>
                 </div>
             </div>
         </mat-card-content>
