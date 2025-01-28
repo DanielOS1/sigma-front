@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../interfaces/users/usersDto';
 import { ApiResponse, PasswordResetResponse, UsersApiResponse } from '../types/response.interface';
 import { AuthService } from '../services/auth.service';
+import { AuditLog } from '../interfaces/users/audits.interface';
 
 
 @Injectable({
@@ -93,18 +94,21 @@ export class UserService {
     );
   }
 
-  getAudits(page: number = 1, limit: number = 10): Observable<any> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    
+  getAudits(page: number = 1, limit: number = 5): Observable<AuditLog[]> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString())
       .set('performedBy', this.authService.getDecodedToken().rut);
 
-    return this.http.get<any>(`/audit`, { headers, params });
+    return this.http.get<AuditLog[]>(
+      `/audit`,
+      {
+        params,
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`
+        }
+      }
+    );
   }
   
 }

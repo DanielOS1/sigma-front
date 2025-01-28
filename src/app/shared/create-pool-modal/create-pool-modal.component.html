@@ -1,0 +1,90 @@
+<div class="modal-container">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>pool</mat-icon>
+    Crear Nueva Estructura
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="pondForm" (ngSubmit)="onSubmit()">
+      <div class="form-content">
+        <div class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de Agua</mat-label>
+            <mat-select formControlName="waterType">
+              <mat-option [value]="WaterType.SALT">Salada</mat-option>
+              <mat-option [value]="WaterType.FRESH">Dulce</mat-option>
+            </mat-select>
+            <mat-error *ngIf="pondForm.get('waterType')?.hasError('required')">
+              El tipo de agua es requerido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Profundidad (metros)</mat-label>
+            <input matInput type="number" formControlName="depth">
+            <mat-error *ngIf="pondForm.get('depth')?.hasError('required')">
+              La profundidad es requerida
+            </mat-error>
+            <mat-error *ngIf="pondForm.get('depth')?.hasError('min')">
+              La profundidad mínima es 1 metro
+            </mat-error>
+            <mat-error *ngIf="pondForm.get('depth')?.hasError('max')">
+              La profundidad máxima es 15 metros
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de Estructura</mat-label>
+            <mat-select formControlName="pondType" (selectionChange)="onPondTypeChange()">
+              <mat-option [value]="PondType.POND">Estanque</mat-option>
+              <mat-option [value]="PondType.POOL">Piscina</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group" *ngIf="showAdditionalFields">
+          <ng-container *ngIf="pondForm.get('pondType')?.value === PondType.POND">
+            <mat-form-field appearance="outline">
+              <mat-label>Radio (metros)</mat-label>
+              <input matInput type="number" formControlName="radius">
+              <mat-error *ngIf="pondForm.get('radius')?.hasError('required')">
+                El radio es requerido
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngIf="pondForm.get('pondType')?.value === PondType.POOL">
+            <mat-form-field appearance="outline">
+              <mat-label>Longitud (metros)</mat-label>
+              <input matInput type="number" formControlName="length">
+              <mat-error *ngIf="pondForm.get('length')?.hasError('required')">
+                La longitud es requerida
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Altura (metros)</mat-label>
+              <input matInput type="number" formControlName="height">
+              <mat-error *ngIf="pondForm.get('height')?.hasError('required')">
+                La altura es requerida
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button mat-raised-button 
+            color="primary"
+            (click)="onSubmit()"
+            [disabled]="!pondForm.valid || loading">
+      <span *ngIf="!loading">Crear Estructura</span>
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+    </button>
+  </mat-dialog-actions>
+</div> 

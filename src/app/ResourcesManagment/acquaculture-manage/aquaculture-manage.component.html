@@ -6,7 +6,7 @@
                 <mat-icon>visibility</mat-icon>
                 Ver Detalles de Acuícolas
             </button>
-            <button mat-raised-button color="primary" [routerLink]="['/system-admin/create-aquaculture']">
+            <button mat-raised-button color="primary" (click)="openCreateAquacultureModal()">
                 <mat-icon>add</mat-icon>
                 Nueva Acuicultura
             </button>

@@ -6,6 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Router } from '@angular/router';
 import { AquacultureService } from '../../services/aquaculture.service';
 import { Aquaculture } from '../../interfaces/aquaculture/aquaculture.interface';
+import { CreateAquacultureModalComponent } from '../../shared/create-aquaculture-modal/create-aquaculture-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 interface AquacultureResponse {
   aquacultures: Aquaculture[];
@@ -37,7 +39,8 @@ export class AquacultureManageComponent implements OnInit {
 
   constructor(
     private aquacultureService: AquacultureService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -77,4 +80,18 @@ export class AquacultureManageComponent implements OnInit {
   selectAquaculture(rut: string) {
 
   }
+
+  openCreateAquacultureModal(): void {
+    const dialogRef = this.dialog.open(CreateAquacultureModalComponent, {
+      width: '600px'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Recargar datos si es necesario
+        this.loadAquacultures();
+      }
+    });
+  }
+
 }

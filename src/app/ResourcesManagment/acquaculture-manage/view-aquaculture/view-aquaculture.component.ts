@@ -19,6 +19,7 @@ import { Scientist } from '../../../interfaces/users/usersDto';
 import { AddScientistModalComponent } from '../../../shared/add-scientist-modal/add-scientist-modal.component';
 import { AssignPersonnelModalComponent } from '../../../shared/assign-personnel-modal/assign-personnel-modal.component';
 import { PoolTypePipe } from '../../../pipes/pool-type.pipe';
+import { CreatePoolModalComponent } from '../../../shared/create-pool-modal/create-pool-modal.component';
 
 interface ScientistResponse {
   scientistRut: string;
@@ -176,12 +177,15 @@ export class ViewAquacultureComponent implements OnInit {
   }
 
   goToCreatePool(): void {
-    if (!this.selectedRut) {
-      this.toastr.error('Por favor, seleccione una acuícola primero');
-      return;
-    }
-    this.router.navigate(['/system-admin/pool-managment/create-pool'], {
-      queryParams: { rut: this.selectedRut }
+    const dialogRef = this.dialog.open(CreatePoolModalComponent, {
+      data: { aquacultureRut: this.selectedRut },
+      width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.selectAquaculture(this.selectedRut); // Recargar los datos
+      }
     });
   }
 

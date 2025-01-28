@@ -42,7 +42,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   audits: AuditLog[] = [];
   totalAudits: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 5;
+  pageSizeOptions: number[] = [5, 10, 20];
   currentPage: number = 0;
   is2FAEnabled: boolean = false;
   private destroy$ = new Subject<void>();
@@ -88,18 +89,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
   }
 
-  loadAudits(page: number = 0): void {
-    this.userService.getAudits(page + 1, this.pageSize)
+  loadAudits(page: number = 1): void {
+    this.isLoading = true;
+    this.userService.getAudits(page, this.pageSize)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response: AuditLog[]) => {
-          console.log('Audits received:', response);
-          this.audits = response;
-          this.totalAudits = response.length;
+        next: (audits: AuditLog[]) => {
+          this.audits = audits;
+          this.totalAudits = 100;
         },
         error: (error) => {
           console.error('Error loading audits:', error);
           this.toastr.error('Error al cargar el historial de actividad');
+        },
+        complete: () => {
+          this.isLoading = false;
         }
       });
   }
@@ -107,7 +111,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onPageChange(event: any): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.loadAudits(this.currentPage);
+    this.loadAudits(this.currentPage + 1);
   }
 
   openResetPasswordModal(): void {

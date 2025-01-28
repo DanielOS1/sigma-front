@@ -20,6 +20,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        /** 
         if (error.status === 401 && !this.authService.isTokenExpired()) {
           // Intentar renovar el token
           return this.http.post('/api/refresh-token', {}).pipe(
@@ -36,6 +37,7 @@ export class TokenInterceptor implements HttpInterceptor {
             })
           );
         }
+          */
         return throwError(() => error);
       })
     );

@@ -1,0 +1,72 @@
+<div class="modal-container">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>business</mat-icon>
+    Crear Nueva Acuícola
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="aquacultureForm" (ngSubmit)="onSubmit()">
+      <div class="form-content">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="aquacultureForm.get('name')?.errors?.['required']">
+            El nombre es requerido
+          </mat-error>
+          <mat-error *ngIf="aquacultureForm.get('name')?.errors?.['minlength'] || 
+                           aquacultureForm.get('name')?.errors?.['maxlength']">
+            El nombre debe tener entre 2 y 50 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required type="email">
+          <mat-error *ngIf="aquacultureForm.get('email')?.errors?.['required']">
+            El email es requerido
+          </mat-error>
+          <mat-error *ngIf="aquacultureForm.get('email')?.errors?.['email']">
+            Email inválido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>RUT</mat-label>
+          <input matInput formControlName="rut" required>
+          <mat-error *ngIf="aquacultureForm.get('rut')?.errors?.['required']">
+            El RUT es requerido
+          </mat-error>
+          <mat-error *ngIf="aquacultureForm.get('rut')?.errors?.['minlength'] || 
+                           aquacultureForm.get('rut')?.errors?.['maxlength']">
+            El RUT debe tener entre 8 y 12 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phoneNumber" required>
+          <mat-error *ngIf="aquacultureForm.get('phoneNumber')?.errors?.['required']">
+            El teléfono es requerido
+          </mat-error>
+          <mat-error *ngIf="aquacultureForm.get('phoneNumber')?.errors?.['minlength'] || 
+                           aquacultureForm.get('phoneNumber')?.errors?.['maxlength']">
+            El teléfono debe tener entre 9 y 15 caracteres
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button mat-raised-button 
+            color="primary"
+            (click)="onSubmit()"
+            [disabled]="!aquacultureForm.valid || loading">
+      <span *ngIf="!loading">Crear Acuícola</span>
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+    </button>
+  </mat-dialog-actions>
+</div> 

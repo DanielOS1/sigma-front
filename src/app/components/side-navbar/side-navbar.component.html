@@ -20,52 +20,38 @@
             </div>
         </div>
 
-        <!-- Navegación -->
+        <!-- Navegación Dinámica -->
         <mat-nav-list class="nav-list">
-            <a mat-list-item (click)="goToSystemAdmin()" routerLinkActive="active">
-                <mat-icon matListItemIcon>dashboard</mat-icon>
-                <span matListItemTitle *ngIf="isExpanded">Dashboard</span>
-            </a>
+            @for (item of filteredNavItems; track item.path) {
+                @if (item.type === 'link') {
+                    <a mat-list-item [routerLink]="item.path" routerLinkActive="active">
+                        <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
+                        <span matListItemTitle *ngIf="isExpanded">{{item.label}}</span>
+                    </a>
+                } @else if (item.type === 'expansion') {
+                    <mat-expansion-panel class="nav-expansion-panel">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <mat-icon>{{item.icon}}</mat-icon>
+                                <span *ngIf="isExpanded">{{item.label}}</span>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
 
-            <a mat-list-item (click)="goToProfile()" routerLinkActive="active">
-                <mat-icon matListItemIcon>person</mat-icon>
-                <span matListItemTitle *ngIf="isExpanded">Mi Perfil</span>
-            </a>
-
-            <!-- Menú System Admin -->
-            <ng-container *ngIf="user.role === roles.SYSTEM_ADMIN">
-                <mat-expansion-panel 
-                    [expanded]="isUserManagementExpanded"
-                    (opened)="isUserManagementExpanded = true"
-                    (closed)="isUserManagementExpanded = false"
-                    class="nav-expansion-panel">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon>admin_panel_settings</mat-icon>
-                            <span *ngIf="isExpanded">Administración</span>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-
-                    <mat-nav-list dense>
-                        <a mat-list-item (click)="goToCreateUser()" routerLinkActive="active">
-                            <mat-icon matListItemIcon>person_add</mat-icon>
-                            <span matListItemTitle>Crear Usuario</span>
-                        </a>
-                        <a mat-list-item (click)="goToResetPassword()" routerLinkActive="active">
-                            <mat-icon matListItemIcon>key</mat-icon>
-                            <span matListItemTitle>Reseteo Contraseñas</span>
-                        </a>
-                        <a mat-list-item (click)="goToAquacultureManage()" routerLinkActive="active">
-                            <mat-icon matListItemIcon>business</mat-icon>
-                            <span matListItemTitle>Gestión Acuícolas</span>
-                        </a>
-                    </mat-nav-list>
-                </mat-expansion-panel>
-            </ng-container>
+                        <mat-nav-list dense>
+                            @for (child of item.children; track child.path) {
+                                <a mat-list-item [routerLink]="child.path" routerLinkActive="active">
+                                    <mat-icon matListItemIcon>{{child.icon}}</mat-icon>
+                                    <span matListItemTitle>{{child.label}}</span>
+                                </a>
+                            }
+                        </mat-nav-list>
+                    </mat-expansion-panel>
+                }
+            }
 
             <mat-divider></mat-divider>
 
-            <!-- Configuración -->
+            <!-- Configuración y Logout -->
             <div class="nav-section" *ngIf="isExpanded">Configuración</div>
             
             <a mat-list-item routerLinkActive="active">

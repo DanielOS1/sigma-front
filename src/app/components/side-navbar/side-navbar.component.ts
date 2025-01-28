@@ -14,6 +14,15 @@ import { UserRole } from '../../interfaces/users/roles.enum';
 import { ApiResponse } from '../../types/response.interface';
 import { User } from '../../interfaces/users/usersDto';
 
+interface NavItem {
+  type: 'link' | 'expansion';
+  icon: string;
+  label: string;
+  path?: string;
+  roles: UserRole[];
+  children?: Omit<NavItem, 'type' | 'children'>[];
+}
+
 @Component({
   selector: 'app-side-nav',
   standalone: true,
@@ -44,6 +53,68 @@ export class AdminSystemSideNavComponent implements OnInit {
     isActive: false,
     isDeleted: false,
   };
+
+  getDashboardPath(role: UserRole): string {
+    switch (role) {
+      case UserRole.SYSTEM_ADMIN:
+        return '/system-admin';
+      case UserRole.AQUACULTURE_ADMIN:
+        return '/dashboard';
+      default:
+        return '/dashboard';
+    }
+  }
+
+  get navItems(): NavItem[] {
+    return [
+      {
+        type: 'link',
+        icon: 'dashboard',
+        label: 'Dashboard',
+        path: this.getDashboardPath(this.user.role),
+        roles: [UserRole.SYSTEM_ADMIN, UserRole.AQUACULTURE_ADMIN]
+      },
+      {
+        type: 'link',
+        icon: 'person',
+        label: 'Mi Perfil',
+        path: '/profile',
+        roles: [UserRole.SYSTEM_ADMIN, UserRole.AQUACULTURE_ADMIN]
+      },
+      {
+        type: 'expansion',
+        icon: 'admin_panel_settings',
+        label: 'Administración',
+        roles: [UserRole.SYSTEM_ADMIN],
+        children: [
+          {
+            icon: 'person_add',
+            label: 'Crear Usuario',
+            path: '/system-admin/create-user',
+            roles: [UserRole.SYSTEM_ADMIN]
+          },
+          {
+            icon: 'key',
+            label: 'Reseteo Contraseñas',
+            path: '/system-admin/reset-password',
+            roles: [UserRole.SYSTEM_ADMIN]
+          },
+          {
+            icon: 'business',
+            label: 'Gestión Acuícolas',
+            path: '/system-admin/aquaculture-manage',
+            roles: [UserRole.SYSTEM_ADMIN]
+          }
+        ]
+      }
+    ];
+  }
+
+  get filteredNavItems() {
+    return this.navItems.filter(item => 
+      item.roles.includes(this.user.role)
+    );
+  }
 
   constructor(
     private authService: AuthService,
@@ -82,7 +153,7 @@ export class AdminSystemSideNavComponent implements OnInit {
       next: () => {
         this.authService.clearToken();
         this.toastr.success('Sesión cerrada con éxito.');
-        this.router.navigate(['/login']); 
+        this.router.navigate(['/auth']); 
       },
       error: (err) => {
         this.toastr.error('Error al cerrar sesión.');

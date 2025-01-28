@@ -15,6 +15,8 @@ export class RolePipe implements PipeTransform {
         return 'Administrador de Acuícola';
       case 4:
         return 'Administrador de Sistema';
+      case 5:
+        return 'Super Administrador';
       default:
         return 'Rol Desconocido';
     }

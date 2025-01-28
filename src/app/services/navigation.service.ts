@@ -12,6 +12,7 @@ export class NavigationService {
     [UserRole.AQUACULTURE_ADMIN]: '/profile',
     [UserRole.SCIENTIST]: '/my-devices',
     [UserRole.OWNER]: '/owner-dashboard',
+    [UserRole.SUPER_ADMIN]: '/super-admin',
     'DEFAULT': '/dashboard'
   };
 

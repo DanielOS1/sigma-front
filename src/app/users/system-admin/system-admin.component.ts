@@ -98,15 +98,17 @@ export class SystemAdminComponent implements OnInit {
   getRoleName(role: number): string {
     switch (role) {
       case UserRole.OWNER:
-        return 'Owner';
+        return 'Dueño de Acuícola';
       case UserRole.SCIENTIST:
-        return 'Scientist';
+        return 'Científico';
       case UserRole.AQUACULTURE_ADMIN:
-        return 'Aquaculture Admin';
+        return 'Administrador de centro de cultivo';
       case UserRole.SYSTEM_ADMIN:
-        return 'System Admin';
+        return 'Administrador de Sistema';
+      case UserRole.SUPER_ADMIN:
+        return 'Super Administrador';
       default:
-        return 'Unknown';
+        return 'Rol Desconocido';
     }
   }
 

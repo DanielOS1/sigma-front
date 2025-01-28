@@ -18,7 +18,7 @@ export class PoolService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<ApiResponse<any>>('/system-admin/createPond', poolData, { headers });
+    return this.http.post<ApiResponse<any>>('/center-admin/createPond', poolData, { headers });
   }
 
   getPoolofAquarium(aquariumRut: string): Observable<ApiResponse<any>> {

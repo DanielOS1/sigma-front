@@ -88,23 +88,25 @@
             </mat-card-header>
             <mat-card-content>
                 <div class="audit-list">
-                    <div *ngFor="let audit of audits" class="audit-item">
-                        <div class="audit-header">
-                            <mat-icon>history</mat-icon>
-                            <span class="audit-date">{{audit.performedAt | date:'dd/MM/yyyy HH:mm'}}</span>
+                    @for (audit of audits; track audit.id) {
+                        <div class="audit-item">
+                            <div class="audit-header">
+                                <mat-icon>history</mat-icon>
+                                <span class="audit-date">{{audit.performedAt | date:'dd/MM/yyyy HH:mm'}}</span>
+                            </div>
+                            <div class="audit-content">
+                                <p class="audit-action">
+                                    <span class="font-medium">Acción:</span> {{audit.action}}
+                                </p>
+                                <p class="audit-user">
+                                    <span class="font-medium">Usuario:</span> {{audit.performedBy}}
+                                </p>
+                                <p class="audit-details" *ngIf="audit.details">
+                                    <span class="font-medium">Detalles:</span> {{audit.details}}
+                                </p>
+                            </div>
                         </div>
-                        <div class="audit-content">
-                            <p class="audit-action">
-                                <span class="font-medium">Acción:</span> {{audit.action}}
-                            </p>
-                            <p class="audit-id">
-                                <span class="font-medium">ID:</span> {{audit.id}}
-                            </p>
-                            <p class="audit-user">
-                                <span class="font-medium">Usuario:</span> {{audit.performedBy}}
-                            </p>
-                        </div>
-                    </div>
+                    }
                 </div>
                 <mat-paginator
                     [length]="totalAudits"

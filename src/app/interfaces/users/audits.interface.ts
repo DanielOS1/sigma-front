@@ -1,9 +1,9 @@
 export interface AuditLog {
   id: string;
   action: string;
+  details: string;
   performedBy: string;
   performedAt: string;
-  details: string;
 }
 
 // Interfaz opcional para los detalles parseados si necesitas acceder a ellos

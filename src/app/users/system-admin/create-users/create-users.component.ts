@@ -80,7 +80,8 @@ export class CreateUsersComponent implements OnInit {
       [UserRole.OWNER]: 'business',
       [UserRole.SCIENTIST]: 'science',
       [UserRole.AQUACULTURE_ADMIN]: 'water',
-      [UserRole.SYSTEM_ADMIN]: 'admin_panel_settings'
+      [UserRole.SYSTEM_ADMIN]: 'admin_panel_settings',
+      [UserRole.SUPER_ADMIN]: 'admin_panel_settings'
     };
     return icons[role];
   }

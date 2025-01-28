@@ -45,7 +45,15 @@ interface ApiPasswordResponse {
 export class ResetPasswordComponent implements OnInit {
   resetRequests: PasswordRequest[] = [];
   totalRequests = 0;
-  displayedColumns: string[] = ['user_rut', 'admin_rut', 'status', 'createdAt', 'updatedAt', 'actions'];
+  displayedColumns: string[] = [
+    'user_rut',
+    'user_name',
+    'admin_rut',
+    'status',
+    'createdAt',
+    'updatedAt',
+    'actions'
+  ];
   loadingStates: { [key: string]: boolean } = {};
 
   constructor(
