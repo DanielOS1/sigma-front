@@ -6,6 +6,24 @@ export interface Aquaculture {
     phoneNumber: string;
   }
 
+
+export interface AquacultureEntity{
+  id: string;
+  name: string;
+  email: string;
+  rut: string;
+  phoneNumber: string;
+  status: boolean;
+}
+
+  export interface AquacultureBasicDetails {
+    id: string;
+    name: string;
+    email: string;
+    rut: string;
+    phoneNumber: string;
+  }
+
   export interface CreateAquacultureDto {
     name: string;
     email: string;
@@ -45,4 +63,12 @@ export interface Aquaculture {
     aqData: AquacultureDetail;
   }
   
+  export interface AquacultureScientists {
+    aquacultureRut: string;
+    scientists: {
+      scientistRut: string;
+      assignedBy: string;
+      assignedAt: string;
+    }[];
+  }
   

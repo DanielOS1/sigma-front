@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  
+  .text-primary {
+    color: #1976d2; // Color primario de Material
+  }
+  
+  mat-icon {
+    vertical-align: middle;
+  }
+
+  .container {
+    max-width: 1200px;
+  }
+
+  // Animaciones
+  .bg-gray-50 {
+    transition: all 0.2s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  }
+
+  // Responsive
+  @media (max-width: 640px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

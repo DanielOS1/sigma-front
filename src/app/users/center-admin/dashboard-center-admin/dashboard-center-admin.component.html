@@ -17,7 +17,7 @@
     </mat-card>
 
     <!-- Assigned State -->
-    <div *ngIf="!loading && isAssigned && aquacultureDetail" class="grid grid-cols-1 gap-6">
+    <div *ngIf="!loading && isAssigned && aquacultureBasicDetails" class="grid grid-cols-1 gap-6">
         <!-- Información Básica -->
         <mat-card class="p-6">
             <div class="flex items-center gap-2 mb-4">
@@ -27,19 +27,19 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <p class="font-medium text-gray-600">Nombre</p>
-                    <p>{{aquacultureDetail.aqData.name}}</p>
+                    <p>{{aquacultureBasicDetails.name}}</p>
                 </div>
                 <div>
                     <p class="font-medium text-gray-600">RUT</p>
-                    <p>{{aquacultureDetail.aqData.rut}}</p>
+                    <p>{{aquacultureBasicDetails.rut}}</p>
                 </div>
                 <div>
                     <p class="font-medium text-gray-600">Email</p>
-                    <p>{{aquacultureDetail.aqData.email}}</p>
+                    <p>{{aquacultureBasicDetails.email}}</p>
                 </div>
                 <div>
                     <p class="font-medium text-gray-600">Teléfono</p>
-                    <p>{{aquacultureDetail.aqData.phoneNumber}}</p>
+                    <p>{{aquacultureBasicDetails.phoneNumber}}</p>
                 </div>
             </div>
         </mat-card>
@@ -55,23 +55,30 @@
             <div class="mb-4">
                 <h3 class="font-medium text-gray-600 mb-2">Administrador de Centro</h3>
                 <div class="bg-gray-50 p-3 rounded">
-                    <p>{{aquacultureDetail.aqData.centerAdminCultive.name}}</p>
-                    <p class="text-sm text-gray-500">RUT: {{aquacultureDetail.aqData.centerAdminCultive.rut}}</p>
+                    <p>{{aquacultureAdmin?.name}}</p>
+                    <p class="text-sm text-gray-500">RUT: {{aquacultureAdmin?.rut}}</p>
                 </div>
             </div>
 
-            <!-- Dueño -->
-            <div class="mb-4">
+                <!-- Dueño -->
+                <div class="mb-4">
                 <h3 class="font-medium text-gray-600 mb-2">Dueño</h3>
-                <div *ngIf="aquacultureDetail.aqData.ownerUsers?.length" class="bg-gray-50 p-3 rounded">
-                    <p>{{aquacultureDetail.aqData.ownerUsers[0].name}}</p>
-                    <p class="text-sm text-gray-500">RUT: {{aquacultureDetail.aqData.ownerUsers[0].rut}}</p>    
-
+                <div *ngIf="(aquacultureOwner ?? []).length" class="bg-gray-50 p-3 rounded">
+                    <p>{{aquacultureOwner?.[0]?.name}}</p>
+                    <p class="text-sm text-gray-500">RUT: {{aquacultureOwner?.[0]?.rut}}</p>    
                 </div>
-                <p *ngIf="!aquacultureDetail?.aqData?.ownerUsers?.length" class="text-gray-500">
+                <p *ngIf="!aquacultureOwner?.length" class="text-gray-500">
                     No hay dueño asignado
                 </p>
             </div>
+
+            <!-- Cienticos -->
+            <div class="mb-4">
+                <h3 class="font-medium text-gray-600 mb-2">Cienticos</h3>
+                <div *ngFor="let scientist of scientists" class="bg-gray-50 p-3 rounded">
+                    <p class="text-sm text-gray-500">RUT: {{scientist.scientistRut}}</p>
+                </div>
+            </div>  
         </mat-card>
 
         <!-- Estructuras -->
@@ -82,7 +89,7 @@
             </div>
 
             <div class="grid gap-4">
-                <mat-card *ngFor="let pool of aquacultureDetail?.aqData?.aquaculturePonds" class="p-4 bg-gray-50">
+                <mat-card *ngFor="let pool of ponds" class="p-4 bg-gray-50">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <p class="font-medium text-gray-600">Tipo</p>
@@ -112,7 +119,7 @@
                 </mat-card>
             </div>
 
-            <div *ngIf="!aquacultureDetail.aqData?.aquaculturePonds?.length" class="text-center py-8">
+            <div *ngIf="!ponds?.length" class="text-center py-8">
                 <mat-icon class="text-4xl text-gray-400 mb-2">pool</mat-icon>
                 <p class="text-gray-500">No hay estructuras registradas</p>
             </div>

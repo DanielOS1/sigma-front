@@ -28,3 +28,12 @@ export interface PoolResponse {
     height: number;
 }
   
+export interface PoolDetails {
+    ponds_id: string;
+    ponds_depth: number;
+    ponds_pondType: number;
+    ponds_waterType: number;
+    poollength?: number;
+    poolheight?: number;
+    pondradius?: number;
+}

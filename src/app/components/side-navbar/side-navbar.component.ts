@@ -71,7 +71,7 @@ export class AdminSystemSideNavComponent implements OnInit {
         type: 'link',
         icon: 'dashboard',
         label: 'Dashboard',
-        path: this.getDashboardPath(this.user.role),
+        path: this.getDashboardPath(this.user.role as UserRole),
         roles: [UserRole.SYSTEM_ADMIN, UserRole.AQUACULTURE_ADMIN]
       },
       {
@@ -106,13 +106,33 @@ export class AdminSystemSideNavComponent implements OnInit {
             roles: [UserRole.SYSTEM_ADMIN]
           }
         ]
+      },
+      {
+        type: 'expansion',
+        icon: 'admin_panel_settings',
+        label: 'Gestion de Recursos',
+        roles: [UserRole.AQUACULTURE_ADMIN],
+        children: [
+          {
+            icon: 'person',
+            label: 'Personnel Administration',
+            path: '/center-admin/personnel-administration',
+            roles: [UserRole.AQUACULTURE_ADMIN]
+          },
+          {
+            icon: 'pool',
+            label: 'Pond Administration',
+            path: '/center-admin/pond-administration',
+            roles: [UserRole.AQUACULTURE_ADMIN]
+          }
+        ]
       }
     ];
   }
 
   get filteredNavItems() {
     return this.navItems.filter(item => 
-      item.roles.includes(this.user.role)
+      item.roles.includes(this.user.role as UserRole)
     );
   }
 

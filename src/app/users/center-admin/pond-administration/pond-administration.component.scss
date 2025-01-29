@@ -1,0 +1,35 @@
+:host {
+  display: block;
+
+  .selected {
+    background-color: rgba(25, 118, 210, 0.1);
+  }
+
+  mat-card {
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+
+  .mat-mdc-card-header {
+    padding: 16px;
+  }
+
+  .mat-mdc-card-content {
+    padding: 0;
+  }
+
+  .mat-mdc-card-actions {
+    padding: 16px;
+    margin: 0;
+  }
+
+  // Animaciones
+  .bg-gray-50 {
+    transition: all 0.2s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  }
+}
