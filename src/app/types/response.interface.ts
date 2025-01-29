@@ -1,5 +1,12 @@
-import { User } from "../interfaces/users/usersDto";
-
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTableModule } from "@angular/material/table";
+import { User } from "../interfaces/entities/user.interface";
+import { PasswordResetRequest } from "../interfaces/entities/user.interface";
+import { AssignedAquaculture } from "../interfaces/entities/aquaculture.interface";
 export interface ApiResponse<T> {
     message: string;
     data: T;
@@ -37,18 +44,12 @@ export interface UsersApiResponse {
 }
 
 
-export interface PasswordResetRequest {
-    id: string;
-    user_rut: string;
-    admin_rut: string;
-    status: 'PENDING' | 'APPROVED' | 'REJECTED';
-    createdAt: string;
-    updatedAt: string;
-}
 
 export interface PasswordResetData {
     requests: PasswordResetRequest[];
     total: number;
+    page: number;
+    limit: number;
 }
 
 export interface PasswordResetResponse {
@@ -74,3 +75,21 @@ export interface LoginApiResponse {
     data: LoginResponse2FA;
     success: boolean;
 }
+export interface ApiPasswordResponse {
+  message: string;
+  data: {
+    requests: PasswordResetRequest[];
+    total: number;
+    page: number;
+    limit: number;
+  };
+  success: boolean;
+}
+
+export interface AssignedAquacultureResponse {
+  message: string;
+  data: AssignedAquaculture;
+  success: boolean;
+}
+
+

@@ -9,24 +9,9 @@ import { Observable } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { PasswordResetRequest } from '../../../interfaces/entities/user.interface';
+import { ApiPasswordResponse } from '../../../types/response.interface';
 
-interface PasswordRequest {
-  id: string;
-  user_rut: string;
-  admin_rut: string;
-  status: 'PENDING' | 'APPROVED' | 'REJECTED';
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ApiPasswordResponse {
-  message: string;
-  data: {
-    requests: PasswordRequest[];
-    total: number;
-  };
-  success: boolean;
-}
 
 @Component({
   selector: 'app-reset-password',
@@ -43,8 +28,9 @@ interface ApiPasswordResponse {
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
-  resetRequests: PasswordRequest[] = [];
-  totalRequests = 0;
+
+  resetRequests: PasswordResetRequest[] = [];
+  totalRequests: number = 0;
   displayedColumns: string[] = [
     'user_rut',
     'user_name',
@@ -67,8 +53,9 @@ export class ResetPasswordComponent implements OnInit {
 
   loadResetRequests() {
     this.userService.getResetPasswordRequests().subscribe({
-      next: (response) => {
+      next: (response: ApiPasswordResponse) => {
         if (response.success) {
+          // Asegúrate de que ambos tipos de PasswordResetRequest son idénticos
           this.resetRequests = response.data.requests;
           this.totalRequests = response.data.total;
         }

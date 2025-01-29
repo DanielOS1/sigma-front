@@ -8,11 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserRole } from '../../../interfaces/users/roles.enum';
+import { UserRole } from '../../../interfaces/entities/user.interface';
 import { ApiResponse } from '../../../types/response.interface';
-import { User } from '../../../interfaces/users/usersDto';
+import { User } from '../../../interfaces/entities/user.interface';
 import { UserService } from '../../../services/user.service';
-import { BaseUser, OwnerUser } from '../../../interfaces/users/usersDto';
+import { BaseUser, OwnerUser } from '../../../interfaces/entities/user.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
@@ -37,10 +37,10 @@ export class CreateUsersComponent implements OnInit {
   roles = UserRole;
   
   roleOptions = [
-    { value: UserRole.OWNER, label: 'Owner' },
-    { value: UserRole.SCIENTIST, label: 'Científico' },
-    { value: UserRole.AQUACULTURE_ADMIN, label: 'Administrador Acuícola' },
-    { value: UserRole.SYSTEM_ADMIN, label: 'Administrador de Sistemas' }
+    { value: UserRole.OWNER, label: 'Dueño', icon: 'business' },
+    { value: UserRole.SCIENTIST, label: 'Científico', icon: 'science' },
+    { value: UserRole.AQUACULTURE_ADMIN, label: 'Administrador Acuícola', icon: 'water' },
+    { value: UserRole.SYSTEM_ADMIN, label: 'Administrador de Sistemas', icon: 'admin_panel_settings' }
   ];
 
   constructor(

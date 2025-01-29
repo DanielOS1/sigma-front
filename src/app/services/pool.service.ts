@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
 import { AuthService } from './auth.service';
-import { PoolResponse } from '../interfaces/Pool/Pool.interface';
+import { PoolResponse } from '../interfaces/entities/pool.interface';
 @Injectable({
   providedIn: 'root'
 })

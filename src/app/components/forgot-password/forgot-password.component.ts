@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-forgot-password-dialog',
@@ -18,21 +19,10 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     FormsModule, 
     CommonModule,
+    MatIconModule
   ],
-  template: `
-    <h2 mat-dialog-title>Recuperar Contraseña</h2>
-    <mat-dialog-content>
-      <p>Ingrese su RUT para recuperar su contraseña.</p>
-      <mat-form-field appearance="outline">
-        <mat-label>RUT</mat-label>
-        <input matInput [(ngModel)]="rut" type="text" />
-      </mat-form-field>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close>Cancelar</button>
-      <button mat-raised-button color="accent" (click)="onRecover()">Recuperar</button>
-    </mat-dialog-actions>
-  `,
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordDialogComponent {
   rut: string = '';

@@ -10,7 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 import { PoolService } from '../../services/pool.service';
-import { WaterType, PondType } from '../../interfaces/Pool/Pool.interface';
+import { WaterType, PondType } from '../../interfaces/entities/pool.interface'; 
 
 @Component({
   selector: 'app-create-pool-modal',

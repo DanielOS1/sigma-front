@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
-import { AquacultureDetailResponse } from '../interfaces/aquaculture/aquaculture.interface';
+import { AquacultureDetail } from '../interfaces/entities/aquaculture.interface';
 import { AuthService } from './auth.service';
 
 interface AAqCad {
@@ -40,14 +40,14 @@ export class AquacultureService {
     return this.http.post<ApiResponse<any>>('/system-admin/create-aquaculture', aquacultureData, { headers });
   }
 
-  getAquacultureByRut(rut: string): Observable<AquacultureDetailResponse> {
+  getAquacultureByRut(rut: string): Observable<ApiResponse<AquacultureDetail>> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
     
-    return this.http.get<AquacultureDetailResponse>(
+    return this.http.get<ApiResponse<AquacultureDetail>>(
       `/system-admin/aquacultures/${rut}`,
       { headers }
     );

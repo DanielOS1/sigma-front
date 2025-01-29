@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Router } from '@angular/router';
 import { AquacultureService } from '../../services/aquaculture.service';
-import { Aquaculture } from '../../interfaces/aquaculture/aquaculture.interface';
+import { Aquaculture } from '../../interfaces/entities/aquaculture.interface'; 
 import { CreateAquacultureModalComponent } from '../../shared/create-aquaculture-modal/create-aquaculture-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 

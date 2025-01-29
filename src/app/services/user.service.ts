@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../interfaces/users/usersDto';
+import { User } from '../interfaces/entities/user.interface';
 import { ApiResponse, PasswordResetResponse, UsersApiResponse } from '../types/response.interface';
 import { AuthService } from '../services/auth.service';
-import { AuditLog } from '../interfaces/users/audits.interface';
+import { AuditResponse } from '../interfaces/entities/user.interface';
 
 
 @Injectable({
@@ -94,13 +94,13 @@ export class UserService {
     );
   }
 
-  getAudits(page: number = 1, limit: number = 5): Observable<AuditLog[]> {
+  getAudits(page: number = 1, limit: number = 5): Observable<AuditResponse[]> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString())
       .set('performedBy', this.authService.getDecodedToken().rut);
 
-    return this.http.get<AuditLog[]>(
+    return this.http.get<AuditResponse[]>(
       `/audit`,
       {
         params,
@@ -110,6 +110,7 @@ export class UserService {
       }
     );
   }
+  
   
 }
 

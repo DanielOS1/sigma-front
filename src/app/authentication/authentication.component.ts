@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { SessionService } from '../services/session-service.service'; 
-import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
+import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/entities/user.interface'; 
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ForgotPasswordDialogComponent } from '../components/forgot-password/forgot-password.component';
@@ -163,6 +163,7 @@ private handleLoginSuccess(response: any): void {
   
   try {
     const { accessToken, role } = response.data;
+    
     console.log(`✅ handleLoginSuccess: Token recibido, rol: ${role}`);
     
     // Manejo del token y sesión

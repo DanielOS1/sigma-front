@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../services/user.service';
-import { User } from '../interfaces/users/usersDto';
+import { User } from '../interfaces/entities/user.interface';
 import { ApiResponse } from '../types/response.interface';
 import { RolePipe } from '../pipes/role.pipe';
 import { MatCardModule } from '@angular/material/card';
@@ -9,17 +9,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AuditLog } from '../interfaces/users/audits.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { ResetPasswordModalComponent } from '../shared/reset-password-modal/reset-password-modal.component';
-import { UserRole } from '../interfaces/users/roles.enum';
+import { UserRole } from '../interfaces/entities/user.interface'; 
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { TwoFAStatusModalComponent } from '../shared/2fa-status-modal/2fa-status-modal.component';
-import { BaseUser } from '../interfaces/users/usersDto';
+import { BaseUser } from '../interfaces/entities/user.interface';
 import { PasswordConfirmDialogComponent } from '../shared/password-confirm-dialog/password-confirm-dialog.component';
 import { Subject, takeUntil } from 'rxjs';
+import { AuditResponse } from '../interfaces/entities/user.interface';
 
 @Component({
   selector: 'app-profile',
@@ -40,7 +40,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class ProfileComponent implements OnInit, OnDestroy {
   user: BaseUser | null = null;
   isLoading: boolean = true;
-  audits: AuditLog[] = [];
+  audits: AuditResponse[] = [];
   totalAudits: number = 0;
   pageSize: number = 5;
   pageSizeOptions: number[] = [5, 10, 20];
@@ -94,7 +94,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userService.getAudits(page, this.pageSize)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (audits: AuditLog[]) => {
+        next: (audits: AuditResponse[]) => {
           this.audits = audits;
           this.totalAudits = 100;
         },

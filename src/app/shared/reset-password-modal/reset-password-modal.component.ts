@@ -43,7 +43,7 @@ export class ResetPasswordModalComponent {
         if (response.success) {
           this.toastr.success('Solicitud de cambio de contraseña enviada exitosamente');
           this.authService.clearToken();
-          this.router.navigate(['/login']); 
+          this.router.navigate(['/auth']); 
           this.dialogRef.close(true);
         }
         this.isLoading = false;

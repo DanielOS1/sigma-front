@@ -2,12 +2,12 @@ import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { NavigationService } from './navigation.service';
-import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/loginDto';
-import { DecodedToken } from '../interfaces/token';
+import { LoginTypeAdto, LoginTypeBdto } from '../interfaces/entities/user.interface';
+import { DecodedToken } from '../interfaces/entities/user.interface';
 import { jwtDecode } from "jwt-decode";
 import { isPlatformBrowser } from '@angular/common';
 import { ApiResponse, LoginApiResponse, LoginResponse } from '../types/response.interface';
-import { UserRole } from '../interfaces/users/roles.enum';
+import { UserRole } from '../interfaces/entities/user.interface';
 
 @Injectable({
   providedIn: 'root'

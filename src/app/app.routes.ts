@@ -58,13 +58,6 @@ export const routes: Routes = [
               ),
           },
           {
-            path: 'create-aquaculture',
-            loadComponent: () =>
-              import('./ResourcesManagment/acquaculture-manage/create-acquaculture/create-aquaculture.component').then(
-                (m) => m.CreateAquacultureComponent
-              ),
-          },
-          {
             path: 'view-aquaculture',
             loadComponent: () =>
               import('./ResourcesManagment/acquaculture-manage/view-aquaculture/view-aquaculture.component').then(
@@ -89,6 +82,16 @@ export const routes: Routes = [
                   ),
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'center-admin',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./users/center-admin/dashboard-center-admin/dashboard-center-admin.component').then((m) => m.DashboardCenterAdminComponent),
           },
         ],
       },

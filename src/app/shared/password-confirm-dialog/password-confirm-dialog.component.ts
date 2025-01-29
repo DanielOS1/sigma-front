@@ -9,37 +9,16 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-password-confirm-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule    ],
-  template: `
-    <div class="modal-container">
-      <div class="modal-header">
-        <h2>
-          <mat-icon>lock</mat-icon>
-          Confirmar Contraseña
-        </h2>
-      </div>
-
-      <div class="modal-content">
-        <p>Por favor, ingresa tu contraseña para continuar</p>
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" [(ngModel)]="password">
-        </mat-form-field>
-      </div>
-
-      <div class="modal-actions">
-        <button mat-button mat-dialog-close>Cancelar</button>
-        <button 
-          mat-raised-button 
-          color="primary"
-          [disabled]="!password"
-          [mat-dialog-close]="password">
-          Confirmar
-        </button>
-      </div>
-    </div>
-  `,
-  styles: [/* ... estilos similares a otros modales ... */]
+  imports: [
+    MatDialogModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule
+  ],
+  templateUrl: './password-confirm-dialog.component.html',
+  styleUrls: ['./password-confirm-dialog.component.scss']
 })
 export class PasswordConfirmDialogComponent {
   password: string = '';

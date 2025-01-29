@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PoolService } from '../../../services/pool.service';
-import { WaterType, PondType } from '../../../interfaces/Pool/Pool.interface';
+import { WaterType, PondType } from '../../../interfaces/entities/pool.interface';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';

@@ -1,12 +1,40 @@
-<h2 mat-dialog-title>Verificación en Dos Pasos</h2>
-<mat-dialog-content>
-  <p>Por favor, ingresa el código de verificación que has recibido:</p>
-  <mat-form-field appearance="fill">
-    <mat-label>Código de Verificación</mat-label>
-    <input matInput [(ngModel)]="verificationCode" maxlength="6" required>
-  </mat-form-field>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="closeModal()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="submitCode()">Enviar</button>
-</mat-dialog-actions>
+<div class="modal-container">
+  <div class="modal-header">
+    <mat-icon class="text-primary">security</mat-icon>
+    <h2 mat-dialog-title>Verificación en Dos Pasos</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="content-wrapper">
+      <p class="description">
+        Por favor, ingresa el código de verificación que has recibido en tu correo electrónico
+      </p>
+      
+      <div class="code-input-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Código de Verificación</mat-label>
+          <input 
+            matInput 
+            [(ngModel)]="verificationCode" 
+            maxlength="6" 
+            required
+            placeholder="000000"
+            autocomplete="off"
+            class="code-input">
+          <mat-hint>Ingresa el código de 6 dígitos</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="closeModal()">Cancelar</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="submitCode()"
+      [disabled]="!verificationCode || verificationCode.length !== 6">
+      Verificar
+    </button>
+  </mat-dialog-actions>
+</div>

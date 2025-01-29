@@ -10,9 +10,9 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
-import { UserRole } from '../../interfaces/users/roles.enum';
+import { UserRole } from '../../interfaces/entities/user.interface';
 import { ApiResponse } from '../../types/response.interface';
-import { User } from '../../interfaces/users/usersDto';
+import { User } from '../../interfaces/entities/user.interface';
 
 interface NavItem {
   type: 'link' | 'expansion';
@@ -59,7 +59,7 @@ export class AdminSystemSideNavComponent implements OnInit {
       case UserRole.SYSTEM_ADMIN:
         return '/system-admin';
       case UserRole.AQUACULTURE_ADMIN:
-        return '/dashboard';
+        return '/center-admin';
       default:
         return '/dashboard';
     }

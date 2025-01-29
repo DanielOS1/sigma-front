@@ -53,14 +53,14 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="w-full">
-                        <mat-label>Rol del Usuario</mat-label>
+                        <mat-label>Rol</mat-label>
                         <mat-select formControlName="role">
-                            <mat-option *ngFor="let role of roleOptions" [value]="role.value">
-                                <div class="flex items-center">
-                                    <mat-icon>{{getRoleIcon(role.value)}}</mat-icon>
-                                    <span>{{ role.label }}</span>
-                                </div>
-                            </mat-option>
+                            @for (role of roleOptions; track role.value) {
+                                <mat-option [value]="role.value">
+                                    <mat-icon>{{role.icon}}</mat-icon>
+                                    {{role.label}}
+                                </mat-option>
+                            }
                         </mat-select>
                     </mat-form-field>
 

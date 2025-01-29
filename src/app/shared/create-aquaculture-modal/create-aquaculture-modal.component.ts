@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AquacultureService } from '../../services/aquaculture.service';
-import { CreateAquacultureDto } from '../../interfaces/aquaculture/aquaculture.interface';
+import { CreateAquacultureDto } from '../../interfaces/entities/aquaculture.interface';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
