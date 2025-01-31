@@ -1,0 +1,113 @@
+<div class="sensor-admin-container">
+  <!-- Header -->
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>Gestión de Sensores - Piscina A1</mat-card-title>
+    </mat-card-header>
+  </mat-card>
+
+  <!-- Main Content -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>Información de la Piscina</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Capacidad:</span>
+          <p>10,000 litros</p>
+        </div>
+        <div class="info-item">
+          <span class="label">Responsable:</span>
+          <p>Dr. Juan Pérez</p>
+        </div>
+        <div class="info-item">
+          <span class="label">Estado:</span>
+          <mat-chip-listbox>   
+            <mat-chip color="primary" selected>Activo</mat-chip>
+          </mat-chip-listbox>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Sensors Grid -->
+  <mat-card class="sensors-card">
+    <mat-card-header>
+      <mat-card-title>Configuración de Sensores</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="sensors-grid">
+        <mat-card *ngFor="let sensor of sensors" [class.active]="sensor.active" class="sensor-card">
+          <!-- Sensor Header -->
+          <div class="sensor-header">
+            <div class="sensor-info">
+              <mat-icon>{{sensor.icon}}</mat-icon>
+              <span>{{sensor.type}}</span>
+            </div>
+            <button mat-mini-fab [color]="sensor.active ? 'primary' : ''" 
+                    (click)="toggleSensor(sensor)">
+              <mat-icon>power_settings_new</mat-icon>
+            </button>
+          </div>
+
+          <!-- Sensor Count -->
+          <div class="sensor-count">
+            <span>Cantidad de sensores:</span>
+            <div class="count-controls">
+              <button mat-icon-button (click)="updateCount(sensor, false)"
+                      [disabled]="!sensor.active || sensor.count === 0">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <span class="count">{{sensor.count}}</span>
+              <button mat-icon-button (click)="updateCount(sensor, true)"
+                      [disabled]="!sensor.active || sensor.count === 5">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sensor Instances -->
+          <div *ngIf="sensor.active && sensor.instances.length > 0" class="sensor-instances">
+            <mat-divider></mat-divider>
+            <div *ngFor="let instance of sensor.instances; let i = index" class="instance-config">
+              <h4>Configuración Sensor {{i + 1}}</h4>
+              
+              <div class="position-fields">
+                <mat-form-field appearance="outline">
+                  <mat-label>Posición X</mat-label>
+                  <input matInput type="number" [(ngModel)]="instance.xPosition"
+                         (ngModelChange)="updateInstance(sensor, instance, 'xPosition', $event)">
+                  <mat-icon matPrefix>place</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Posición Y</mat-label>
+                  <input matInput type="number" [(ngModel)]="instance.yPosition"
+                         (ngModelChange)="updateInstance(sensor, instance, 'yPosition', $event)">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Posición Z</mat-label>
+                  <input matInput type="number" [(ngModel)]="instance.zPosition"
+                         (ngModelChange)="updateInstance(sensor, instance, 'zPosition', $event)">
+                </mat-form-field>
+              </div>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Intervalo de medición</mat-label>
+                <mat-select [(ngModel)]="instance.samplingFrequency"
+                          (ngModelChange)="updateInstance(sensor, instance, 'samplingFrequency', $event)">
+                  <mat-option *ngFor="let interval of intervals" [value]="interval.value">
+                    {{interval.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>schedule</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

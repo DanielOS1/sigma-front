@@ -103,8 +103,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./users/center-admin/pond-administration/pond-administration.component').then((m) => m.PondAdministrationComponent),
           },
+          {
+            path: 'sensor-administration',
+            loadComponent: () =>
+              import('./users/center-admin/sensor-administration/sensor-administration.component').then((m) => m.SensorAdministrationComponent),
+          },
         ],
       },
+
 
       // Mis dispositivos
       {

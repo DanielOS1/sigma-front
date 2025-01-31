@@ -1,0 +1,69 @@
+export interface CreateSensor {
+    type: SensorType;
+    thresholdMin?: number;
+    thresholdMax?: number;
+    samplingFrequency?: number;
+    xPosition: number;
+    yPosition: number;
+    zPosition: number;
+    pondId: string;
+  }
+  
+
+export enum SensorType {
+    OXYGEN = 1,
+    TEMPERATURE = 2,
+    PH = 3,
+    CONDUCTIVITY = 4,
+    TURBIDITY = 5,
+    WATER_LEVEL = 6,
+    WATER_FLOW = 7,
+  }
+
+
+export interface Sensor {
+    id: string;
+    type: SensorType;
+    thresholdMin: number | null;
+    thresholdMax: number | null;
+    samplingFrequency: number;
+    status: boolean;
+    lastUpdate: Date;
+    xPosition: number;
+    yPosition: number;
+    zPosition: number;
+    unit: string;
+    //pond: AquaculturePond;
+  }
+
+export interface updateSensor{
+    samplingFrequency: number;
+    xPosition: number;
+    yPosition: number;
+    zPosition: number;
+}
+  
+  
+
+export interface SensorInstance {
+    id: number;
+    type: SensorType;
+    thresholdMin: number | null;
+    thresholdMax: number | null;
+    samplingFrequency: number;
+    xPosition: number;
+    location: string;
+    yPosition: number;
+    zPosition: number;
+    status: boolean;
+  }
+
+export interface SensorFormat {
+    id: string;
+    type: SensorType;
+    icon: string;
+    active: boolean;
+    count: number;
+    instances: SensorInstance[];
+
+  }

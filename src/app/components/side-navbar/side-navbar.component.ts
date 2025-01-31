@@ -124,7 +124,13 @@ export class AdminSystemSideNavComponent implements OnInit {
             label: 'Pond Administration',
             path: '/center-admin/pond-administration',
             roles: [UserRole.AQUACULTURE_ADMIN]
-          }
+          },
+          {
+            icon: 'sensor',
+            label: 'Sensor Administration',
+            path: '/center-admin/sensor-administration',
+            roles: [UserRole.AQUACULTURE_ADMIN]
+          } 
         ]
       }
     ];

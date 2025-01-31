@@ -1,128 +1,150 @@
-<div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-6">Dashboard Administrador de Centro</h1>
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Dashboard Centro de Cultivo</h1>
+    <p class="subtitle">{{aquacultureBasicDetails?.name}}</p>
+  </div>
 
-    <!-- Loading State -->
-    <div *ngIf="loading" class="flex justify-center items-center h-64">
-        <mat-spinner></mat-spinner>
-    </div>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
 
-    <!-- Not Assigned State -->
-    <mat-card *ngIf="!loading && !isAssigned" class="p-6 text-center">
-        <mat-icon class="text-6xl mb-4 text-gray-400">warning</mat-icon>
-        <h2 class="text-2xl font-semibold mb-2">No Asignado</h2>
-        <p class="text-gray-600">
-            Actualmente no está asignado como administrador de ningún centro acuícola.
-            Por favor, contacte al administrador del sistema.
-        </p>
+  <!-- Not Assigned State -->
+  <mat-card *ngIf="!loading && !isAssigned" class="empty-state-card">
+    <mat-icon>warning</mat-icon>
+    <h2>No Asignado</h2>
+    <p>Actualmente no está asignado como administrador de ningún centro acuícola.
+       Por favor, contacte al administrador del sistema.</p>
+  </mat-card>
+
+  <!-- Assigned State -->
+  <div *ngIf="!loading && isAssigned && aquacultureBasicDetails" class="dashboard-grid">
+    <!-- Información Básica -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>business</mat-icon>
+        <mat-card-title>Información del Centro</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Nombre del Centro</label>
+            <p>{{aquacultureBasicDetails.name}}</p>
+          </div>
+          <div class="info-item">
+            <label>RUT</label>
+            <p>{{aquacultureBasicDetails.rut}}</p>
+          </div>
+          <div class="info-item">
+            <label>Correo Electrónico</label>
+            <p>{{aquacultureBasicDetails.email}}</p>
+          </div>
+          <div class="info-item">
+            <label>Teléfono de Contacto</label>
+            <p>{{aquacultureBasicDetails.phoneNumber}}</p>
+          </div>
+        </div>
+      </mat-card-content>
     </mat-card>
 
-    <!-- Assigned State -->
-    <div *ngIf="!loading && isAssigned && aquacultureBasicDetails" class="grid grid-cols-1 gap-6">
-        <!-- Información Básica -->
-        <mat-card class="p-6">
-            <div class="flex items-center gap-2 mb-4">
-                <mat-icon class="text-primary">business</mat-icon>
-                <h2 class="text-xl font-semibold">Información Básica</h2>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <p class="font-medium text-gray-600">Nombre</p>
-                    <p>{{aquacultureBasicDetails.name}}</p>
-                </div>
-                <div>
-                    <p class="font-medium text-gray-600">RUT</p>
-                    <p>{{aquacultureBasicDetails.rut}}</p>
-                </div>
-                <div>
-                    <p class="font-medium text-gray-600">Email</p>
-                    <p>{{aquacultureBasicDetails.email}}</p>
-                </div>
-                <div>
-                    <p class="font-medium text-gray-600">Teléfono</p>
-                    <p>{{aquacultureBasicDetails.phoneNumber}}</p>
-                </div>
-            </div>
-        </mat-card>
+    <!-- Personal -->
+    <mat-card class="personnel-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>people</mat-icon>
+        <mat-card-title>Personal del Centro</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Administrador -->
+        <div class="personnel-section">
+          <h3>
+            <mat-icon>admin_panel_settings</mat-icon>
+            Administrador
+          </h3>
+          <div class="personnel-info">
+            <p class="name">{{aquacultureAdmin?.name}}</p>
+            <p class="rut">RUT: {{aquacultureAdmin?.rut}}</p>
+          </div>
+        </div>
 
-        <!-- Personal Asignado -->
-        <mat-card class="p-6">
-            <div class="flex items-center gap-2 mb-4">
-                <mat-icon class="text-primary">people</mat-icon>
-                <h2 class="text-xl font-semibold">Personal Asignado</h2>
+        <!-- Dueño -->
+        <div class="personnel-section">
+          <h3>
+            <mat-icon>person</mat-icon>
+            Dueño
+          </h3>
+          <div class="personnel-info" *ngIf="(aquacultureOwner ?? []).length">
+            <p class="name">{{aquacultureOwner?.[0]?.name}}</p>
+            <p class="rut">RUT: {{aquacultureOwner?.[0]?.rut}}</p>
+          </div>
+          <div class="empty-state" *ngIf="!aquacultureOwner?.length">
+            <p>No hay dueño asignado</p>
+          </div>
+        </div>
+
+        <!-- Científicos -->
+        <div class="personnel-section">
+          <h3>
+            <mat-icon>science</mat-icon>
+            Científicos
+          </h3>
+          <div class="scientists-list">
+            <div class="scientist-item" *ngFor="let scientist of scientists">
+              <p class="rut">RUT: {{scientist.scientistRut}}</p>
             </div>
-            
-            <!-- Administrador -->
-            <div class="mb-4">
-                <h3 class="font-medium text-gray-600 mb-2">Administrador de Centro</h3>
-                <div class="bg-gray-50 p-3 rounded">
-                    <p>{{aquacultureAdmin?.name}}</p>
-                    <p class="text-sm text-gray-500">RUT: {{aquacultureAdmin?.rut}}</p>
+            <div class="empty-state" *ngIf="!scientists?.length">
+              <p>No hay científicos asignados</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Estructuras -->
+    <mat-card class="structures-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>pool</mat-icon>
+        <mat-card-title>Estructuras del Centro</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="structures-grid">
+          <mat-card class="structure-item" *ngFor="let pool of ponds">
+            <div class="structure-header">
+              <mat-icon>{{pool.ponds_pondType === '1' ? 'waves' : 'pool'}}</mat-icon>
+              <h4>{{pool.ponds_pondType === '1' ? 'Estanque Circular' : 'Piscina Rectangular'}}</h4>
+            </div>
+            <div class="structure-details">
+              <div class="detail-item">
+                <label>Tipo de Agua</label>
+                <p>{{pool.ponds_waterType === 1 ? 'Salada' : 'Dulce'}}</p>
+              </div>
+              <div class="detail-item">
+                <label>Profundidad</label>
+                <p>{{pool.ponds_depth}} metros</p>
+              </div>
+              <ng-container *ngIf="pool.ponds_pondType === '1'">
+                <div class="detail-item">
+                  <label>Radio</label>
+                  <p>{{pool.pondradius}} metros</p>
                 </div>
-            </div>
-
-                <!-- Dueño -->
-                <div class="mb-4">
-                <h3 class="font-medium text-gray-600 mb-2">Dueño</h3>
-                <div *ngIf="(aquacultureOwner ?? []).length" class="bg-gray-50 p-3 rounded">
-                    <p>{{aquacultureOwner?.[0]?.name}}</p>
-                    <p class="text-sm text-gray-500">RUT: {{aquacultureOwner?.[0]?.rut}}</p>    
+              </ng-container>
+              <ng-container *ngIf="pool.ponds_pondType === '2'">
+                <div class="detail-item">
+                  <label>Longitud</label>
+                  <p>{{pool.poollength}} metros</p>
                 </div>
-                <p *ngIf="!aquacultureOwner?.length" class="text-gray-500">
-                    No hay dueño asignado
-                </p>
-            </div>
-
-            <!-- Cienticos -->
-            <div class="mb-4">
-                <h3 class="font-medium text-gray-600 mb-2">Cienticos</h3>
-                <div *ngFor="let scientist of scientists" class="bg-gray-50 p-3 rounded">
-                    <p class="text-sm text-gray-500">RUT: {{scientist.scientistRut}}</p>
+                <div class="detail-item">
+                  <label>Altura</label>
+                  <p>{{pool.poolheight}} metros</p>
                 </div>
-            </div>  
-        </mat-card>
-
-        <!-- Estructuras -->
-        <mat-card class="p-6">
-            <div class="flex items-center gap-2 mb-4">
-                <mat-icon class="text-primary">pool</mat-icon>
-                <h2 class="text-xl font-semibold">Estructuras</h2>
+              </ng-container>
             </div>
-
-            <div class="grid gap-4">
-                <mat-card *ngFor="let pool of ponds" class="p-4 bg-gray-50">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="font-medium text-gray-600">Tipo</p>
-                            <p>{{pool.ponds_pondType }}</p>
-                        </div>
-                        <div>
-                            <p class="font-medium text-gray-600">Tipo de Agua</p>
-                            <p>{{pool.ponds_waterType === 1 ? 'Salada' : 'Dulce'}}</p>
-                        </div>
-                        <div>
-                            <p class="font-medium text-gray-600">Profundidad</p>
-                            <p>{{pool.ponds_depth}} metros</p>
-                        </div>
-                        <div *ngIf="pool.ponds_pondType === 1">
-                            <p class="font-medium text-gray-600">Radio</p>
-                            <p>{{pool.pondradius}} metros</p>
-                        </div>
-                        <div *ngIf="pool.ponds_pondType === 2">
-                            <p class="font-medium text-gray-600">Longitud</p>
-                            <p>{{pool.poollength}} metros</p>
-                        </div>
-                        <div *ngIf="pool.ponds_pondType === 2">
-                            <p class="font-medium text-gray-600">Altura</p>
-                            <p>{{pool.poolheight}} metros</p>
-                        </div>
-                    </div>
-                </mat-card>
-            </div>
-
-            <div *ngIf="!ponds?.length" class="text-center py-8">
-                <mat-icon class="text-4xl text-gray-400 mb-2">pool</mat-icon>
-                <p class="text-gray-500">No hay estructuras registradas</p>
-            </div>
-        </mat-card>
-    </div>
+          </mat-card>
+          <div class="empty-state" *ngIf="!ponds?.length">
+            <mat-icon>pool</mat-icon>
+            <p>No hay estructuras registradas</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

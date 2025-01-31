@@ -38,3 +38,4 @@ export class AquacultureStateService {
     this.aquacultureAdmin.next(null);
   }
 }
+

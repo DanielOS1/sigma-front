@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { PoolService } from '../../services/pool.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PoolResponse } from '../../interfaces/entities/pool.interface';
+import { PoolAdvancedDetails, PoolResponse } from '../../interfaces/entities/pool.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -13,16 +13,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AssignPersonnelModalComponent } from '../assign-personnel-modal/assign-personnel-modal.component';
 
-interface Pool {
-  id: string;
-  depth: number;
-  watertype: string;
-  radius: number | null;
-  length: number | null;
-  height: number | null;
-  ownerName: string | null;
-  ownerRut: string | null;
-}
 
 @Component({
   selector: 'app-pool-details-modal',
@@ -58,10 +48,11 @@ interface Pool {
             </div>
             <div class="info-item">
               <label>Tipo de Agua</label>
-              <p>{{pool.watertype === '1' ? 'Agua Dulce' : 'Agua Salada'}}</p>
+              <p>{{pool.waterType === 1 ? 'Agua Dulce' : 'Agua Salada'}}</p>
             </div>
             <div class="info-item" *ngIf="pool.radius">
               <label>Radio</label>
+
               <p>{{pool.radius}} metros</p>
             </div>
             <div class="info-item" *ngIf="!pool.radius">
@@ -243,9 +234,10 @@ interface Pool {
   `]
 })
 export class PoolDetailsModalComponent implements OnInit {
-  pool: any;
+  pool: PoolAdvancedDetails | null = null;
   scientists: any[] = [];
   selectedAquacultureRut: string | null = null;
+
 
 
   constructor(
@@ -263,7 +255,7 @@ export class PoolDetailsModalComponent implements OnInit {
 
   loadPoolDetails() {
     this.poolService.getPoolbyId(this.data.id).subscribe({
-      next: (response) => {
+      next: (response: ApiResponse<PoolAdvancedDetails>) => {
         if (response.success) {
           this.pool = response.data;
           this.loadScientists();
@@ -277,10 +269,11 @@ export class PoolDetailsModalComponent implements OnInit {
   }
 
   loadScientists() {
-    this.poolService.getPoolScientists(this.pool.id).subscribe({
+    this.poolService.getPoolScientists(this.pool!.id).subscribe({
       next: (response) => {
         if (response.success) {
           this.scientists = response.data;
+
         }
       },
       error: (error) => {
@@ -294,15 +287,16 @@ export class PoolDetailsModalComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignPersonnelModalComponent, {
       data: { 
         type: 'owner',
-        aquacultureRut: this.pool.aquacultureRut
       }
     });
 
+
     dialogRef.afterClosed().subscribe(ownerRut => { 
       if (ownerRut) {
-        this.poolService.assignOwnerToPool(this.pool.id, ownerRut).subscribe({
+        this.poolService.assignOwnerToPool(this.pool!.id, ownerRut).subscribe({
           next: (response) => {
             if (response.success) {
+
               this.loadPoolDetails();
               this.toastr.success('Dueño asignado exitosamente');
             }
@@ -317,9 +311,10 @@ export class PoolDetailsModalComponent implements OnInit {
   }
 
   removeOwner() {
-    this.poolService.removeOwnerFromPool(this.pool.id).subscribe({
+    this.poolService.removeOwnerFromPool(this.pool!.id).subscribe({
       next: (response) => {
         if (response.success) {
+
           this.loadPoolDetails();
           this.toastr.success('Dueño removido exitosamente');
         }
@@ -335,16 +330,17 @@ export class PoolDetailsModalComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignPersonnelModalComponent, {
       data: { 
         type: 'scientist',
-        aquacultureRut: this.pool.aquacultureRut
       }
+
     });
 
     dialogRef.afterClosed().subscribe(scientistRut => {
       if (scientistRut) {
-        this.poolService.assignScientistToPool(this.pool.id, scientistRut).subscribe({
+        this.poolService.assignScientistToPool(this.pool!.id, scientistRut).subscribe({
       next: (response) => {
         if (response.success) {
           this.loadScientists();
+
           this.toastr.success('Científico asignado exitosamente');
         }
       },
@@ -358,10 +354,11 @@ export class PoolDetailsModalComponent implements OnInit {
   }
 
   removeScientist(scientistRut: string) {
-    this.poolService.removeScientistFromPool(this.pool.id, scientistRut).subscribe({
+    this.poolService.removeScientistFromPool(this.pool!.id, scientistRut).subscribe({
       next: (response) => {
         if (response.success) {
           this.scientists = this.scientists.filter(scientist => scientist.scientistRut !== scientistRut);
+
           this.toastr.success('Científico removido exitosamente');
         }
       },
