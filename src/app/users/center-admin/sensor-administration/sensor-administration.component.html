@@ -1,113 +1,136 @@
 <div class="sensor-admin-container">
   <!-- Header -->
   <mat-card class="header-card">
-    <mat-card-header>
-      <mat-card-title>Gestión de Sensores - Piscina A1</mat-card-title>
-    </mat-card-header>
-  </mat-card>
+    <mat-card-header class="header-title">
+      <mat-card-title>Gestión de Sensores</mat-card-title>
+      <div class="header-actions">
+        <mat-form-field appearance="outline">
+          <mat-label>Seleccionar Piscina</mat-label>
+          <mat-select [(ngModel)]="selectedPond" (ngModelChange)="onPondChange($event)">
+            <mat-option *ngFor="let pond of ponds" [value]="pond">
+              Piscina {{pond.id}}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>pool</mat-icon>
+        </mat-form-field>
+        
 
-  <!-- Main Content -->
-  <mat-card class="info-card">
-    <mat-card-header>
-      <mat-card-title>Información de la Piscina</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="info-grid">
-        <div class="info-item">
-          <span class="label">Capacidad:</span>
-          <p>10,000 litros</p>
-        </div>
-        <div class="info-item">
-          <span class="label">Responsable:</span>
-          <p>Dr. Juan Pérez</p>
-        </div>
-        <div class="info-item">
-          <span class="label">Estado:</span>
-          <mat-chip-listbox>   
-            <mat-chip color="primary" selected>Activo</mat-chip>
-          </mat-chip-listbox>
-        </div>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngFor="let type of availableSensorTypes" (click)="openCreateSensorModal(type)">
+            <mat-icon>{{getSensorIcon(type)}}</mat-icon>
+            <span>{{getSensorTypeName(type)}}</span>
+          </button>
+        </mat-menu>
       </div>
-    </mat-card-content>
+    </mat-card-header>
   </mat-card>
 
-  <!-- Sensors Grid -->
-  <mat-card class="sensors-card">
-    <mat-card-header>
-      <mat-card-title>Configuración de Sensores</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+  <!-- Estado sin piscina seleccionada -->
+  <div class="no-pond-selected" *ngIf="!(selectedPond$ | async)">
+    <mat-card class="empty-state-card">
+      <mat-card-content>
+        <div class="empty-state">
+          <mat-icon>pool</mat-icon>
+          <h2>Selecciona una Piscina</h2>
+          <p>Para comenzar a gestionar los sensores, por favor selecciona una piscina del menú superior.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Contenido cuando hay piscina seleccionada -->
+  <ng-container *ngIf="selectedPond$ | async as selectedPond">
+    <!-- Info Card -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>Información de la Piscina</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Tipo de Estructura:</span>
+            <p>{{ selectedPond.pondType === 1 ? 'Circular' : 'Rectangular' }}</p>
+          </div>
+          <div class="info-item">
+            <span class="label">Propietario:</span>
+            <!-- <p>{{ selectedPond.owner || 'No especificado' }}</p> -->
+          </div>
+          <div class="info-item">
+            <span class="label">Científico Responsable:</span>
+            <!-- <p>{{ selectedPond.scientist || 'No especificado' }}</p> -->
+          </div>
+          <div class="info-item">
+
+            <span class="label">Estado:</span>
+            <mat-chip-listbox>   
+
+            </mat-chip-listbox>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sensors Container -->
+    <div class="sensors-container">
+      <!-- Header con botón de agregar -->
+      <div class="header-actions">
+        <h2>Sensores Instalados</h2>
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">
+          <mat-icon>add</mat-icon>
+          Agregar Sensor
+        </button>
+      </div>
+
       <div class="sensors-grid">
-        <mat-card *ngFor="let sensor of sensors" [class.active]="sensor.active" class="sensor-card">
-          <!-- Sensor Header -->
-          <div class="sensor-header">
-            <div class="sensor-info">
-              <mat-icon>{{sensor.icon}}</mat-icon>
-              <span>{{sensor.type}}</span>
-            </div>
-            <button mat-mini-fab [color]="sensor.active ? 'primary' : ''" 
-                    (click)="toggleSensor(sensor)">
-              <mat-icon>power_settings_new</mat-icon>
-            </button>
-          </div>
+        <mat-card *ngFor="let group of groupedSensors" class="sensor-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>{{group.icon}}</mat-icon>
+            <mat-card-title>{{getSensorTypeName(group.type)}}</mat-card-title>
+            <mat-card-subtitle>
+              {{group.sensors.length}} sensor{{group.sensors.length !== 1 ? 'es' : ''}}
+            </mat-card-subtitle>
+          </mat-card-header>
 
-          <!-- Sensor Count -->
-          <div class="sensor-count">
-            <span>Cantidad de sensores:</span>
-            <div class="count-controls">
-              <button mat-icon-button (click)="updateCount(sensor, false)"
-                      [disabled]="!sensor.active || sensor.count === 0">
-                <mat-icon>remove</mat-icon>
-              </button>
-              <span class="count">{{sensor.count}}</span>
-              <button mat-icon-button (click)="updateCount(sensor, true)"
-                      [disabled]="!sensor.active || sensor.count === 5">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-          </div>
+          <mat-card-content>
+            <table mat-table [dataSource]="group.sensors" class="sensor-table">
+              <!-- ID Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let sensor">{{sensor.id | slice:0:8}}...</td>
+              </ng-container>
 
-          <!-- Sensor Instances -->
-          <div *ngIf="sensor.active && sensor.instances.length > 0" class="sensor-instances">
-            <mat-divider></mat-divider>
-            <div *ngFor="let instance of sensor.instances; let i = index" class="instance-config">
-              <h4>Configuración Sensor {{i + 1}}</h4>
-              
-              <div class="position-fields">
-                <mat-form-field appearance="outline">
-                  <mat-label>Posición X</mat-label>
-                  <input matInput type="number" [(ngModel)]="instance.xPosition"
-                         (ngModelChange)="updateInstance(sensor, instance, 'xPosition', $event)">
-                  <mat-icon matPrefix>place</mat-icon>
-                </mat-form-field>
+              <!-- Status Column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Estado</th>
+                <td mat-cell *matCellDef="let sensor">
+                  <span class="status-chip" [class.active]="sensor.status">
+                    {{sensor.status ? 'Activo' : 'Inactivo'}}
+                  </span>
+                </td>
+              </ng-container>
 
-                <mat-form-field appearance="outline">
-                  <mat-label>Posición Y</mat-label>
-                  <input matInput type="number" [(ngModel)]="instance.yPosition"
-                         (ngModelChange)="updateInstance(sensor, instance, 'yPosition', $event)">
-                </mat-form-field>
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let sensor">
+                  <button mat-icon-button color="primary" (click)="viewSensorDetails(sensor)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
 
-                <mat-form-field appearance="outline">
-                  <mat-label>Posición Z</mat-label>
-                  <input matInput type="number" [(ngModel)]="instance.zPosition"
-                         (ngModelChange)="updateInstance(sensor, instance, 'zPosition', $event)">
-                </mat-form-field>
-              </div>
-
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Intervalo de medición</mat-label>
-                <mat-select [(ngModel)]="instance.samplingFrequency"
-                          (ngModelChange)="updateInstance(sensor, instance, 'samplingFrequency', $event)">
-                  <mat-option *ngFor="let interval of intervals" [value]="interval.value">
-                    {{interval.label}}
-                  </mat-option>
-                </mat-select>
-                <mat-icon matPrefix>schedule</mat-icon>
-              </mat-form-field>
-            </div>
-          </div>
+              <tr mat-header-row *matHeaderRowDef="['id', 'status', 'actions']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['id', 'status', 'actions'];"></tr>
+            </table>
+          </mat-card-content>
         </mat-card>
       </div>
-    </mat-card-content>
-  </mat-card>
+
+      <!-- Estado vacío -->
+      <div class="empty-state" *ngIf="!groupedSensors.length">
+        <mat-icon>sensors</mat-icon>
+        <p>No hay sensores instalados en esta piscina</p>
+      </div>
+    </div>
+  </ng-container>
 </div>

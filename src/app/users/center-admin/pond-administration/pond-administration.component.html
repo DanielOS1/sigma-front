@@ -1,190 +1,186 @@
-<div class="container mx-auto p-4">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-    <!-- Lista de Piscinas (Columna 1) -->
-    <div class="md:col-span-1">
-      <mat-card class="h-full">
-        <mat-card-header>
-          <mat-card-title>Piscinas</mat-card-title>
-          <mat-card-subtitle>{{aquacultureDetails?.name}}</mat-card-subtitle>
-        </mat-card-header>
-        
-        <mat-card-content>
-          <mat-nav-list>
-            <a mat-list-item *ngFor="let pond of ponds" 
-               (click)="selectPond(pond.ponds_id)"
-               [class.selected]="selectedPondId === pond.ponds_id">
-              <mat-icon matListItemIcon>
-                {{pond.ponds_pondType === '1' ? 'waves' : 'pool'}}
-              </mat-icon>
-              <div matListItemTitle>
-                Piscina #{{pond.ponds_id.slice(0,8)}}
-              </div>
-              <div matListItemLine>
-                {{pond.ponds_pondType === '1' ? 'Circular' : 'Rectangular'}} - 
-                {{pond.ponds_depth}}m
-              </div>
-            </a>
-          </mat-nav-list>
+<div class="min-h-screen bg-gray-50 p-4">
+  <div class="container mx-auto">
+    <!-- Header -->
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+        <mat-icon class="text-blue-600">pool</mat-icon>
+        Gestión de Piscinas y Estanques
+      </h1>
+    </header>
 
-          <!-- Estado vacío -->
-          <div *ngIf="!ponds.length && !loading" class="text-center py-8">
-            <mat-icon class="text-gray-400 text-4xl mb-2">pool</mat-icon>
-            <p class="text-gray-500">No hay piscinas registradas</p>
-          </div>
-
-          <!-- Loading spinner -->
-          <div *ngIf="loading" class="flex justify-center py-8">
-            <mat-spinner diameter="40"></mat-spinner>
-          </div>
-        </mat-card-content>
-
-        <mat-card-actions>
-          <button mat-raised-button color="primary" (click)="openCreatePondModal()">
-            <mat-icon>add</mat-icon>
-            Nueva Piscina
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-
-    <!-- Detalles de la Piscina (Columna 2) -->
-    <div class="md:col-span-3">
-      <div *ngIf="selectedPond" class="grid gap-4">
-        <!-- Información Básica -->
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title class="flex items-center gap-2">
-              <mat-icon>{{isCircularPond(selectedPond.id) ? 'waves' : 'pool'}}</mat-icon>
-              {{isCircularPond(selectedPond.id) ? 'Estanque Circular' : 'Piscina Rectangular'}}
-            </mat-card-title>
-            <mat-card-subtitle>ID: {{selectedPond.id}}</mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content class="p-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="info-item">
-                <label>Tipo</label>
-                <p>{{isCircularPond(selectedPond.id) ? 'Estanque Circular' : 'Piscina Rectangular'}}</p>
-              </div>
-              <div class="info-item">
-                <label>Profundidad</label>
-
-                <p>{{selectedPond.depth}} metros</p>
-              </div>
-              <div class="info-item">
-                <label>Tipo de Agua</label>
-                <p>{{selectedPond.waterType === 1 ? 'Agua Dulce' : 'Agua Salada'}}</p>
-              </div>
-              <div class="info-item" *ngIf="isCircularPond(selectedPond.id)">
-                <label>Radio</label>
-                <p>{{selectedPond.radius}} metros</p>
-
-              </div>
-              <div class="info-item" *ngIf="!isCircularPond(selectedPond.id)">
-                <label>Largo</label>
-                <p>{{selectedPond.length}} metros</p>
-
-              </div>
-              <div class="info-item" *ngIf="!isCircularPond(selectedPond.id)">
-                <label>Alto</label>
-                <p>{{selectedPond.height}} metros</p>
-
-              </div>
+    <div class="flex gap-6">
+      <!-- Left Column - Water Body Selection -->
+      <div class="w-1/3 bg-white rounded-lg shadow-md p-4">
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Instalaciones</h2>
+        <mat-nav-list>
+          <a mat-list-item *ngFor="let pond of ponds" 
+             (click)="selectPond(pond.id)"
+             [class.selected]="selectedPondId === pond.id"
+             class="transition-colors hover:bg-gray-50 rounded-lg">
+            <mat-icon matListItemIcon class="text-blue-600">
+              {{pond.pondType === 1 ? 'waves' : 'pool'}}
+            </mat-icon>
+            <div matListItemTitle class="font-medium">
+              Piscina #{{pond.id.slice(0,8)}}
             </div>
-          </mat-card-content>
-
-        </mat-card>
-
-        <!-- Personal Asignado -->
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Personal Asignado</mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content class="p-4">
-            <!-- Dueño -->
-            <div class="mb-6">
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-medium flex items-center gap-2">
-                  <mat-icon>person</mat-icon>
-                  Dueño
-                </h3>
-                <button mat-stroked-button color="primary" *ngIf="!selectedPond.ownerRut" (click)="assignOwner()">
-                  <mat-icon>person_add</mat-icon>
-                  Asignar Dueño
-                </button>
-                <button mat-stroked-button color="warn" *ngIf="selectedPond.ownerRut" (click)="removeOwner()">
-                  <mat-icon>person_remove</mat-icon>
-                  Remover Dueño
-                </button>
-              </div>
-
-              <div class="info-item" *ngIf="selectedPond.ownerRut">
-                <p><strong>Nombre:</strong> {{selectedPond.ownerName}}</p>
-                <p><strong>RUT:</strong> {{selectedPond.ownerRut}}</p>
-              </div>
-
-              <div class="empty-state" *ngIf="!selectedPond.ownerRut">
-                <p>No hay dueño asignado</p>
-              </div>
+            <div matListItemLine class="text-sm text-gray-500">
+              {{pond.pondType === 1 ? 'Circular' : 'Rectangular'}} - {{pond.depth}}m
             </div>
+          </a>
+        </mat-nav-list>
 
-            <!-- Científicos -->
-            <div>
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-medium flex items-center gap-2">
-                  <mat-icon>science</mat-icon>
-                  Científicos
-                </h3>
-                <button mat-stroked-button color="primary" (click)="assignScientist()">
-                  <mat-icon>person_add</mat-icon>
-                  Asignar Científico
-                </button>
+        <!-- Estado vacío -->
+        <div *ngIf="!ponds.length && !loading" class="text-center py-8">
+          <mat-icon class="text-gray-400 text-4xl mb-2">pool</mat-icon>
+          <p class="text-gray-500">No hay piscinas registradas</p>
+        </div>
+
+        <!-- Loading spinner -->
+        <div *ngIf="loading" class="flex justify-center py-8">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="openCreatePondModal()" class="w-full mt-4">
+          <mat-icon>add</mat-icon>
+          Nueva Piscina
+        </button>
+      </div>
+
+      <!-- Right Column - Details -->
+      <div class="w-2/3 space-y-6">
+        <div *ngIf="selectedPond">
+          <!-- Basic Information -->
+          <mat-card class="rounded-lg shadow-md ">
+            <mat-card-header class="border-b">
+              <mat-card-title class="text-xl font-semibold text-gray-700 flex items-center gap-2">
+                <mat-icon class="text-blue-600">{{isCircularPond(selectedPond.id) ? 'waves' : 'pool'}}</mat-icon>
+                {{isCircularPond(selectedPond.id) ? 'Estanque Circular' : 'Piscina Rectangular'}}
+              </mat-card-title>
+              <mat-card-subtitle class="text-gray-500">ID: {{selectedPond.id}}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content class="p-6">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="info-item">
+                  <label class="text-sm text-gray-500">Tipo</label>
+                  <p class="font-medium">{{isCircularPond(selectedPond.id) ? 'Estanque Circular' : 'Piscina Rectangular'}}</p>
+                </div>
+                <div class="info-item">
+                  <label class="text-sm text-gray-500">Profundidad</label>
+                  <p class="font-medium">{{selectedPond.depth}} metros</p>
+                </div>
+                <div class="info-item">
+                  <label class="text-sm text-gray-500">Tipo de Agua</label>
+                  <p class="font-medium">{{selectedPond.waterType === 1 ? 'Agua Dulce' : 'Agua Salada'}}</p>
+                </div>
+                <div class="info-item" *ngIf="isCircularPond(selectedPond.id)">
+                  <label class="text-sm text-gray-500">Radio</label>
+                  <p class="font-medium">{{selectedPond.radius}} metros</p>
+                </div>
+                <div class="info-item" *ngIf="!isCircularPond(selectedPond.id)">
+                  <label class="text-sm text-gray-500">Largo</label>
+                  <p class="font-medium">{{selectedPond.length}} metros</p>
+                </div>
+                <div class="info-item" *ngIf="!isCircularPond(selectedPond.id)">
+                  <label class="text-sm text-gray-500">Alto</label>
+                  <p class="font-medium">{{selectedPond.height}} metros</p>
+                </div>
               </div>
+            </mat-card-content>
+          </mat-card>
 
-              <div class="grid gap-4" *ngIf="selectedPond.scientist">
-                <div class="info-item flex justify-between items-center">
-                  <div>
-                    <p><strong>RUT:</strong> {{selectedPond.scientist.rut}}</p>
+          <!-- Personnel -->
+          <mat-card class="rounded-lg shadow-md">
+            <mat-card-header class="border-b">
 
-                    <p><strong>Nombre:</strong> {{selectedPond.scientist.name}}</p>
-                    <p><strong>Apellido:</strong> {{selectedPond.scientist.lastName}}</p>
-                  </div>
-                  <button mat-icon-button color="warn" (click)="removeScientist()">
-                    <mat-icon>person_remove</mat-icon>
+              <mat-card-title class="text-xl font-semibold text-gray-700 flex items-center gap-2">
+                <mat-icon class="text-blue-600">people</mat-icon>
+                Personal Asignado
+              </mat-card-title>
+            </mat-card-header>
 
+            <mat-card-content class="p-6">
+              <!-- Dueño -->
+              <div class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-medium flex items-center gap-2">
+                    <mat-icon class="text-blue-600">person</mat-icon>
+                    Dueño
+                  </h3>
+                  <button mat-stroked-button color="primary" *ngIf="!selectedPond.ownerRut" (click)="assignOwner()">
+                    <mat-icon>person_add</mat-icon>
+                    Asignar Dueño
                   </button>
+                  <button mat-stroked-button color="warn" *ngIf="selectedPond.ownerRut" (click)="removeOwner()">
+                    <mat-icon>person_remove</mat-icon>
+                    Remover Dueño
+                  </button>
+                </div>
+
+                <div class="info-item" *ngIf="selectedPond.ownerRut">
+                  <p><strong>Nombre:</strong> {{selectedPond.ownerName}}</p>
+                  <p><strong>RUT:</strong> {{selectedPond.ownerRut}}</p>
+                </div>
+
+                <div class="empty-state" *ngIf="!selectedPond.ownerRut">
+                  <p>No hay dueño asignado</p>
                 </div>
               </div>
 
-              <div class="empty-state" *ngIf="!selectedPond.scientist">
-                <p>No hay científicos asignados</p>
+              <!-- Científicos -->
+              <div>
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-medium flex items-center gap-2">
+                    <mat-icon class="text-blue-600">science</mat-icon>
+                    Científicos
+                  </h3>
+                  <button mat-stroked-button color="primary" (click)="assignScientist()">
+                    <mat-icon>person_add</mat-icon>
+                    Asignar Científico
+                  </button>
+                </div>
+
+                <div class="grid gap-4" *ngIf="selectedPond.scientist">
+                  <div class="info-item flex justify-between items-center">
+                    <div>
+                      <p><strong>RUT:</strong> {{selectedPond.scientist.rut}}</p>
+                      <p><strong>Nombre:</strong> {{selectedPond.scientist.name}}</p>
+                      <p><strong>Apellido:</strong> {{selectedPond.scientist.lastName}}</p>
+                    </div>
+                    <button mat-icon-button color="warn" (click)="removeScientist()">
+                      <mat-icon>person_remove</mat-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="empty-state" *ngIf="!selectedPond.scientist">
+                  <p>No hay científicos asignados</p>
+                </div>
               </div>
-            </div>
+            </mat-card-content>
+          </mat-card>
 
-          </mat-card-content>
+          <!-- Acciones -->
+          <div class="flex justify-end gap-2">
+            <button mat-button color="warn" (click)="deletePond()">
+              <mat-icon>delete</mat-icon>
+              Eliminar Piscina
+            </button>
+            <button mat-raised-button color="primary" (click)="editPond()">
+              <mat-icon>edit</mat-icon>
+              Editar Piscina
+            </button>
+          </div>
+        </div>
+
+        <!-- Mensaje cuando no hay piscina seleccionada -->
+        <mat-card *ngIf="!selectedPond" class="h-full flex items-center justify-center rounded-lg shadow-md">
+          <div class="text-center text-gray-500">
+            <mat-icon class="text-6xl mb-4">pool</mat-icon>
+            <p>Seleccione una piscina para ver sus detalles</p>
+          </div>
         </mat-card>
-
-        <!-- Acciones -->
-        <div class="flex justify-end gap-2">
-          <button mat-button color="warn" (click)="deletePond()">
-            <mat-icon>delete</mat-icon>
-            Eliminar Piscina
-          </button>
-          <button mat-raised-button color="primary" (click)="editPond()">
-            <mat-icon>edit</mat-icon>
-            Editar Piscina
-          </button>
-        </div>
       </div>
-
-      <!-- Mensaje cuando no hay piscina seleccionada -->
-      <mat-card *ngIf="!selectedPond" class="h-full flex items-center justify-center">
-        <div class="text-center text-gray-500">
-          <mat-icon class="text-6xl mb-4">pool</mat-icon>
-          <p>Seleccione una piscina para ver sus detalles</p>
-        </div>
-      </mat-card>
     </div>
   </div>
 </div>

@@ -3,10 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
 import { AuthService } from './auth.service';
-import { PoolAdvancedDetails, PoolResponse } from '../interfaces/entities/pool.interface';
+import { PoolAdvancedDetails, PoolDetails } from '../interfaces/entities/pool.interface';
 @Injectable({
   providedIn: 'root'
 })
+
 export class PoolService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}

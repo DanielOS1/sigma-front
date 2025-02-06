@@ -94,11 +94,6 @@ export const routes: Routes = [
               import('./users/center-admin/dashboard-center-admin/dashboard-center-admin.component').then((m) => m.DashboardCenterAdminComponent),
           },
           {
-            path: 'personnel-administration',
-            loadComponent: () =>
-              import('./users/center-admin/personnel-administration/personnel-administration.component').then((m) => m.PersonnelAdministrationComponent),
-          },
-          {
             path: 'pond-administration',
             loadComponent: () =>
               import('./users/center-admin/pond-administration/pond-administration.component').then((m) => m.PondAdministrationComponent),

@@ -33,7 +33,7 @@ export interface Sensor {
     yPosition: number;
     zPosition: number;
     unit: string;
-    //pond: AquaculturePond;
+
   }
 
 export interface updateSensor{
@@ -46,17 +46,17 @@ export interface updateSensor{
   
 
 export interface SensorInstance {
-    id: number;
-    type: SensorType;
-    thresholdMin: number | null;
-    thresholdMax: number | null;
-    samplingFrequency: number;
-    xPosition: number;
-    location: string;
-    yPosition: number;
-    zPosition: number;
-    status: boolean;
-  }
+  id: string;
+  type: SensorType;
+  thresholdMin: number | null;
+  thresholdMax: number | null;
+  samplingFrequency: number;
+  xPosition: number;
+  yPosition: number;
+  zPosition: number;
+  status: boolean;
+  isUpdating?: boolean;  
+}
 
 export interface SensorFormat {
     id: string;

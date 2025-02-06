@@ -5,6 +5,7 @@ import { ApiResponse } from '../types/response.interface';
 import { AuthService } from './auth.service';
 import { AssignedAquaculture } from '../interfaces/entities/aquaculture.interface';
 import { PoolAdvancedDetails } from '../interfaces/entities/pool.interface';
+import { SensorFormat } from '../interfaces/entities/sensor.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,13 @@ export class CenterAdminService {
   }
 
 
+  getSensorsFromPond(id: string): Observable<ApiResponse<SensorFormat[]>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<ApiResponse<SensorFormat[]>>(`/center-admin/get-sensors-from-pond/${id}`, { headers });
+  }
 
 
 

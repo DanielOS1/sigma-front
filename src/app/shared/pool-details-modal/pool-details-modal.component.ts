@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { PoolService } from '../../services/pool.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PoolAdvancedDetails, PoolResponse } from '../../interfaces/entities/pool.interface';
+import { PoolAdvancedDetails, PoolDetails } from '../../interfaces/entities/pool.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';

@@ -16,21 +16,24 @@ export enum PondType {
     POOL = 2,
   }
 
+
 export enum WaterType {
     FRESH = 1,
     SALT = 2,
 }
 
-export interface PoolResponse {
+export interface PoolDetails {
     id: string;
     depth: number;
-    waterType: string;
+    waterType: number;
+    pondType: number;
     radius: number;
     length: number;
     height: number;
+
 }
   
-export interface PoolDetails {
+export interface PoolDetailss {
     ponds_id: string;
     ponds_depth: number;
     ponds_pondType: string;

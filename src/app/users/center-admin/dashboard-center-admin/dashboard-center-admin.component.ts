@@ -12,14 +12,15 @@ import { mapAquacultureData, mapUserData } from '../../../utils/data.utils';
 import { CenterAdmin, OwnerUser, User } from '../../../interfaces/entities/user.interface';
 import { PoolDetails } from '../../../interfaces/entities/pool.interface';
 import { AquacultureStateService } from '../aquaculture-state.service';
-
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-dashboard-center-admin',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, MatProgressSpinnerModule, CommonModule],
+  imports: [MatCardModule, MatIconModule, MatProgressSpinnerModule, CommonModule, MatTableModule],
   templateUrl: './dashboard-center-admin.component.html',
   styleUrl: './dashboard-center-admin.component.scss'
+
 })
 export class DashboardCenterAdminComponent implements OnInit {
   isAssigned: boolean = false;
@@ -87,6 +88,17 @@ export class DashboardCenterAdminComponent implements OnInit {
         console.log(this.ponds);
       }
     });
+  }
+
+  get staffList() {
+    return [this.aquacultureAdmin, ...(this.aquacultureOwner ?? []), ...(this.scientists ?? [])];
+  }
+
+  getRoleLabel(person: any): string {
+    if (person?.scientistRut) return 'Científico';
+    if (person === this.aquacultureAdmin) return 'Administrador';
+    if (this.aquacultureOwner?.includes(person)) return 'Dueño';
+    return '';
   }
 
 }

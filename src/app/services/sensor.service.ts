@@ -13,7 +13,7 @@ export class SensorService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  createSensor(sensor: CreateSensor): Observable<ApiResponse<any>> {
+  createSensor(sensor: CreateSensor): Observable<ApiResponse<CreateSensor>> {
 
     const token = this.authService.getToken();
 
@@ -21,15 +21,17 @@ export class SensorService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<ApiResponse<any>>(`/sensors`, sensor, { headers });
+    return this.http.post<ApiResponse<any>>(`/center-admin/create-sensor`, sensor, { headers });
   }
+
+
 
   getSensorDetails(sensorId: string): Observable<ApiResponse<Sensor>> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<ApiResponse<Sensor>>(`/sensors/${sensorId}`, { headers });
+    return this.http.get<ApiResponse<Sensor>>(`/sensors/${sensorId}/details`, { headers });
   }
 
   updateSensor(sensorId: string, sensor: updateSensor): Observable<ApiResponse<any>> {
@@ -37,25 +39,33 @@ export class SensorService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<ApiResponse<any>>(`/sensors/${sensorId}/update`, sensor, { headers });
+    return this.http.patch<ApiResponse<any>>(`/sensors/${sensorId}/update`, sensor, { headers });
   }
   
+
   desactivateSensor(sensorId: string): Observable<ApiResponse<any>> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<ApiResponse<any>>(`/sensors/${sensorId}/desactivate`, { headers });
+    return this.http.patch<ApiResponse<any>>(`/sensors/${sensorId}/desactivate`, { headers });
   }
+
 
   activateSensor(sensorId: string): Observable<ApiResponse<any>> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<ApiResponse<any>>(`/sensors/${sensorId}/activate`, { headers });
+    return this.http.patch<ApiResponse<any>>(`/sensors/${sensorId}/activate`, { headers });
   }
 
-  
+  getPondSensors(pondId: string): Observable<ApiResponse<Sensor[]>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<ApiResponse<Sensor[]>>(`/sensors/pond/${pondId}`, { headers });
+  }
 
 }

@@ -12,15 +12,54 @@
 }
 
 .header-card {
+  display: flex;
+  position: relative;
+  align-items: center;
   mat-card-title {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
     font-size: 1.5rem;
     font-weight: 600;
     color: #1e293b;
+  }
+  mat-select {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+  }
+  .header-actions {
+    min-width: 250px;
+    
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+.info-card {
+  background: white;
+  
+  mat-card-header {
+    margin-bottom: 1rem;
+    
+    mat-card-title {
+      font-size: 1.25rem;
+      color: #1e293b;
+    }
   }
 }
 
 .info-grid {
   display: grid;
+
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
   padding: 1rem 0;
@@ -40,85 +79,120 @@
   }
 }
 
-.sensors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem 0;
-}
-
-.sensor-card {
+.sensors-container {
   padding: 1.5rem;
-  transition: all 0.3s ease;
 
-  &.active {
-    border-color: #2196f3;
-    background-color: #e3f2fd;
-  }
-
-  .sensor-header {
+  .header-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
 
-    .sensor-info {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-
-      mat-icon {
-        color: #2196f3;
-      }
-
-      span {
-        font-weight: 500;
-        color: #1e293b;
-      }
-    }
-  }
-
-  .sensor-count {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 1rem 0;
-
-    span {
-      color: #64748b;
-      font-size: 0.875rem;
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #1e293b;
     }
 
-    .count-controls {
+    button {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+  }
+  
+  .sensors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem;
 
-      .count {
-        min-width: 2rem;
-        text-align: center;
-        font-weight: 500;
+    .sensor-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+
+      mat-card-header {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        background: #f8fafc;
+
+        mat-icon {
+          color: #2196f3;
+        }
+
+        mat-card-title {
+          font-size: 1.125rem;
+          font-weight: 500;
+          color: #1e293b;
+        }
+
+        mat-card-subtitle {
+          color: #64748b;
+        }
+      }
+
+      .sensor-table {
+        width: 100%;
+
+        .mat-mdc-header-cell {
+          color: #64748b;
+          font-weight: 500;
+          font-size: 0.875rem;
+        }
+
+        .mat-mdc-cell {
+          color: #1e293b;
+        }
+
+        .status-chip {
+          padding: 0.25rem 0.75rem;
+          border-radius: 9999px;
+          font-size: 0.75rem;
+          font-weight: 500;
+          
+          &.active {
+            background: #dcfce7;
+            color: #16a34a;
+          }
+
+          &:not(.active) {
+            background: #fee2e2;
+            color: #dc2626;
+          }
+        }
+
+        button {
+          opacity: 0.7;
+          transition: opacity 0.2s;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
       }
     }
   }
-}
 
-.sensor-instances {
-  margin-top: 1.5rem;
-
-  .instance-config {
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: white;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
     margin-top: 1.5rem;
 
-    h4 {
-      color: #1e293b;
-      font-size: 0.875rem;
-      font-weight: 500;
+    mat-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      color: #94a3b8;
       margin-bottom: 1rem;
     }
 
-    .full-width {
-      width: 100%;
-      margin-bottom: 1rem;
+    p {
+      margin: 0;
+      color: #64748b;
     }
   }
 }
@@ -135,5 +209,93 @@ mat-divider {
 
   .sensors-grid {
     grid-template-columns: 1fr;
+  }
+
+  .threshold-fields,
+  .position-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .instance-actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Material Override Styles
+::ng-deep {
+  .mat-mdc-form-field-appearance-outline {
+    .mat-mdc-form-field-outline {
+      background: white;
+    }
+  }
+
+  .mat-mdc-chip.mat-mdc-standard-chip {
+    &.mat-primary {
+      background-color: #e3f2fd;
+      color: #2196f3;
+    }
+  }
+}
+
+// Empty State Styles
+.no-pond-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  
+  .empty-state-card {
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .empty-state {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: #94a3b8;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    p {
+      margin: 0;
+      color: #64748b;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  }
+}
+
+.sensors-card {
+  mat-card-header {
+    .header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0 1rem;
+
+      mat-card-title {
+        margin: 0;
+      }
+    }
   }
 }

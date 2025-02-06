@@ -18,9 +18,12 @@ import { AssignPersonnelModalComponent } from '../../../shared/assign-personnel-
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
+import { MatDividerModule } from '@angular/material/divider';
+
 @Component({
   selector: 'app-pond-administration',
   standalone: true,
+
   imports: [
     CommonModule,
     MatCardModule,
@@ -28,9 +31,11 @@ import { ToastrService } from 'ngx-toastr';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDividerModule
   ],
   templateUrl: './pond-administration.component.html',
+
   styleUrls: ['./pond-administration.component.scss']
 })
 export class PondAdministrationComponent implements OnInit, OnDestroy {
@@ -230,12 +235,14 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
   deletePond() {}
 
   // Método helper para obtener el pondType
-  getPondType(id: string): string | undefined {
-    return this.ponds.find(pond => pond.ponds_id === id)?.ponds_pondType;
+  getPondType(id: string): number | undefined {
+    return this.ponds.find(pond => pond.id === id)?.pondType;
   }
+
 
   // Método helper para verificar si es circular
   isCircularPond(id: string): boolean {
-    return this.getPondType(id) === '1';
+    return this.getPondType(id) === 1;
   }
+
 }
