@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SensorTypePipe } from '../../pipes/sensor-type.pipe';
 import { ConfirmDialogComponent } from '../confirm-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CenterAdminService } from '../../services/center-admin.service';
 
 @Component({
   selector: 'app-sensor-details-modal',
@@ -216,21 +217,28 @@ export class SensorDetailsModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<SensorDetailsModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { sensorId: string },
+    @Inject(MAT_DIALOG_DATA) public data: { sensorId: string, isActive: boolean },
     private sensorService: SensorService,
     private _snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private centerAdminService: CenterAdminService 
   ) {}
 
+
   ngOnInit() {
-    this.getSensorDetails(this.data.sensorId);
+    this.getSensorDetails(this.data.sensorId, this.data.isActive);
   }
 
-  getSensorDetails(sensorId: string): void {
-    this.sensorService.getSensorDetails(sensorId).subscribe({
-      next: (sensor) => {
-        this.sensor = sensor;
+  getSensorDetails(sensorId: string, isActive: boolean): void {
+    this.centerAdminService.getSensorDetails(sensorId, true, isActive).subscribe({
+      next: (response) => {
+        this.sensor = response.data;
         this.initForm();
+      },
+      error: () => {
+        this._snackBar.open('Error al cargar los detalles del sensor', 'Cerrar', {
+          duration: 3000
+        });
       }
     });
   }
@@ -276,9 +284,10 @@ export class SensorDetailsModalComponent implements OnInit {
     this.isProcessing = true;
     
     const action = event.checked ? 
-      this.sensorService.activateSensor(this.sensor.id) : 
-      this.sensorService.desactivateSensor(this.sensor.id);
+      this.centerAdminService.activateSensor(this.sensor.id) : 
+      this.centerAdminService.desactivateSensor(this.sensor.id);
   
+
     action.subscribe({
       next: () => {
         this.sensor.status = event.checked;
@@ -287,6 +296,7 @@ export class SensorDetailsModalComponent implements OnInit {
           'Cerrar', 
           { duration: 3000 }
         );
+        this.dialogRef.close(true);
       },
       error: () => {
         this._snackBar.open('Error al cambiar el estado del sensor', 'Cerrar', { duration: 3000 });
@@ -331,9 +341,10 @@ export class SensorDetailsModalComponent implements OnInit {
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
         this.isProcessing = true;
-        this.sensorService.desactivateSensor(this.sensor.id).subscribe({
+        this.centerAdminService.desactivateSensor(this.sensor.id).subscribe({
           next: () => {
             this._snackBar.open('Sensor eliminado exitosamente', 'Cerrar', { duration: 3000 });
+
             this.dialogRef.close(true);
 
           },

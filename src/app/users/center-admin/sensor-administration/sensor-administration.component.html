@@ -82,46 +82,27 @@
       </div>
 
       <div class="sensors-grid">
-        <mat-card *ngFor="let group of groupedSensors" class="sensor-card">
+        <mat-card *ngFor="let sensorGroup of groupedSensors">
           <mat-card-header>
-            <mat-icon mat-card-avatar>{{group.icon}}</mat-icon>
-            <mat-card-title>{{getSensorTypeName(group.type)}}</mat-card-title>
-            <mat-card-subtitle>
-              {{group.sensors.length}} sensor{{group.sensors.length !== 1 ? 'es' : ''}}
-            </mat-card-subtitle>
+            <mat-icon>{{getSensorIcon(sensorGroup.type)}}</mat-icon>
+            <mat-card-title>{{sensorGroup.type | sensorType}}</mat-card-title>
           </mat-card-header>
-
           <mat-card-content>
-            <table mat-table [dataSource]="group.sensors" class="sensor-table">
-              <!-- ID Column -->
-              <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef>ID</th>
-                <td mat-cell *matCellDef="let sensor">{{sensor.id | slice:0:8}}...</td>
-              </ng-container>
-
-              <!-- Status Column -->
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>Estado</th>
-                <td mat-cell *matCellDef="let sensor">
-                  <span class="status-chip" [class.active]="sensor.status">
-                    {{sensor.status ? 'Activo' : 'Inactivo'}}
-                  </span>
-                </td>
-              </ng-container>
-
-              <!-- Actions Column -->
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let sensor">
-                  <button mat-icon-button color="primary" (click)="viewSensorDetails(sensor)">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="['id', 'status', 'actions']"></tr>
-              <tr mat-row *matRowDef="let row; columns: ['id', 'status', 'actions'];"></tr>
-            </table>
+            <div class="sensor-list">
+              <div *ngFor="let sensor of sensorGroup.sensors" class="sensor-item">
+                <div class="sensor-info">
+                  <span class="sensor-id">{{sensor.id}}</span>
+                  <mat-chip-listbox>
+                    <mat-chip-option [color]="sensor.status ? 'primary' : 'warn'" selected> 
+                      {{sensor.status ? 'Activo' : 'Inactivo'}}
+                    </mat-chip-option>
+                  </mat-chip-listbox>
+                </div>
+                <button mat-icon-button color="primary" (click)="viewSensorDetails(sensor)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
       </div>

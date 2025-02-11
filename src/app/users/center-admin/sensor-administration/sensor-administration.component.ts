@@ -9,7 +9,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { SensorType, SensorFormat, SensorInstance, CreateSensor, updateSensor } from '../../../interfaces/entities/sensor.interface';
-import { PondType, PoolDetails, PoolDetailss } from '../../../interfaces/entities/pool.interface';
+import { PondType, PoolAdvancedDetails, PoolDetails, PoolDetailss } from '../../../interfaces/entities/pool.interface';
 import { PoolService } from '../../../services/pool.service';
 import { CenterAdminService } from '../../../services/center-admin.service';
 import { ApiResponse } from '../../../types/response.interface';
@@ -22,8 +22,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { BehaviorSubject } from 'rxjs';
 import { SensorDetailsModalComponent } from '../../../shared/sensor-details-modal/sensor-details-modal.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
-
+ 
 interface SensorData {
   id: string;
   type: number;
@@ -53,27 +54,31 @@ interface GroupedSensors {
     MatDialogModule,
     SensorTypePipe,
     MatSnackBarModule,
-    MatTableModule
+    MatTableModule,
+    MatTooltipModule,
+    MatTooltipModule
   ],
   templateUrl: './sensor-administration.component.html',
   styleUrls: ['./sensor-administration.component.scss']
+
 })
 export class SensorAdministrationComponent implements OnInit {
   pondType = PondType;
   ponds: PoolDetails[] = [];
   selectedPond: PoolDetails | null = null;
+  selectedPondDetails: PoolAdvancedDetails | null = null;
   private selectedPondSubject = new BehaviorSubject<PoolDetails | null>(null);
   selectedPond$ = this.selectedPondSubject.asObservable();
   SensorType = SensorType;
 
   sensors: SensorFormat[] = [
-    { id: 'oxygen', type: SensorType.OXYGEN, icon: 'water_drop', active: false, count: 0, instances: [] as SensorInstance[] },
-    { id: 'temperature', type: SensorType.TEMPERATURE, icon: 'thermostat', active: false, count: 0, instances: [] as SensorInstance[] },
-    { id: 'ph', type: SensorType.PH, icon: 'science', active: false, count: 0, instances: [] as SensorInstance[] },
-    { id: 'conductivity', type: SensorType.CONDUCTIVITY, icon: 'bolt', active: false, count: 0, instances: [] as SensorInstance[] },
-    { id: 'turbidity', type: SensorType.TURBIDITY, icon: 'waves', active: false, count: 0, instances: [] as SensorInstance[] },
-    { id: 'waterLevel', type: SensorType.WATER_LEVEL, icon: 'speed', active: false, count: 0, instances: [] as SensorInstance[] },
-    { id: 'waterFlow', type: SensorType.WATER_FLOW, icon: 'arrow_upward', active: false, count: 0, instances: [] as SensorInstance[] },
+    { id: 'oxygen', type: SensorType.OXYGEN, icon: 'water_drop', status: false, count: 0, instances: [] as SensorInstance[] },  
+    { id: 'temperature', type: SensorType.TEMPERATURE, icon: 'thermostat', status: false, count: 0, instances: [] as SensorInstance[] },
+    { id: 'ph', type: SensorType.PH, icon: 'science', status: false, count: 0, instances: [] as SensorInstance[] },
+    { id: 'conductivity', type: SensorType.CONDUCTIVITY, icon: 'bolt', status: false, count: 0, instances: [] as SensorInstance[] },
+    { id: 'turbidity', type: SensorType.TURBIDITY, icon: 'waves', status: false, count: 0, instances: [] as SensorInstance[] },
+    { id: 'waterLevel', type: SensorType.WATER_LEVEL, icon: 'speed', status: false, count: 0, instances: [] as SensorInstance[] },
+    { id: 'waterFlow', type: SensorType.WATER_FLOW, icon: 'arrow_upward', status: false, count: 0, instances: [] as SensorInstance[] },
   ];
 
   intervals = [
@@ -129,8 +134,8 @@ export class SensorAdministrationComponent implements OnInit {
   }
 
   toggleSensor(sensor: SensorFormat): void {
-    sensor.active = !sensor.active;
-    if (!sensor.active) {
+    sensor.status = !sensor.status;
+    if (!sensor.status) {
       sensor.count = 0;
       sensor.instances = [];
     }
@@ -169,6 +174,7 @@ export class SensorAdministrationComponent implements OnInit {
     this.centerAdminService.getSensorsFromPond(pondId).subscribe({
       next: (response) => {
         // Agrupar sensores por tipo
+        console.log("response", );
         const grouped = response.data.reduce((acc, sensor) => {
           const existingGroup = acc.find(group => group.type === sensor.type);
           
@@ -176,7 +182,7 @@ export class SensorAdministrationComponent implements OnInit {
             existingGroup.sensors.push({
               id: sensor.id,
               type: sensor.type,
-              status: sensor.active
+              status: sensor.status
             });
           } else {
             acc.push({
@@ -185,7 +191,7 @@ export class SensorAdministrationComponent implements OnInit {
               sensors: [{
                 id: sensor.id,
                 type: sensor.type,
-                status: sensor.active
+                status: sensor.status
               }]
             });
           }
@@ -233,11 +239,15 @@ export class SensorAdministrationComponent implements OnInit {
   viewSensorDetails(sensor: any): void {
     const dialogRef = this.dialog.open(SensorDetailsModalComponent, {
       width: '500px',
-      data: { sensorId: sensor.id }
+      data: { 
+        sensorId: sensor.id,
+        isActive: sensor.status
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        // Recargar los sensores para reflejar los cambios
         this.loadSensors(this.selectedPond!.id);
       }
     });
@@ -264,7 +274,7 @@ openCreateSensorModal(type: SensorType): void {
       const sensorData: CreateSensor = {
         ...result,
         type: type,
-        pondId: this.selectedPond!.id
+        pondId: this.selectedPond?.id
       };
       this.createSensor(sensorData);
     }
@@ -317,12 +327,13 @@ openCreateSensorModal(type: SensorType): void {
       this.sensorService.desactivateSensor(instance.id) : 
       this.sensorService.activateSensor(instance.id);
 
-
     action.subscribe({
       next: (response) => {
         instance.status = !instance.status;
         this.showSnackbar(`Sensor ${instance.status ? 'activado' : 'desactivado'} correctamente`);
         instance.isUpdating = false;
+        // Recargar los sensores para reflejar los cambios
+        this.loadSensors(this.selectedPond!.id);
       },
       error: (error) => {
         this.showSnackbar('Error al cambiar el estado del sensor');
@@ -338,6 +349,25 @@ openCreateSensorModal(type: SensorType): void {
       verticalPosition: 'top'
     });
   }
+
+  findDataForSensorDetails(id: string): PoolDetails {
+    const pond = this.ponds.find(pond => pond.id === id);
+    if (!pond) {
+      throw new Error('Piscina no encontrada');
+    }
+    return pond;
+  }
+
+
+  getPondById(id: string): void {
+    this.centerAdminService.getPoolbyId(id).subscribe({
+      next: (response) => {
+        this.selectedPondDetails = response.data;
+      }
+    });
+  }
 }
+
+
 
 

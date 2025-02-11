@@ -62,8 +62,7 @@ export interface SensorFormat {
     id: string;
     type: SensorType;
     icon: string;
-    active: boolean;
+    status: boolean;
     count: number;
     instances: SensorInstance[];
-
-  }
+}

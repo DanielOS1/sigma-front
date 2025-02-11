@@ -104,74 +104,32 @@
   
   .sensors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
 
-    .sensor-card {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.5rem;
+  .sensor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
 
-      mat-card-header {
-        padding: 1rem;
-        border-bottom: 1px solid #e2e8f0;
-        background: #f8fafc;
-
-        mat-icon {
-          color: #2196f3;
-        }
-
-        mat-card-title {
-          font-size: 1.125rem;
-          font-weight: 500;
-          color: #1e293b;
-        }
-
-        mat-card-subtitle {
-          color: #64748b;
-        }
-      }
-
-      .sensor-table {
-        width: 100%;
-
-        .mat-mdc-header-cell {
-          color: #64748b;
-          font-weight: 500;
-          font-size: 0.875rem;
-        }
-
-        .mat-mdc-cell {
-          color: #1e293b;
-        }
-
-        .status-chip {
-          padding: 0.25rem 0.75rem;
-          border-radius: 9999px;
-          font-size: 0.75rem;
-          font-weight: 500;
-          
-          &.active {
-            background: #dcfce7;
-            color: #16a34a;
-          }
-
-          &:not(.active) {
-            background: #fee2e2;
-            color: #dc2626;
-          }
-        }
-
-        button {
-          opacity: 0.7;
-          transition: opacity 0.2s;
-
-          &:hover {
-            opacity: 1;
-          }
-        }
-      }
+    &:last-child {
+      border-bottom: none;
     }
+  }
+
+  .sensor-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .sensor-id {
+    font-family: monospace;
+    color: #64748b;
   }
 
   .empty-state {

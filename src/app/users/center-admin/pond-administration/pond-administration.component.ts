@@ -11,19 +11,16 @@ import { AquacultureStateService } from '../aquaculture-state.service';
 import { CreatePoolModalComponent } from '../../../shared/create-pool-modal/create-pool-modal.component';
 import { CenterAdminService } from '../../../services/center-admin.service';
 import { ApiResponse } from '../../../types/response.interface';
-import { AquacultureEntity, AquacultureScientists } from '../../../interfaces/entities/aquaculture.interface';
-import { AquacultureService } from '../../../services/aquaculture.service';
+import { AquacultureEntity } from '../../../interfaces/entities/aquaculture.interface';
 import { PoolDetails, PoolAdvancedDetails } from '../../../interfaces/entities/pool.interface';
 import { AssignPersonnelModalComponent } from '../../../shared/assign-personnel-modal/assign-personnel-modal.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-pond-administration',
   standalone: true,
-
   imports: [
     CommonModule,
     MatCardModule,
@@ -35,7 +32,6 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDividerModule
   ],
   templateUrl: './pond-administration.component.html',
-
   styleUrls: ['./pond-administration.component.scss']
 })
 export class PondAdministrationComponent implements OnInit, OnDestroy {
@@ -61,7 +57,6 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
       this.aquacultureStateService.aquacultureDetails$.subscribe(details => {
         if (details) {
           this.aquacultureDetails = details;
-          
         }
       })
     );
@@ -69,6 +64,13 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private refreshView() {
+    if (this.selectedPondId) {
+      this.selectPond(this.selectedPondId);
+    }
+    this.loadPonds();
   }
 
   loadPonds() {
@@ -94,15 +96,9 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
     
     this.centerAdminService.getPoolbyId(id).subscribe({
       next: (response: ApiResponse<PoolAdvancedDetails>) => {
-        console.log('Respuesta completa:', response);
         if (response.success) {
-          console.log('Datos a asignar:', response.data);
-
-
           this.selectedPond = response.data;
-          console.log('Selected Pond después de asignar:', this.selectedPond);
           this.loading = false;
-
         }
       },
       error: (error) => {
@@ -124,7 +120,7 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadPonds();
+        this.refreshView();
         this.toastr.success('Piscina creada exitosamente');
       }
     });
@@ -146,7 +142,7 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
         this.poolService.assignOwnerToPool(this.selectedPond!.id, ownerRut).subscribe({
           next: (response) => {
             if (response.success) {
-              this.loadPonds();
+              this.refreshView();
               this.toastr.success('Dueño asignado exitosamente');
             }
           },
@@ -165,7 +161,7 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
     this.poolService.removeOwnerFromPool(this.selectedPond.id).subscribe({
       next: (response) => {
         if (response.success) {
-          this.loadPonds();
+          this.refreshView();
           this.toastr.success('Dueño removido exitosamente');
         }
       },
@@ -192,8 +188,7 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
         this.poolService.assignScientistToPool(this.selectedPond!.id, scientistRut).subscribe({
           next: (response) => {
             if (response.success) {
-              this.selectPond(this.selectedPond!.id);
-
+              this.refreshView();
               this.toastr.success('Científico asignado exitosamente');
             }
           },
@@ -212,12 +207,10 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
     this.poolService.removeScientistFromPool(
       this.selectedPond.id, 
       this.selectedPond.scientist.rut!
-
-
     ).subscribe({
       next: (response) => {
         if (response.success) {
-          this.selectPond(this.selectedPond!.id);
+          this.refreshView();
           this.toastr.success('Científico removido exitosamente');
         }
       },
@@ -228,21 +221,19 @@ export class PondAdministrationComponent implements OnInit, OnDestroy {
     });
   }
 
-  editPond() {
-    // Implementar lógica de edición
-  }
-
-  deletePond() {}
-
-  // Método helper para obtener el pondType
   getPondType(id: string): number | undefined {
     return this.ponds.find(pond => pond.id === id)?.pondType;
   }
 
-
-  // Método helper para verificar si es circular
   isCircularPond(id: string): boolean {
     return this.getPondType(id) === 1;
   }
+
+  deletePond() {}
+
+  editPond() {
+  }
+
+
 
 }

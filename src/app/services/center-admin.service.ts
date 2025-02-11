@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
@@ -70,7 +70,49 @@ export class CenterAdminService {
     return this.http.get<ApiResponse<SensorFormat[]>>(`/center-admin/get-sensors-from-pond/${id}`, { headers });
   }
 
+  getSensorDetails(sensorId: string, all: boolean = true, active: boolean = true): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    
+    const params = new HttpParams()
+      .set('all', all.toString())
+    
+    return this.http.get<ApiResponse<any>>(
+      `/center-admin/get-sensor-details/${sensorId}`,
+      { headers, params }
+    );
+  }
 
+  desactivateSensor(sensorId: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    
+    return this.http.patch<ApiResponse<any>>(
+      `/center-admin/deactivate-sensor/${sensorId}`, 
+      {}, // cuerpo vacío
+      { headers } // headers como tercer parámetro
+    );
+  }
+
+
+
+  activateSensor(sensorId: string): Observable<ApiResponse<any>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    
+    return this.http.patch<ApiResponse<any>>(
+      `/center-admin/activate-sensor/${sensorId}`, 
+      {}, // cuerpo vacío
+      { headers } // headers como tercer parámetro
+    );
+  }
+  
 
 }
 
