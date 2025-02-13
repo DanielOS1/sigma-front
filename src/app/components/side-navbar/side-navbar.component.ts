@@ -126,6 +126,20 @@ export class AdminSystemSideNavComponent implements OnInit {
             roles: [UserRole.AQUACULTURE_ADMIN]
           } 
         ]
+      },
+      {
+        type: 'expansion',
+        icon: 'admin_panel_settings',
+        label: 'Gestion de Recursos',
+        roles: [UserRole.SCIENTIST],
+        children: [
+          {
+            icon: 'pool',
+            label: 'Dashboard',
+            path: '/scientist/dashboard',
+            roles: [UserRole.SCIENTIST]
+          }
+        ]
       }
     ];
   }

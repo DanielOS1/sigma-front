@@ -1,0 +1,48 @@
+<div class="modal-container">
+    <h2>Detalles del Estanque</h2>
+    
+    <div class="details-section">
+      <h3>Información General</h3>
+      <p><strong>ID:</strong> {{data.id}}</p>
+      <p><strong>Profundidad:</strong> {{data.depth}} metros</p>
+      <p><strong>Tipo de Agua:</strong> {{data.waterType === 2 ? 'Salada' : 'Dulce'}}</p>
+      
+      <div *ngIf="data.radius">
+        <p><strong>Radio:</strong> {{data.radius}} metros</p>
+      </div>
+      <div *ngIf="data.length">
+        <p><strong>Largo:</strong> {{data.length}} metros</p>
+      </div>
+      <div *ngIf="data.height">
+        <p><strong>Altura:</strong> {{data.height}} metros</p>
+      </div>
+    </div>
+  
+    <div class="scientist-section" *ngIf="data.scientist">
+      <h3>Científico Asignado</h3>
+      <p><strong>Nombre:</strong> {{data.scientist?.name}} {{data.scientist?.lastName}}</p>
+      <p><strong>RUT:</strong> {{data.scientist?.rut}}</p>
+    </div>
+  
+    <div class="sensors-section">
+      <h3>Sensores</h3>
+      <div *ngIf="data.sensors && data.sensors.length > 0; else noSensors">
+        <div class="sensor-item" *ngFor="let sensor of data.sensors">
+          <p><strong>ID del Sensor:</strong> {{sensor.id}}</p>
+          <p><strong>Tipo de Sensor:</strong> 
+            {{sensor.type === 1 ? 'Temperatura' : 
+              sensor.type === 2 ? 'pH' : 
+              sensor.type === 3 ? 'Oxígeno' : 'Desconocido'}}
+          </p>
+          <hr>
+        </div>
+      </div>
+      <ng-template #noSensors>
+        <p>No hay sensores asignados a este estanque.</p>
+      </ng-template>
+    </div>
+    
+    
+  
+    <button mat-button (click)="closeModal()">Cerrar</button>
+  </div>

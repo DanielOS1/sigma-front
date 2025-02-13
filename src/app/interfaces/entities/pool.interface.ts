@@ -1,4 +1,5 @@
-import { Scientist } from "./user.interface";
+import { PartialSensor } from "./sensor.interface";
+import { PartialUser, Scientist } from "./user.interface";
 
 export interface PoolDTo {
     aquacultureRut: string; 
@@ -54,3 +55,16 @@ export interface PoolAdvancedDetails {
     ownerRut: string | null;
     scientist: Scientist | null;
 }
+
+export type PartialPool = Pick<PoolDetails, "id" | "pondType">
+
+export interface AquaculturePonds extends PartialPool {
+    assignedScientists: PartialUser[] | null;
+}
+
+
+export interface PondAssignedScientistDetails extends PoolAdvancedDetails{
+    sensors: PartialSensor[] | null; 
+} 
+
+

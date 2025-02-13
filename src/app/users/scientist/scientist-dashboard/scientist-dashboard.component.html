@@ -1,0 +1,53 @@
+<p>scientist-dashboard works!</p>
+<div *ngIf="selectedAquaculture">
+    <h1>Información de Acuicultura</h1>
+    <div class="info-section">
+        <h2>Datos Básicos</h2>
+        <p>Nombre: <strong>{{ selectedAquaculture.name }}</strong></p>
+        <p>Email: <strong>{{ selectedAquaculture.email }}</strong></p>
+        <p>RUT: <strong>{{ selectedAquaculture.rut }}</strong></p>
+        <p>Teléfono: <strong>{{ selectedAquaculture.phoneNumber }}</strong></p>
+    </div>
+
+    <div class="info-section">
+        <h2>Administrador del Centro</h2>
+        <p>Nombre: {{ selectedAquaculture.centerAdminCultive?.name }}</p>
+        <p>RUT: {{ selectedAquaculture.centerAdminCultive?.rut }}</p>
+    </div>
+
+    <div class="info-section">
+        <h2>Propietarios</h2>
+        <div *ngFor="let owner of selectedAquaculture.ownerUsers">
+            <p>Nombre: {{ owner.name }}</p>
+            <p>RUT: {{ owner.rut }}</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h2>Científicos Asignados</h2>
+        <div *ngFor="let scientist of selectedAquaculture.assignedScientistsToAquaculture">
+            <p>Nombre: {{ scientist.scientistName }}</p>
+            <p>RUT: {{ scientist.scientistRut }}</p>
+            <p>Asignado por: {{ scientist.assignedBy }}</p>
+            <p>Fecha de asignación: {{ scientist.assignedAt | date:'medium' }}</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h2>Estanques</h2>
+        <div *ngFor="let pond of selectedAquaculture.aquaculturePonds">
+            <h3>Estanque ID: {{ pond.id }}</h3>
+            <p>Tipo: {{ pond.pondType == 1 ? "Pond" : "Pool" }}</p> 
+            <h4>Científicos asignados al estanque:</h4>
+            <div *ngFor="let scientist of pond.assignedScientists || []">
+                <p>Nombre: {{ scientist.name }}</p>
+                <p>RUT: {{ scientist.rut }}</p>
+            </div>
+            <div class="actions">
+                <button mat-raised-button color="primary" (click)="openPondDetails(pond.id)">
+                    Ver Detalles
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

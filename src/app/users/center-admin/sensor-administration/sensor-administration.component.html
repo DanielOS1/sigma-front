@@ -53,18 +53,11 @@
           </div>
           <div class="info-item">
             <span class="label">Propietario:</span>
-            <!-- <p>{{ selectedPond.owner || 'No especificado' }}</p> -->
+             <p>{{ selectedPondDetails?.ownerName || 'No especificado' }}</p> 
           </div>
           <div class="info-item">
             <span class="label">Científico Responsable:</span>
-            <!-- <p>{{ selectedPond.scientist || 'No especificado' }}</p> -->
-          </div>
-          <div class="info-item">
-
-            <span class="label">Estado:</span>
-            <mat-chip-listbox>   
-
-            </mat-chip-listbox>
+            <p>{{ selectedPondDetails?.scientist?.name || 'No especificado' }}</p> 
           </div>
         </div>
       </mat-card-content>

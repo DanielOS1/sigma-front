@@ -1,0 +1,69 @@
+.sensor-details-modal {
+  padding: 24px;
+  max-width: 600px;
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+      
+      mat-icon {
+        color: #2196f3;
+      }
+    }
+  }
+
+  .modal-content {
+    margin-top: 24px;
+
+    mat-card {
+      margin-bottom: 24px;
+    }
+
+    .status-section {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+
+      .status-indicator {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      button {
+        min-width: 200px;
+        
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+// Estilos para los chips
+::ng-deep {
+  .mat-mdc-chip-option {
+    &.mat-primary {
+      &.mdc-evolution-chip--selected {
+        background-color: #4caf50 !important;
+      }
+    }
+    
+    &.mat-warn {
+      &.mdc-evolution-chip--selected {
+        background-color: #f44336 !important;
+      }
+    }
+  }
+} 

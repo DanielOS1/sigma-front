@@ -27,6 +27,8 @@ export interface Scientist extends BaseUser {
 //Usuario Base
 export type User = BaseUser | OwnerUser | Scientist | CenterAdmin;
 
+export type PartialUser = Pick<BaseUser, "rut" | "name"> 
+
 export function isOwnerUser(user: User): user is OwnerUser {
     return user.role === 1; 
 }
@@ -87,3 +89,8 @@ export interface DecodedToken  {
     iat: number;
     exp: number;
   }
+
+export interface AssignedScientist extends PartialUser {
+    assignedBy: string;
+    assignedAt: string;
+}

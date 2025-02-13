@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AcquacultureManageComponent } from './aquaculture-manage.component';
+import { AquacultureManageComponent } from './aquaculture-manage.component';
 
 describe('AcquacultureManageComponent', () => {
-  let component: AcquacultureManageComponent;
-  let fixture: ComponentFixture<AcquacultureManageComponent>;
+  let component: AquacultureManageComponent;
+  let fixture: ComponentFixture<AquacultureManageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AcquacultureManageComponent]
+      imports: [AquacultureManageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AcquacultureManageComponent);
+    fixture = TestBed.createComponent(AquacultureManageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

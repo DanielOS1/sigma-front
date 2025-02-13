@@ -170,47 +170,47 @@
                         <mat-card *ngFor="let pool of aquacultureDetail.pools" class="pool-card">
                             <mat-card-header>
                                 <mat-icon mat-card-avatar>
-                                    {{ pool.ponds_pondType === 1 ? 'waves' : 'pool' }}
+                                    {{ pool.pondType === 1 ? 'waves' : 'pool' }}
                                 </mat-icon>
                                 <mat-card-title>
-                                    {{ pool.ponds_pondType | poolType }} #{{pool.ponds_id.slice(0,8)}}
+                                    {{ pool.pondType | poolType }} #{{pool.id.slice(0,8)}}
                                 </mat-card-title>
-                                <mat-card-subtitle>ID: {{ pool.ponds_id }}</mat-card-subtitle>
+                                <mat-card-subtitle>ID: {{ pool.id }}</mat-card-subtitle>
                             </mat-card-header>
 
                             <mat-card-content>
                                 <div class="pool-info-grid">
                                     <div class="info-item">
                                         <span class="label">Profundidad:</span>
-                                        <span class="value">{{ pool.ponds_depth }} metros</span>
+                                        <span class="value">{{ pool.depth }} metros</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="label">Tipo de Agua:</span>
-                                        <span class="value">{{ pool.ponds_waterType === 1 ? 'Dulce' : 'Salada' }}</span>
+                                        <span class="value">{{ pool.waterType === 1 ? 'Dulce' : 'Salada' }}</span>
                                     </div>
-                                    <ng-container *ngIf="pool.ponds_pondType === 1">
-                                        <div class="info-item" *ngIf="pool.pondradius">
+                                    <ng-container *ngIf="pool.pondType === 1">
+                                        <div class="info-item" *ngIf="pool.radius">
                                             <span class="label">Radio:</span>
-                                            <span class="value">{{ pool.pondradius }} metros</span>
+                                            <span class="value">{{ pool.radius }} metros</span>
                                         </div>
                                     </ng-container>
-                                    <ng-container *ngIf="pool.ponds_pondType === 2">
-                                        <div class="info-item" *ngIf="pool.poollength">
+                                    <ng-container *ngIf="pool.pondType === 2">
+                                        <div class="info-item" *ngIf="pool.length">
                                             <span class="label">Longitud:</span>
-                                            <span class="value">{{ pool.poollength }} metros</span>
+                                            <span class="value">{{ pool.length }} metros</span>
                                         </div>
                                     </ng-container>
-                                    <ng-container *ngIf="pool.ponds_pondType === 2">
-                                        <div class="info-item" *ngIf="pool.poolheight">
+                                    <ng-container *ngIf="pool.pondType === 2">
+                                        <div class="info-item" *ngIf="pool.height">
                                             <span class="label">Altura:</span>
-                                            <span class="value">{{ pool.poolheight }} metros</span>
+                                            <span class="value">{{ pool.height }} metros</span>
                                         </div>
                                     </ng-container>
                                 </div>
                             </mat-card-content>
 
                             <mat-card-actions align="end">
-                                <button mat-button color="primary" (click)="openPoolDetails(pool.ponds_id)">
+                                <button mat-button color="primary" (click)="openPoolDetails(pool.id)">
                                     <mat-icon>visibility</mat-icon>
                                     Ver Detalles
                                 </button>

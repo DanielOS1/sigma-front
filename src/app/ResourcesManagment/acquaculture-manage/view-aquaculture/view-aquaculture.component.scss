@@ -228,15 +228,23 @@
 }
 
 .pools-section {
-  margin: 1rem;
+  margin-top: 2rem;
+
   .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
 
-    .section-title {
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       margin: 0;
+      
+      mat-icon {
+        color: #2196f3;
+      }
     }
   }
 
@@ -245,71 +253,46 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
-  }
 
-  .pool-card {
-    background: white;
-    border-radius: 8px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    .pool-card {
+      mat-card-header {
+        margin-bottom: 1rem;
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    mat-card-header {
-      padding: 16px 16px 0;
-
-      .mat-icon {
-        color: #2196f3;
-        background: #e3f2fd;
-        padding: 8px;
-        border-radius: 50%;
-      }
-
-      mat-card-title {
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin-bottom: 4px;
-      }
-
-      mat-card-subtitle {
-        color: #666;
-      }
-    }
-
-    .pool-info-grid {
-      display: grid;
-      gap: 12px;
-      padding: 16px;
-
-      .info-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px;
-        background: #f8fafc;
-        border-radius: 4px;
-
-        .label {
-          color: #666;
-          font-weight: 500;
-        }
-
-        .value {
-          color: #333;
-          font-weight: 400;
+        .mat-card-avatar {
+          background-color: #f5f5f5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
-    }
 
-    mat-card-actions {
-      padding: 8px 16px;
-      border-top: 1px solid #e5e7eb;
+      .pool-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
 
-      button {
-        mat-icon {
-          margin-right: 4px;
+        .info-item {
+          .label {
+            color: #666;
+            font-size: 0.875rem;
+            display: block;
+            margin-bottom: 0.25rem;
+          }
+
+          .value {
+            font-weight: 500;
+          }
+        }
+      }
+
+      mat-card-actions {
+        padding: 1rem;
+        margin: 0;
+        
+        button {
+          mat-icon {
+            margin-right: 0.5rem;
+          }
         }
       }
     }
@@ -319,30 +302,26 @@
 .empty-state {
   text-align: center;
   padding: 2rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  margin-top: 1rem;
-
+  
   mat-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
-    color: #94a3b8;
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: #bdbdbd;
     margin-bottom: 1rem;
   }
 
   p {
-    color: #64748b;
-    font-size: 1.1rem;
+    color: #666;
     margin-bottom: 1rem;
   }
 
   button {
     mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-      margin-right: 8px;
+      font-size: 1.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
     }
   }
 }

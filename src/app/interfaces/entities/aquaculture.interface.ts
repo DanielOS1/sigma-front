@@ -1,3 +1,5 @@
+import { AquaculturePonds, PoolDetails } from "./pool.interface";
+import { AssignedScientist, PartialUser } from "./user.interface";
 
 export interface Aquaculture {
     name: string;
@@ -47,15 +49,7 @@ export interface AquacultureEntity{
       rut: string;
     }[];
     aquaculturePonds: any[];
-    pools?: Array<{
-      ponds_id: string;
-      ponds_depth: number;
-      ponds_pondType: number;
-      ponds_waterType: number;
-      poollength?: number;
-      poolheight?: number;
-      pondradius?: number | null;
-    }>;
+    pools?: PoolDetails[];
   }
 
   export interface AssignedAquaculture {
@@ -72,3 +66,30 @@ export interface AquacultureEntity{
     }[];
   }
   
+
+  export interface AquacultureAssignmentsScientist {
+    id: string;
+    assigned_at: string;
+    active: boolean;
+    scientisRut: string;
+    aquiferRut: string;
+    assignedByRut: string;
+  }
+
+
+  export interface AquacultureAssignmentsScientistDetails {
+    id: string;
+    name: string;
+    email: string;
+    rut: string;
+    phoneNumber: string;
+    centerAdminCultive: PartialUser | null ;
+    ownerUsers: PartialUser[] | null;
+    assignedScientistsToAquaculture: {
+      assignedBy: string;
+      assignedAt: string;
+      scientistName: string;
+      scientistRut: string;
+    }[] | null; 
+    aquaculturePonds: AquaculturePonds[] | null; 
+  }

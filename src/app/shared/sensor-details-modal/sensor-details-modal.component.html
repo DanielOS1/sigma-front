@@ -1,0 +1,43 @@
+<div class="sensor-details-modal">
+  <div class="modal-header">
+    <h2>
+      <mat-icon>sensors</mat-icon>
+      Detalles del Sensor
+    </h2>
+    <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="modal-content">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Estado del Sensor</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="status-section">
+          <div class="status-indicator">
+            <mat-chip-option 
+              [selected]="true"
+              [color]="sensorData.isActive ? 'primary' : 'warn'"
+              (click)="toggleSensorStatus()"
+              [disabled]="false">
+              {{ sensorData.isActive ? 'Activo' : 'Inactivo' }}
+            </mat-chip-option>
+          </div>
+          
+          <button 
+            mat-raised-button 
+            [color]="sensorData.isActive ? 'warn' : 'primary'"
+            (click)="toggleSensorStatus()">
+            <mat-icon>{{ sensorData.isActive ? 'power_settings_new' : 'play_arrow' }}</mat-icon>
+            {{ sensorData.isActive ? 'Desactivar' : 'Activar' }} Sensor
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 

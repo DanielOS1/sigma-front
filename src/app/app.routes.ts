@@ -105,6 +105,16 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        path: 'scientist',
+        children: [
+          {
+            path: 'dashboard',
+            loadComponent: () =>
+              import('./users/scientist/scientist-dashboard/scientist-dashboard.component').then((m) => m.ScientistDashboardComponent),
+          },
+        ],
+      },
 
 
       // Mis dispositivos

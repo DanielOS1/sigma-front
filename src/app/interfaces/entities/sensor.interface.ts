@@ -36,6 +36,8 @@ export interface Sensor {
 
   }
 
+export type PartialSensor = Pick<Sensor, "id" | "type">
+
 export interface updateSensor{
     samplingFrequency: number;
     xPosition: number;

@@ -130,6 +130,7 @@ export class SensorAdministrationComponent implements OnInit {
 
   onPondChange(pond: PoolDetails): void {
     this.selectedPond = pond;
+    this.getPondById(pond.id);
     this.selectedPondSubject.next(pond);
   }
 
