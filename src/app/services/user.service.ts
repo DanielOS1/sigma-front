@@ -98,7 +98,7 @@ export class UserService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString())
-      .set('performedBy', this.authService.getDecodedToken().rut);
+      .set('performedBy', this.authService.getDecodedToken()?.rut ?? '');
 
     return this.http.get<AuditResponse[]>(
       `/audit`,

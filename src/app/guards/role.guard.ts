@@ -25,7 +25,7 @@ export class RoleGuard implements CanActivate {
     const requiredRoles = route.data['roles'] as UserRole[];
 
     // Validar si el usuario tiene un rol permitido
-    if (requiredRoles && requiredRoles.includes(userRole)) {
+    if (requiredRoles && userRole !== undefined && requiredRoles.includes(userRole)) {
       return true; // Acceso permitido
     }
 

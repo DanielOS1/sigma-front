@@ -132,12 +132,17 @@ export class AuthService {
     return this.http.get<any>(`/user/reset-password?rut=${rut}`);
   }
 
-  getDecodedToken() {
+  getDecodedToken(): DecodedToken | null {
     const token = this.getToken();
-    if (token) {
-        return JSON.parse(atob(token.split('.')[1]));
+    if (!token) {
+      return null;
     }
-    return null;
+    try {
+      return jwtDecode<DecodedToken>(token);
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      return null;
+    }
   }
 
   request2FASetup(): Observable<any> {
