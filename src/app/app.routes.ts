@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
+import { UserRole } from './interfaces/entities/user.interface';
 import { MyDevicesComponent } from './devices/my-devices/my-devices.component';
 
 export const routes: Routes = [
@@ -34,6 +36,8 @@ export const routes: Routes = [
       // Rutas específicas para administradores del sistema
       {
         path: 'system-admin',
+        canActivate: [RoleGuard],
+        data: { roles: [UserRole.SYSTEM_ADMIN, UserRole.SUPER_ADMIN] },
         children: [
           {
             path: '',
@@ -87,6 +91,8 @@ export const routes: Routes = [
       },
       {
         path: 'center-admin',
+        canActivate: [RoleGuard],
+        data: { roles: [UserRole.AQUACULTURE_ADMIN, UserRole.SUPER_ADMIN] },
         children: [
           {
             path: '',
@@ -107,6 +113,8 @@ export const routes: Routes = [
       },
       {
         path: 'scientist',
+        canActivate: [RoleGuard],
+        data: { roles: [UserRole.SCIENTIST, UserRole.SUPER_ADMIN] },
         children: [
           {
             path: 'dashboard',
