@@ -1,27 +1,90 @@
-# SigmaFrontend
+# Sigma Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+Frontend de **Sigma**, un sistema de gestión para centros de acuicultura: administración de usuarios y roles, centros de cultivo, pozas/estanques, sensores y dispositivos, con autenticación por RUT y verificación en dos pasos (2FA).
 
-## Development server
+> Este proyecto nació como parte de un desafío técnico en un proceso de selección con **Thoughtworks**. El diseño y la implementación de este repositorio son propios.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Stack técnico
 
-## Code scaffolding
+- [Angular 18](https://angular.dev/) (standalone components) con Server-Side Rendering (`@angular/ssr` + Express)
+- [Angular Material](https://material.angular.io/) para componentes de UI
+- [Tailwind CSS](https://tailwindcss.com/) para estilos utilitarios
+- [RxJS](https://rxjs.dev/) para manejo de flujos asíncronos
+- [ngx-toastr](https://www.npmjs.com/package/ngx-toastr) para notificaciones
+- [jwt-decode](https://www.npmjs.com/package/jwt-decode) para el manejo de tokens JWT
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Funcionalidades principales
 
-## Build
+- **Autenticación** por RUT chileno, con formateo automático y detección dinámica de si el usuario requiere contraseña, más soporte de verificación en dos pasos (2FA).
+- **Gestión de roles**: Owner, Científico, Administrador de centro, Administrador de sistema y Super Administrador, cada uno con su propio dashboard y rutas.
+- **Administración de recursos**: centros de acuicultura, pozas/estanques y sensores (alta, edición, detalle).
+- **Gestión de usuarios**: creación de usuarios, reseteo de contraseñas, asignación de personal.
+- **Mis dispositivos**: vista de dispositivos vinculados a la cuenta del usuario autenticado.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Estructura del proyecto
 
-## Running unit tests
+```
+src/app/
+├── authentication/          # Login (RUT + contraseña / passwordless + 2FA)
+├── dashboard/                # Dashboard genérico
+├── devices/                  # Gestión de dispositivos propios
+├── guards/                   # AuthGuard y RoleGuard
+├── interceptors/              # Interceptores HTTP (base URL, manejo de 401)
+├── layouts/                  # Layouts de la app (main, auth)
+├── profile/                   # Perfil de usuario
+├── ResourcesManagment/         # Gestión de centros de acuicultura y pozas
+├── services/                  # Servicios de dominio (auth, usuarios, pozas, sensores, etc.)
+├── shared/                    # Modales y componentes reutilizables
+├── users/                     # Vistas específicas por rol (system-admin, center-admin, scientist)
+└── interfaces/ · types/        # Contratos de datos y respuestas de API
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Puesta en marcha
 
-## Running end-to-end tests
+### Requisitos
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Node.js 18+
+- Angular CLI 18 (`npm install -g @angular/cli`)
 
-## Further help
+### Instalación
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm install
+```
+
+### Configuración
+
+La URL del backend se define en los archivos de entorno (`src/environments/`):
+
+```ts
+// src/environments/environment.development.ts
+export const environment = {
+  production: false,
+  API_URL: "http://localhost:3000",
+};
+```
+
+### Servidor de desarrollo
+
+```bash
+npm start
+```
+
+Navega a `http://localhost:4200/`. La aplicación se recarga automáticamente al detectar cambios.
+
+### Build y SSR
+
+```bash
+npm run build
+npm run serve:ssr:sigma-frontend
+```
+
+### Tests
+
+```bash
+npm test
+```
+
+## Estado del proyecto
+
+Este repositorio está en proceso de revisión y hardening (autorización por rol a nivel de rutas, limpieza de código muerto, consistencia en el manejo de tokens) antes de considerarse listo para producción.
