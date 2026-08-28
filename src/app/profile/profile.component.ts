@@ -72,7 +72,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (user: ApiResponse<User>) => {
           if (user?.data) {
-            console.log('Datos de usuario recibidos:', user.data);
             this.user = user.data;
           } else {
             console.error('Datos de usuario inválidos:', user);
@@ -133,7 +132,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
         if (result) {
-          console.log('Solicitud de cambio de contraseña enviada');
           this.toastr.success('Solicitud de cambio de contraseña enviada');
         }
       });

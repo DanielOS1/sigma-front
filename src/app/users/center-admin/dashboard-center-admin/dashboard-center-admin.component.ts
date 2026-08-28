@@ -76,7 +76,6 @@ export class DashboardCenterAdminComponent implements OnInit {
     this.aquacultureService.getAqScientists(this.aquacultureBasicDetails?.rut!).subscribe({
       next: (response: ApiResponse<AquacultureScientists>) => {
         this.scientists = response.data.scientists;
-        console.log(this.scientists);
       }
     });
   }
@@ -85,7 +84,6 @@ export class DashboardCenterAdminComponent implements OnInit {
     this.centerAdminService.getPoolofAquarium().subscribe({
       next: (response: ApiResponse<PoolDetails[]>) => {
         this.ponds = response.data;
-        console.log(this.ponds);
       }
     });
   }

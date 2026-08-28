@@ -114,7 +114,6 @@ export class ViewAquacultureComponent implements OnInit {
       next: (response) => {
         if (response.success && this.aquacultureDetail) {
           this.aquacultureDetail.pools = response.data;
-          console.log('Piscinas cargadas:', this.aquacultureDetail.pools);
         } else {
           this.toastr.error('Error al cargar las piscinas');
         }

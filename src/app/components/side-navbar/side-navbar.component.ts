@@ -197,7 +197,6 @@ export class AdminSystemSideNavComponent implements OnInit {
   }
 
   goToProfile(): void {
-    console.log('goToProfile');
     this.router.navigate(['/profile']);
   }
 

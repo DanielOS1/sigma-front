@@ -71,8 +71,7 @@ export class CreateUsersComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {  
-    console.log('Roles disponibles:', this.roleOptions);
+  ngOnInit(): void {
   }
 
   getRoleIcon(role: UserRole): string {

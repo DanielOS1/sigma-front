@@ -48,7 +48,6 @@ export class AuthService {
   }
 
   checkShouldPassword(rut: string): Observable<boolean> {
-    console.log('Verificando si el RUT requiere contraseña...');
     return this.http.get<boolean>(`${this.shouldPasswordUrl}/${rut}`);
   }
 

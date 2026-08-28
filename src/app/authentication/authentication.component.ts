@@ -118,7 +118,6 @@ export class AuthenticationComponent {
         next: (response: LoginApiResponse) => {
           if(response.data.twoFactorEnabled)
             {
-              console.log('Código de doble verificación enviado a tu correo.');
               this.toastr.success('Código de doble verificación enviado a tu correo.');
               this.open2FAModal();
             }
@@ -141,7 +140,6 @@ export class AuthenticationComponent {
         next: (response: LoginApiResponse) => {
           if(response.data.twoFactorEnabled)
             {
-              console.log('Código de doble verificación enviado a tu correo.');
               this.toastr.success('Código de doble verificación enviado a tu correo.');
               this.open2FAModal();
             }
@@ -159,36 +157,26 @@ export class AuthenticationComponent {
   /** Maneja el éxito en el login */
 // components/login/login.component.ts
 private handleLoginSuccess(response: any): void {
-  console.log('🔍 handleLoginSuccess: Iniciando proceso de login', response);
-  
   try {
     const { accessToken, role } = response.data;
-    
-    console.log(`✅ handleLoginSuccess: Token recibido, rol: ${role}`);
-    
+
     // Manejo del token y sesión
     this.authService.setToken(accessToken, this.rememberMe);
-    console.log('✅ handleLoginSuccess: Token almacenado');
-    
     this.sessionService.startSessionMonitor();
-    console.log('✅ handleLoginSuccess: Monitor de sesión iniciado');
 
     // Notificación de éxito
     this.toastr.success('Login exitoso', 'Éxito');
-    console.log('✅ handleLoginSuccess: Notificación mostrada');
 
     // Navegación basada en rol
-    console.log(`➡️ handleLoginSuccess: Intentando navegar según rol: ${role}`);
     this.navigationService.navigateByRole(role)
       .catch(error => {
-        console.error('❌ handleLoginSuccess: Error en navegación:', error);
+        console.error('handleLoginSuccess: Error en navegación:', error);
         throw error; // Re-lanzar para ser capturado por el catch exterior
       });
   } catch (error) {
-    console.error('❌ handleLoginSuccess: Error general:', error);
+    console.error('handleLoginSuccess: Error general:', error);
     this.toastr.error('Error al procesar el login', 'Error');
   } finally {
-    console.log('🏁 handleLoginSuccess: Proceso finalizado');
     this.isLoading = false;
   }
 }

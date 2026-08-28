@@ -60,11 +60,8 @@ export class CreatePoolComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.aquacultureRut = params['rut'] || '';
-      console.log('RUT recibido:', this.aquacultureRut);
       if (!this.aquacultureRut) {
         this.toastr.error('El RUT de la acuícola no fue proporcionado.');
-      } else {
-        console.log('RUT recibido:', this.aquacultureRut);
       }
     });
   }

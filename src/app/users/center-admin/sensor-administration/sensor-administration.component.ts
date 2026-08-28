@@ -175,7 +175,6 @@ export class SensorAdministrationComponent implements OnInit {
     this.centerAdminService.getSensorsFromPond(pondId).subscribe({
       next: (response) => {
         // Agrupar sensores por tipo
-        console.log("response", );
         const grouped = response.data.reduce((acc, sensor) => {
           const existingGroup = acc.find(group => group.type === sensor.type);
           
@@ -285,7 +284,6 @@ openCreateSensorModal(type: SensorType): void {
   createSensor(sensorData: CreateSensor): void {
     this.sensorService.createSensor(sensorData).subscribe({
       next: (response: ApiResponse<CreateSensor>) => {
-        console.log('Sensor creado:', response);
         this._snackBar.open('Sensor creado exitosamente', 'Cerrar', {
           duration: 3000
         });

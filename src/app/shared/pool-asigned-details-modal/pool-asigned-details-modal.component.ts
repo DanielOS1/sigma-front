@@ -15,9 +15,7 @@ export class PoolAssignedDetailsModalComponent {
   constructor(
     public dialogRef: MatDialogRef<PoolAssignedDetailsModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PondAssignedScientistDetails
-  ) {
-    console.log(data);
-  }
+  ) {}
 
   closeModal(): void {
     this.dialogRef.close();
