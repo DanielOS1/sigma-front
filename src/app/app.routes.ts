@@ -132,4 +132,7 @@ export const routes: Routes = [
       },
     ],
   },
+
+  // Cualquier URL no reconocida cae al dashboard (AuthGuard redirige a /auth si no hay sesión)
+  { path: '**', redirectTo: 'dashboard' },
 ];

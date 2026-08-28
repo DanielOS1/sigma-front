@@ -7,12 +7,13 @@ import { UserRole } from '../interfaces/entities/user.interface';
   providedIn: 'root'
 })
 export class NavigationService {
+  // OWNER y SUPER_ADMIN todavía no tienen un dashboard dedicado; usan el genérico.
   private readonly roleRouteMap: Record<UserRole | 'DEFAULT', string> = {
     [UserRole.SYSTEM_ADMIN]: '/system-admin',
     [UserRole.AQUACULTURE_ADMIN]: '/center-admin',
     [UserRole.SCIENTIST]: '/my-devices',
-    [UserRole.OWNER]: '/owner-dashboard',
-    [UserRole.SUPER_ADMIN]: '/super-admin',
+    [UserRole.OWNER]: '/dashboard',
+    [UserRole.SUPER_ADMIN]: '/dashboard',
     'DEFAULT': '/dashboard'
   };
 
